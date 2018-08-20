@@ -1,0 +1,26 @@
+- name: Set ZSH shell for {{ username }}
+  become: yes
+  user: name={{ username }} shell=/bin/zsh state=present
+
+- name: install sudo, aptitude and locales
+  become: yes
+  apt: name={{ item }} update_cache=yes cache_valid_time=3600
+  with_items:
+  - sudo
+  - aptitude
+  - locales
+
+- name: Install locales
+  become: yes
+  locale_gen: name={{ item }} state=present
+  with_items:
+  - en_US.UTF-8
+  - fr_FR.UTF-8
+
+- name: Set LANG to en_US.UTF-8
+  become: yes
+  shell: update-locale LANG=en_US.UTF-8
+
+- name: Add user {{ username }}
+  become: yes
+  user: name={{ username }} groups=adm,sudo append=yes createhome=no

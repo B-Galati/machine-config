@@ -1,0 +1,15 @@
+---
+- command: test -f /home/{{ username }}/.ssh/id_rsa
+  register: ssh_key_installed
+  ignore_errors: True
+
+- pause:
+    prompt: Please install your SSH and GPG to install your dotfiles
+  when: ssh_key_installed|failed
+
+- name: Download dotfiles
+  git: repo=https://github.com/B-Galati/dotfiles dest=~/dotfiles clone=yes recursive=yes version=master
+
+# Synchonized module was not working as intended
+- name: Install dotfiles
+  command: ~/dotfiles/bootstrap.sh

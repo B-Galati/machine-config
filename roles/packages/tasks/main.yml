@@ -1,0 +1,37 @@
+---
+- name: Add backports repository to source list
+  become: yes
+  apt_repository: repo='deb http://ftp.fr.debian.org/debian/ jessie-backports main contrib non-free' state=present
+
+- name: Upgrade packages
+  become: yes
+  apt: update_cache=yes upgrade=yes cache_valid_time=3600
+
+- name: Install packages
+  become: yes
+  apt: name={{ item }} state=present
+  with_items:
+    - man
+    - bash-completion
+    - screenfetch
+    - htop
+    - nmon
+    - hdparm
+    - smartmontools
+    - sysbench
+    - iotop
+    - fio
+    - multitail
+    - git
+    - vim
+    - vim-gui-common
+    - zsh
+    - tar
+    - unzip
+    - netstat-nat
+    - net-tools
+    - powerline
+    - tmux
+    - tzdata
+    - ntp
+    - locales

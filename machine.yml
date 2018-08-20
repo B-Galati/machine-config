@@ -1,0 +1,25 @@
+---
+- name: Main playbook to setup machine
+  hosts: localhost
+  gather_facts: yes
+  connection: local
+  vars_files:
+    - vars/vars.yml
+  roles:
+    - packages
+    - user
+    - role: tschifftner.datetime
+      become: yes
+      datetime_timezone: 'Europe/Paris'
+      # install locale
+      # install dropbox cryptomator + fstab entry, KeeWeb, btysnc, php avec php-cs-fixer et composer
+      # install jetbrains toolbox + phpstorm
+      # install https://github.com/sanduhrs/phpstorm-url-handler
+      # install https://github.com/sharkdp/bat
+      # gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize'
+      # install apt://gnome-software-plugin-flatpak
+      # mkcert
+      # keychain
+      #  cozy cloud
+      # setup crontab
+    - dotfiles
