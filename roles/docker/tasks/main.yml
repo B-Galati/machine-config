@@ -1,0 +1,57 @@
+---
+- name: Add Docker apt key.
+  become: yes
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    state: present
+
+- name: Add Docker repository.
+  become: yes
+  apt_repository:
+    repo: "{{ apt_repository }}"
+    state: present
+    update_cache: yes
+
+- name: install docker
+  become: yes
+  apt:
+    name: "docker-ce"
+    force: yes
+
+- name: Ensure docker users are added to the docker group.
+  become: yes
+  user:
+    name: "{{ user }}"
+    groups: docker
+    append: yes
+
+- name: ensure docker is running
+  become: yes
+  service:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Check current docker-compose version.
+  become: yes
+  command: docker-compose --version
+  register: docker_compose_current_version
+  changed_when: false
+  failed_when: false
+
+- name: Delete existing docker-compose version if it's different.
+  become: yes
+  file:
+    path: "{{ docker_compose_path }}"
+    state: absent
+  when: >
+    docker_compose_current_version.stdout is defined
+    and docker_compose_version not in docker_compose_current_version.stdout
+
+- name: Install Docker Compose
+  become: yes
+  get_url:
+    url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
+    dest: "{{ docker_compose_path }}"
+  mode: 0755

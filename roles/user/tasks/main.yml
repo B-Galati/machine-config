@@ -1,6 +1,6 @@
-- name: Set ZSH shell for {{ username }}
+- name: Set ZSH shell for {{ user }}
   become: yes
-  user: name={{ username }} shell=/bin/zsh state=present
+  user: name={{ user }} shell=/bin/zsh state=present
 
 - name: install sudo, aptitude and locales
   become: yes
@@ -21,6 +21,6 @@
   become: yes
   shell: update-locale LANG=en_US.UTF-8
 
-- name: Add user {{ username }}
+- name: Add user {{ user }}
   become: yes
-  user: name={{ username }} groups=adm,sudo append=yes createhome=no
+  user: name={{ user }} groups=adm,sudo append=yes createhome=no

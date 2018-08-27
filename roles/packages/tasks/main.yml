@@ -1,8 +1,4 @@
 ---
-- name: Add backports repository to source list
-  become: yes
-  apt_repository: repo='deb http://ftp.fr.debian.org/debian/ jessie-backports main contrib non-free' state=present
-
 - name: Upgrade packages
   become: yes
   apt: update_cache=yes upgrade=yes cache_valid_time=3600
@@ -33,5 +29,8 @@
     - powerline
     - tmux
     - tzdata
-    - ntp
     - locales
+    - gnome-tweak-tool
+    - apt-transport-https
+    - ca-certificates
+    - curl
