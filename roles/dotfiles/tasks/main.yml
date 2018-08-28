@@ -3,7 +3,8 @@
   register: ssh_key_installed
   ignore_errors: True
 
-- pause:
+- name: Ask for SSH and GPG key if needed
+  pause:
     prompt: Please install your SSH and GPG to install your dotfiles
   when: ssh_key_installed is failed
 
