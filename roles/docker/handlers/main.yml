@@ -1,3 +1,14 @@
 ---
+- name: restart
+  become: yes
+  notify: restart NetworkManager
+  shell: systemctl daemon-reload
+
+- name: restart NetworkManager
+  become: yes
+  notify: restart docker
+  service: name=NetworkManager state=restarted
+
 - name: restart docker
+  become: yes
   service: name=docker state=restarted

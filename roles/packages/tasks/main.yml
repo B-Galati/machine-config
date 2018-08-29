@@ -31,6 +31,12 @@
     - tzdata
     - locales
     - gnome-tweak-tool
+    - gnome-shell-extensions
     - apt-transport-https
     - ca-certificates
     - curl
+    - gir1.2-gtop-2.0
+    - gir1.2-networkmanager-1.0
+    - arc-theme
+    - python-pip
+    - keychain

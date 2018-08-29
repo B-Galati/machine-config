@@ -1,0 +1,85 @@
+---
+- name: Remove bind9 if present
+  become: yes
+  failed_when: false
+  apt:
+    name: bind9
+    state: absent
+
+- name: Install dnsmasq
+  become: yes
+  apt:
+    name: dnsmasq
+    state: present
+
+- name: Create /etc/docker directory
+  become: yes
+  file: 
+    path: /etc/docker
+    state: directory 
+    mode: 0755
+
+- name: /etc/docker/daemon.json
+  become: yes
+  notify: restart
+  copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+        "dns": ["172.17.42.1"],
+        "bip": "172.17.42.1/24"
+      }
+
+- name: Create /etc/systemd/system/docker.service.d directory
+  become: yes
+  file: 
+    path: /etc/systemd/system/docker.service.d
+    state: directory 
+    mode: 0755
+
+- name: /etc/systemd/system/docker.service.d/docker.conf
+  become: yes
+  notify: restart
+  copy:
+    dest: /etc/systemd/system/docker.service.d/docker.conf
+    content: |
+      [Unit]
+      Wants=NetworkManager.service
+      Before=NetworkManager.service
+
+- name: /etc/NetworkManager/conf.d/dns.conf
+  become: yes
+  notify: restart
+  copy:
+    dest: /etc/NetworkManager/conf.d/dns.conf
+    content: |
+      [main]
+      dns=dnsmasq
+
+- name: Install docker-py
+  pip:
+    name: docker-py
+    state: present
+
+- name: Run docker-dns-gen
+  docker_container:
+    name: dns-gen
+    image: jderusse/dns-gen
+    command: -R
+    restart_policy: always
+    published_ports: ['54:53/udp']
+    capabilities: [NET_BIND_SERVICE]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+- name: /etc/NetworkManager/dnsmasq.d/docker
+  become: yes
+  notify: restart
+  copy:
+    dest: /etc/NetworkManager/dnsmasq.d/docker
+    content: |
+      bind-interfaces
+      interface=lo
+      interface=docker0
+      server=/docker/127.0.0.1#54
+      address=/code/127.0.0.1

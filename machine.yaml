@@ -22,3 +22,8 @@
       # keychain
       #  cozy cloud
       # setup crontab
+
+# 19  cp hidden.extra ../
+# 20  cp hidden.gitconfig_private ../.gitconfig_private
+# 21  mv ../hidden.extra ../.extra
+# 22  dconf load /org/gnome/ < gnome_settings_backup.txt
