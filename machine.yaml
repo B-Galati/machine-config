@@ -21,7 +21,16 @@
       # mkcert
       # keychain
       #  cozy cloud
-      # setup crontab
+      # setup crontab with croncape and postfix
+      # 
+
+# - name: Install croncape
+  # become: yes
+  # unarchive:
+      # src: https://github.com/symfonycorp/croncape/releases/download/v1.2.1/croncape_linux_amd64.tar.gz
+      # dest: /usr/local/bin
+      # remote_src: yes
+
 
 # 19  cp hidden.extra ../
 # 20  cp hidden.gitconfig_private ../.gitconfig_private
