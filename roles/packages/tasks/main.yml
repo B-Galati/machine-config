@@ -1,11 +1,16 @@
 ---
 - name: Upgrade packages
   become: yes
-  apt: update_cache=yes upgrade=yes cache_valid_time=3600
+  apt:
+    update_cache: yes
+    upgrade: yes
+    cache_valid_time: 3600
 
 - name: Install packages
   become: yes
-  apt: name={{ item }} state=present
+  apt:
+    name: '{{ item }}'
+    state: present
   with_items:
     - man
     - bash-completion
@@ -19,6 +24,7 @@
     - fio
     - multitail
     - git
+    - ssh
     - vim
     - vim-gui-common
     - zsh
@@ -40,3 +46,13 @@
     - arc-theme
     - python-pip
     - keychain
+    - postfix
+    - mailutils
+    - python-jmespath
+
+- name: Install croncape
+  become: yes
+  unarchive:
+      src: https://github.com/symfonycorp/croncape/releases/download/v1.2.1/croncape_linux_amd64.tar.gz
+      dest: /usr/local/bin
+      remote_src: yes

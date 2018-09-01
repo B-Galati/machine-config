@@ -17,20 +17,8 @@
       # composer
       # install https://github.com/sanduhrs/phpstorm-url-handler
       # install https://github.com/sharkdp/bat
-      # gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize'
-      # install apt://gnome-software-plugin-flatpak
       # mkcert
       #  cozy cloud
-      # setup crontab with croncape and postfix
-      # 
-
-# - name: Install croncape
-  # become: yes
-  # unarchive:
-      # src: https://github.com/symfonycorp/croncape/releases/download/v1.2.1/croncape_linux_amd64.tar.gz
-      # dest: /usr/local/bin
-      # remote_src: yes
-
 
 # 19  cp hidden.extra ../
 # 20  cp hidden.gitconfig_private ../.gitconfig_private
