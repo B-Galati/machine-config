@@ -83,3 +83,21 @@
       interface=docker0
       server=/docker/127.0.0.1#54
       address=/code/127.0.0.1
+
+- name: Disable systemd-resolved
+  become: yes
+  notify: restart
+  systemd:
+    name: systemd-resolved
+    state: stopped
+    enabled: no
+
+- name: /etc/resolv.conf must point to /var/run/NetworkManager/resolv.conf
+  become: yes
+  notify: restart
+  file:
+    path: /etc/resolv.conf
+    src: /var/run/NetworkManager/resolv.conf
+    state: link
+    follow: no
+    force: yes

@@ -4,14 +4,13 @@
   gather_facts: yes
   vars_files:
     - vars/vars.yml
+    - vault.yaml
   roles:
     - packages
     - user
-    - dotfiles
+    - repositories
     - docker
-    # - docker + docker-dns-gen
-      # install locale
-      # install dropbox cryptomator + fstab entry, KeeWeb, php avec php-cs-fixer et composer
+      # php avec php-cs-fixer et composer
       # install jetbrains toolbox + phpstorm
       # composer
       # install https://github.com/sanduhrs/phpstorm-url-handler
@@ -19,7 +18,6 @@
       # gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize'
       # install apt://gnome-software-plugin-flatpak
       # mkcert
-      # keychain
       #  cozy cloud
       # setup crontab with croncape and postfix
       # 
