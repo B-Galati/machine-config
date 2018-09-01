@@ -1,5 +1,5 @@
 ---
-- command: test -f /home/{{ user }}/.ssh/id_rsa
+- command: test -f /home/{{ ansible_user }}/.ssh/id_rsa
   register: ssh_key_installed
   ignore_errors: True
 

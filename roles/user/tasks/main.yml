@@ -1,6 +1,6 @@
-- name: Set ZSH shell for {{ user }}
+- name: Set ZSH shell for {{ ansible_user }}
   become: yes
-  user: name={{ user }} shell=/bin/zsh state=present
+  user: name={{ ansible_user }} shell=/bin/zsh state=present
 
 - name: install sudo, aptitude and locales
   become: yes
@@ -21,6 +21,6 @@
   become: yes
   shell: update-locale LANG=en_US.UTF-8
 
-- name: Add user {{ user }}
+- name: Add user {{ ansible_user }}
   become: yes
-  user: name={{ user }} groups=adm,sudo append=yes createhome=no
+  user: name={{ ansible_user }} groups=adm,sudo append=yes createhome=no

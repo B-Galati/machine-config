@@ -2,16 +2,18 @@
 - name: Main playbook to setup machine
   hosts: localhost
   gather_facts: yes
+  vars:
+    ansible_user: benoit
+    jetbrains_toolbox_version: 1.11
   vars_files:
-    - vars/vars.yml
     - vault.yaml
   roles:
-    - packages
-    - user
-    - repositories
-    - docker
+    # - packages
+    # - user
+    # - repositories
+    # - docker
+    - jaredhocutt.jetbrains_toolbox
       # php avec php-cs-fixer et composer
-      # install jetbrains toolbox + phpstorm
       # composer
       # install https://github.com/sanduhrs/phpstorm-url-handler
       # install https://github.com/sharkdp/bat

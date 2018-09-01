@@ -22,7 +22,7 @@
 - name: Ensure docker users are added to the docker group.
   become: yes
   user:
-    name: "{{ user }}"
+    name: "{{ ansible_user }}"
     groups: docker
     append: yes
 
