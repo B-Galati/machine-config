@@ -8,10 +8,10 @@
   vars_files:
     - vault.yaml
   roles:
-    # - packages
-    # - user
-    # - repositories
-    # - docker
+    - packages
+    - user
+    - repositories
+    - docker
     - jaredhocutt.jetbrains_toolbox
       # php avec php-cs-fixer et composer
       # composer
@@ -19,6 +19,7 @@
       # install https://github.com/sharkdp/bat
       # mkcert
       #  cozy cloud
+      # install docs and learning-lab
 
 # 19  cp hidden.extra ../
 # 20  cp hidden.gitconfig_private ../.gitconfig_private
