@@ -49,6 +49,8 @@
     - postfix
     - mailutils
     - python-jmespath
+    - ncdu
+    - pandoc
 
 - name: Install croncape
   become: yes

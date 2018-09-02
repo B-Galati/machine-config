@@ -1,0 +1,16 @@
+---
+- name: Create /etc/profile.d directory
+  become: yes
+  file:
+    path: /etc/profile.d
+    state: directory
+    mode: 0755
+
+- name: include role geerlingguy.nodejs
+  become: yes
+  import_role:
+    name: geerlingguy.nodejs
+  vars:
+    npm_config_prefix: '/home/{{ ansible_user }}/.npm-global'
+    nodejs_version: 8.x
+    nodejs_npm_global_packages: [doctoc]
