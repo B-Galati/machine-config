@@ -8,17 +8,21 @@
   vars_files:
     - vault.yaml
   roles:
-    - packages
-    - user
-    - repositories
-    - docker
-    - jaredhocutt.jetbrains_toolbox
-      # php avec php-cs-fixer et composer
-      # composer
+#    - packages
+#    - user
+#    - repositories
+#    - docker
+#    - jaredhocutt.jetbrains_toolbox
+#    - nodejs
+#    - php
+#    - system
+
+      # php-cs-fixer
+      # phive
       # install https://github.com/sanduhrs/phpstorm-url-handler
       # install https://github.com/sharkdp/bat
       # mkcert
-      #  cozy cloud
+      # cozy cloud
       # install docs and learning-lab
 
 # 19  cp hidden.extra ../

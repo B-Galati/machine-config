@@ -1,4 +1,5 @@
 /install.lock
 /vault.*
-/roles/jaredhocutt.jetbrains_toolbox/
-/roles/geerlingguy.nodejs/
+/roles/jaredhocutt.jetbrains_toolbox
+/roles/geerlingguy.nodejs
+/roles/geerlingguy.composer

@@ -9,6 +9,7 @@
 - name: Install packages
   become: yes
   apt:
+    cache_valid_time: 3600
     name: '{{ item }}'
     state: present
   with_items:
@@ -51,6 +52,14 @@
     - python-jmespath
     - ncdu
     - pandoc
+
+- name: 'Ensure /usr/local/bin belongs to {{ ansible_user }}'
+  become: yes
+  file:
+    path: /usr/local/bin
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    recurse: yes
 
 - name: Install croncape
   become: yes

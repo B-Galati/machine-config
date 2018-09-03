@@ -7,6 +7,7 @@ install: install.lock vault.yaml
 	ansible-galaxy install --role-file requirements.yaml --roles-path ./roles
 	ansible-playbook machine.yaml --vault-id vault.txt --verbose
 	~/dotfiles/bootstrap.sh
+	composer global update
 
 vault.yaml: vault.txt
 	@echo "[PAUSE] you will need to specify ansible variable ansible_become_pass in the vault"

@@ -1,0 +1,37 @@
+---
+- name: Install php packages
+  become: yes
+  apt:
+    name: '{{ item }}'
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - php7.2-cli
+    - php-redis
+    - php7.2-common
+    - php7.2-curl
+    - php7.2-zip
+    - php7.2-json
+    - php7.2-mbstring
+    - php7.2-opcache
+    - php7.2-readline
+    - php7.2-sqlite3
+    - php7.2-xml
+
+- name: Import role geerlingguy.composer
+  import_role:
+    name: geerlingguy.composer
+  vars:
+    composer_home_path: '~/.composer'
+    composer_path: /usr/local/bin/composer
+    composer_add_to_path: true
+    composer_home_owner: '{{ ansible_user }}'
+    composer_home_group: '{{ ansible_user }}'
+    composer_keep_updated: true
+
+- name: App | Ensure /etc/profile.d/composer.sh file is present
+  become: yes
+  copy:
+      content: 'export PATH=$PATH:~/.composer/vendor/bin'
+      dest: /etc/profile.d/composer.sh
+      mode: 0644

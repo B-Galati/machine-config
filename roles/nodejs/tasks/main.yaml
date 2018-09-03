@@ -6,7 +6,7 @@
     state: directory
     mode: 0755
 
-- name: include role geerlingguy.nodejs
+- name: Import role geerlingguy.nodejs
   become: yes
   import_role:
     name: geerlingguy.nodejs
@@ -14,3 +14,10 @@
     npm_config_prefix: '/home/{{ ansible_user }}/.npm-global'
     nodejs_version: 8.x
     nodejs_npm_global_packages: [doctoc]
+
+- name: 'Ensure npm global belongs to {{ ansible_user }}'
+  file:
+    path: '~/.npm-global'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    recurse: yes
