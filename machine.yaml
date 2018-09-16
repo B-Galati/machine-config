@@ -5,27 +5,24 @@
   vars:
     ansible_user: benoit
     jetbrains_toolbox_version: 1.11
+    croncape_version: v1.2.1
+    croncape_archive_checksum: 28a5da07e6168799aae9e7aa656b5faa9694f3b915f40ffdac3c14991c26c409
+    mkcert_version: v1.1.2
   vars_files:
     - vault.yaml
   roles:
-#    - packages
+    - software
 #    - user
 #    - repositories
 #    - docker
 #    - jaredhocutt.jetbrains_toolbox
+#    - system
 #    - nodejs
 #    - php
-#    - system
 
-      # php-cs-fixer
-      # phive
+      # php-cs-fixer phive
       # install https://github.com/sanduhrs/phpstorm-url-handler
       # install https://github.com/sharkdp/bat
-      # mkcert
+      # vscode
       # cozy cloud
-      # install docs and learning-lab
-
-# 19  cp hidden.extra ../
-# 20  cp hidden.gitconfig_private ../.gitconfig_private
-# 21  mv ../hidden.extra ../.extra
-# 22  dconf load /org/gnome/ < gnome_settings_backup.txt
+      #

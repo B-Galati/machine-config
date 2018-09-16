@@ -4,9 +4,9 @@ default:
 
 .PHONY: install
 install: install.lock vault.yaml
-	ansible-galaxy install --role-file requirements.yaml --roles-path ./roles
+	ansible-galaxy install --role-file requirements.yaml --roles-path ./roles --force
 	ansible-playbook machine.yaml --vault-id vault.txt --verbose
-	~/dotfiles/bootstrap.sh
+	~/dotfiles/bootstrap.sh --force
 	composer global update
 
 vault.yaml: vault.txt

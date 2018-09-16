@@ -1,0 +1,128 @@
+---
+- name: Install peek repository
+  become: yes
+  apt_repository:
+    repo: ppa:peek-developers/stable
+
+- name: Upgrade packages
+  become: yes
+  apt:
+    update_cache: yes
+    upgrade: yes
+    cache_valid_time: 3600
+
+- name: Install packages
+  become: yes
+  apt:
+    cache_valid_time: 3600
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - man
+    - bash-completion
+    - screenfetch
+    - htop
+    - nmon
+    - hdparm
+    - smartmontools
+    - sysbench
+    - iotop
+    - fio
+    - multitail
+    - git
+    - ssh
+    - vim
+    - vim-gui-common
+    - zsh
+    - tar
+    - unzip
+    - netstat-nat
+    - net-tools
+    - powerline
+    - tmux
+    - tzdata
+    - locales
+    - gnome-tweak-tool
+    - gnome-shell-extensions
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gir1.2-gtop-2.0
+    - gir1.2-networkmanager-1.0
+    - arc-theme
+    - python-pip
+    - keychain
+    - postfix
+    - mailutils
+    - python-jmespath
+    - ncdu
+    - pandoc
+    - libnss3-tools
+    - peek
+    - keepassx
+    - entr
+
+- name: 'Ensure /usr/local/bin belongs to {{ ansible_user }}'
+  become: yes
+  file:
+    path: /usr/local/bin
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    recurse: yes
+
+- name: Croncape | Check for existing croncape install
+  stat:
+    path: '/usr/local/bin/croncape'
+  register: croncape_install
+  changed_when: False
+
+- name: Croncape | Check croncape version to know if an update is needed or not
+  command: '/usr/local/bin/croncape --version'
+  register: croncape_installed_version
+  when: 'croncape_install.stat.exists'
+  changed_when: 'croncape_version not in croncape_installed_version.stdout'
+  failed_when: False
+
+- block:
+    - name: Croncape | Download croncape
+      get_url:
+        url: https://github.com/symfonycorp/croncape/releases/download/{{ croncape_version }}/croncape_linux_amd64.tar.gz
+        checksum: 'sha256:{{ croncape_archive_checksum }}'
+        dest: /tmp/croncape_linux_amd64.tar.gz
+        force: yes
+
+    - name: Croncape | Install croncape
+      unarchive:
+        src: /tmp/croncape_linux_amd64.tar.gz
+        dest: '/usr/local/bin'
+        remote_src: yes
+  when: not croncape_install.stat.exists or croncape_version not in croncape_installed_version.stdout
+
+- name: mkcert | Check for existing mkcert install
+  stat:
+    path: '/usr/local/bin/mkcert'
+  register: mkcert_install
+  changed_when: False
+
+- block:
+    - name: mkcert | Download and install mkcert
+      get_url:
+        url: https://github.com/FiloSottile/mkcert/releases/download/{{ mkcert_version }}/mkcert-{{ mkcert_version }}-linux-amd64
+        dest: /usr/local/bin/mkcert
+        mode: 0755
+        force: yes
+
+    - name: mkcert | Create local CA
+      shell: /usr/local/bin/mkcert -install
+      register: mkcert_install
+      changed_when: "'Created a new local CA' in mkcert_install.stdout"
+  when: not mkcert_install.stat.exists
+
+- name: fzf | Clone repository
+  git:
+    repo: https://github.com/junegunn/fzf.git
+    dest: ~/.fzf
+    depth: 1
+
+- name: fzf | Install
+  shell: ~/.fzf/install --completion --64 --key-bindings --update-rc

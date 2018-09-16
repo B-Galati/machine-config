@@ -12,6 +12,12 @@
   git:
     repo: git@github.com:B-Galati/dotfiles
     dest: ~/dotfiles
-    clone: yes
     recursive: yes
-    version: master
+    update: no
+
+- name: Download docs
+  git:
+    repo: git@gitlab.com:B-Galati/docs.git
+    dest: ~/docs
+    recursive: yes
+    update: no

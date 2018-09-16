@@ -29,9 +29,26 @@
     composer_home_group: '{{ ansible_user }}'
     composer_keep_updated: true
 
-- name: App | Ensure /etc/profile.d/composer.sh file is present
+- name: Ensure /etc/profile.d/composer.sh file is present
   become: yes
   copy:
       content: 'export PATH=$PATH:~/.composer/vendor/bin'
       dest: /etc/profile.d/composer.sh
       mode: 0644
+
+- name: Write /etc/php/7.2/cli/conf.d/99-custom.ini file
+  become: yes
+  copy:
+    dest: /etc/php/7.2/cli/conf.d/99-custom.ini
+    content: |
+      [PHP]
+      error_reporting = E_ALL
+      display_errors = On
+      display_startup_errors = On
+      log_errors = On
+      log_errors_max_len = 1024
+      report_memleaks = On
+      default_charset = "UTF-8"
+
+      [Date]
+      date.timezone = Europe/Paris
