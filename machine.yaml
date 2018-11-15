@@ -8,6 +8,9 @@
     croncape_version: v1.2.1
     croncape_archive_checksum: 28a5da07e6168799aae9e7aa656b5faa9694f3b915f40ffdac3c14991c26c409
     mkcert_version: v1.1.2
+    fd_version: 7.1.0
+    bat_version: 0.8.0
+    slack_version: 3.3.3
   vars_files:
     - vault.yaml
   roles:
