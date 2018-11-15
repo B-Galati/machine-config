@@ -8,6 +8,10 @@
   with_items:
     - php7.2-cli
     - php-redis
+    - php-mysql
+    - php-pgsql
+    - php-gd
+    - phpmd
     - php7.2-common
     - php7.2-curl
     - php7.2-zip

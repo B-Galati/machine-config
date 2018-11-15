@@ -44,8 +44,8 @@
     dest: /etc/systemd/system/docker.service.d/docker.conf
     content: |
       [Unit]
-      Wants=NetworkManager.service
-      Before=NetworkManager.service
+      Wants=network-pre.target
+      Before=network-pre.target
 
 - name: /etc/NetworkManager/conf.d/dns.conf
   become: yes
@@ -60,17 +60,6 @@
   pip:
     name: docker-py
     state: present
-
-- name: Run docker-dns-gen
-  docker_container:
-    name: dns-gen
-    image: jderusse/dns-gen
-    command: -R
-    restart_policy: always
-    published_ports: ['54:53/udp']
-    capabilities: [NET_BIND_SERVICE]
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
 
 - name: /etc/NetworkManager/dnsmasq.d/docker
   become: yes
@@ -92,6 +81,14 @@
     state: stopped
     enabled: no
 
+- name: Disable dnsmasq
+  become: yes
+  notify: restart
+  systemd:
+    name: dnsmasq
+    state: stopped
+    enabled: no
+
 - name: /etc/resolv.conf must point to /var/run/NetworkManager/resolv.conf
   become: yes
   notify: restart
@@ -101,3 +98,15 @@
     state: link
     follow: no
     force: yes
+
+- name: Run docker-dns-gen
+  docker_container:
+    name: dns-gen
+    image: jderusse/dns-gen
+    command: -R
+    restart_policy: always
+    published_ports: ['54:53/udp']
+    capabilities: [NET_BIND_SERVICE]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
