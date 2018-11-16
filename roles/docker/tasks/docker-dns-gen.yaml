@@ -32,20 +32,19 @@
 
 - name: Create /etc/systemd/system/docker.service.d directory
   become: yes
-  file: 
+  file:
     path: /etc/systemd/system/docker.service.d
     state: directory 
     mode: 0755
 
-- name: /etc/systemd/system/docker.service.d/docker.conf
+- name: /etc/systemd/system/docker.service.d/override.conf
   become: yes
   notify: restart
   copy:
-    dest: /etc/systemd/system/docker.service.d/docker.conf
+    dest: /etc/systemd/system/docker.service.d/override.conf
     content: |
       [Unit]
-      Wants=network-pre.target
-      Before=network-pre.target
+      Before=NetworkManager.service
 
 - name: /etc/NetworkManager/conf.d/dns.conf
   become: yes
