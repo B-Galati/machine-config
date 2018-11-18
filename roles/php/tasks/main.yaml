@@ -2,25 +2,26 @@
 - name: Install php packages
   become: yes
   apt:
-    name: '{{ item }}'
+    name: '{{ packages }}'
     update_cache: yes
     cache_valid_time: 3600
-  with_items:
-    - php7.2-cli
-    - php-redis
-    - php-mysql
-    - php-pgsql
-    - php-gd
-    - phpmd
-    - php7.2-common
-    - php7.2-curl
-    - php7.2-zip
-    - php7.2-json
-    - php7.2-mbstring
-    - php7.2-opcache
-    - php7.2-readline
-    - php7.2-sqlite3
-    - php7.2-xml
+  vars:
+    packages:
+      - php7.2-cli
+      - php-redis
+      - php-mysql
+      - php-pgsql
+      - php-gd
+      - phpmd
+      - php7.2-common
+      - php7.2-curl
+      - php7.2-zip
+      - php7.2-json
+      - php7.2-mbstring
+      - php7.2-opcache
+      - php7.2-readline
+      - php7.2-sqlite3
+      - php7.2-xml
 
 - name: Import role geerlingguy.composer
   import_role:
@@ -56,3 +57,69 @@
 
       [Date]
       date.timezone = Europe/Paris
+
+- name: phive | Check for existing phive install
+  stat:
+    path: '/usr/local/bin/phive'
+  register: phive_install
+  changed_when: False
+
+- block:
+    - name: phive | Download phive phar
+      get_url:
+        url: https://phar.io/releases/phive.phar
+        dest: /tmp/phive.phar
+        force: yes
+
+    - name: phive | Download phive gpg key
+      get_url:
+        url: https://phar.io/releases/phive.phar.asc
+        dest: /tmp/phive.phar.asc
+        force: yes
+
+    - name: phive | Add GPG key
+      shell: gpg --keyserver pool.sks-keyservers.net --recv-keys 0x9D8A98B29B2D5D79
+
+    - name: phive | Verify GPG archive
+      shell: gpg --verify /tmp/phive.phar.asc /tmp/phive.phar
+
+    - name: phive | Install phive
+      copy:
+        src: /tmp/phive.phar
+        dest: /usr/local/bin/phive
+        mode: 0755
+  when: not phive_install.stat.exists
+
+- name: phive | Self update
+  shell: phive selfupdate
+  register: phive_selfupdate
+  changed_when: "'Downloading' in phive_selfupdate.stdout"
+
+- name: phive | Update repository list
+  shell: phive update-repository-list
+  register: phive_update_repo_list
+  changed_when: "'Downloading' in phive_update_repo_list.stdout"
+
+- name: phive | Intall packages
+  shell: phive install --target /usr/local/bin {{ item }} --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C,E82B2FB314E9906E,D2CCAC42F6295E7D,AFA6EAAB339B841E,E82B2FB314E9906E
+  register: phive_install
+  with_items:
+    - phpunit
+    - infection
+    - php-cs-fixer
+    - phan
+    - composer-require-checker
+    - php-coveralls
+    - phploc
+    - phpcpd
+  changed_when: "'Downloading' in phive_install.stdout"
+
+- name: phive | Update packages
+  shell: phive update
+  register: phive_update
+  changed_when: "'Downloading' in phive_update.stdout"
+
+- name: Composer global update
+  shell: composer global update
+  register: composer_update_global
+  changed_when: "'Installing' in composer_update_global.stdout"

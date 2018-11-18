@@ -4,6 +4,11 @@
   apt_repository:
     repo: ppa:peek-developers/stable
 
+- name: Install DBeaver repository
+  become: yes
+  apt_repository:
+    repo: ppa:serge-rider/dbeaver-ce
+
 - name: vscode | Set gpg key
   become: true
   apt_key:
@@ -17,7 +22,21 @@
     repo: 'deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main'
     filename: vscode
     state: present
-    update_cache: yes
+    update_cache: no
+
+- name: insomnia | Set gpg key
+  become: true
+  apt_key:
+    url: https://insomnia.rest/keys/debian-public.key.asc
+    state: present
+
+- name: insomnia | Add repository
+  become: true
+  apt_repository:
+    repo: 'deb https://dl.bintray.com/getinsomnia/Insomnia /'
+    filename: insomnia
+    state: present
+    update_cache: no
 
 - name: Upgrade packages
   become: yes
@@ -30,63 +49,66 @@
   become: yes
   apt:
     cache_valid_time: 3600
-    name: '{{ item }}'
+    name: "{{ packages }}"
     state: present
-  with_items:
-    - man
-    - bash-completion
-    - screenfetch
-    - htop
-    - nmon
-    - hdparm
-    - smartmontools
-    - sysbench
-    - iotop
-    - fio
-    - multitail
-    - git
-    - ssh
-    - vim
-    - vim-gui-common
-    - zsh
-    - tar
-    - fonts-hack
-    - unzip
-    - netstat-nat
-    - net-tools
-    - powerline
-    - tmux
-    - tzdata
-    - locales
-    - shellcheck
-    - gnome-tweak-tool
-    - gnome-shell-extensions
-    - menulibre
-    - apt-transport-https
-    - ca-certificates
-    - curl
-    - imagemagick
-    - gthumb
-    - nautilus-image-converter
-    - gir1.2-gtop-2.0
-    - gir1.2-networkmanager-1.0
-    - arc-theme
-    - python-pip
-    - ubuntu-make
-    - keychain
-    - postfix
-    - mailutils
-    - python-jmespath
-    - ncdu
-    - pandoc
-    - libnss3-tools
-    - peek
-    - keepassx
-    - entr
-    - code
-    - gdebi
-    - chromium-browser
-    - fonts-roboto
+  vars:
+    packages:
+      - man
+      - bash-completion
+      - screenfetch
+      - htop
+      - nmon
+      - hdparm
+      - smartmontools
+      - sysbench
+      - iotop
+      - fio
+      - multitail
+      - git
+      - ssh
+      - vim
+      - vim-gui-common
+      - zsh
+      - tar
+      - fonts-hack
+      - unzip
+      - netstat-nat
+      - net-tools
+      - powerline
+      - tmux
+      - tzdata
+      - locales
+      - shellcheck
+      - gnome-tweak-tool
+      - gnome-shell-extensions
+      - menulibre
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - imagemagick
+      - gthumb
+      - nautilus-image-converter
+      - gir1.2-gtop-2.0
+      - gir1.2-networkmanager-1.0
+      - arc-theme
+      - python-pip
+      - ubuntu-make
+      - keychain
+      - postfix
+      - mailutils
+      - python-jmespath
+      - ncdu
+      - pandoc
+      - libnss3-tools
+      - peek
+      - keepassx
+      - entr
+      - code
+      - gdebi
+      - chromium-browser
+      - fonts-roboto
+      - insomnia
+      - dbeaver-ce
 
 - name: 'Ensure /usr/local/bin belongs to {{ ansible_user }}'
   become: yes
@@ -239,3 +261,13 @@
   become: yes
   apt:
     autoclean: yes
+
+# Source https://github.com/sanduhrs/phpstorm-url-handler
+- name: phpstorm-url-handler | Install shell script
+  copy:
+    src: phpstorm-url-handler
+    dest: /usr/local/bin/phpstorm-url-handler
+
+- name: phpstorm-url-handler | Install desktop file
+  become: yes
+  shell: 'desktop-file-install "{{ role_path}}/files/phpstorm-url-handler.desktop" && update-desktop-database'

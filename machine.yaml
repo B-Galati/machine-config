@@ -15,17 +15,10 @@
     - vault.yaml
   roles:
     - software
-#    - user
-#    - repositories
-#    - docker
-#    - jaredhocutt.jetbrains_toolbox
-#    - system
-#    - nodejs
-#    - php
-
-      # php-cs-fixer phive
-      # install https://github.com/sanduhrs/phpstorm-url-handler
-      # install https://github.com/sharkdp/bat
-      # vscode
-      # cozy cloud
-      #
+    - user
+    - repositories
+    - docker
+    - jaredhocutt.jetbrains_toolbox
+    - system
+    - nodejs
+    - php
