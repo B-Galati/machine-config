@@ -4,11 +4,15 @@
 
 - name: install sudo, aptitude and locales
   become: yes
-  apt: name={{ item }} update_cache=yes cache_valid_time=3600
-  with_items:
-  - sudo
-  - aptitude
-  - locales
+  apt:
+    name: '{{ packages }}'
+    update_cache: yes
+    cache_valid_time: 3600
+  vars:
+    packages:
+      - sudo
+      - aptitude
+      - locales
 
 - name: Install locales
   become: yes
@@ -24,3 +28,17 @@
 - name: Add user {{ ansible_user }}
   become: yes
   user: name={{ ansible_user }} groups=adm,sudo append=yes createhome=no
+
+- name: Add ENV vars in /etc/profile.d/custom.sh
+  become: yes
+  copy:
+    dest: /etc/profile.d/custom.sh
+    mode: 0644
+    content: |
+      PATH="$PATH:/snap/bin"
+      #PATH="$PATH:$HOME/.platformsh/bin"
+      #PATH="$PATH:$HOME/.sensiocloud/bin"
+
+      # https://remysharp.com/2018/08/23/cli-improved
+      # add support for ctrl+o to open selected file in VS Code
+      export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"

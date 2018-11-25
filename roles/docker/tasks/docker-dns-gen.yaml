@@ -30,21 +30,22 @@
         "bip": "172.17.42.1/24"
       }
 
-- name: Create /etc/systemd/system/docker.service.d directory
+- name: Create /etc/systemd/system/NetworkManager.service.d directory
   become: yes
   file:
-    path: /etc/systemd/system/docker.service.d
+    path: /etc/systemd/system/NetworkManager.service.d
     state: directory 
     mode: 0755
 
-- name: /etc/systemd/system/docker.service.d/override.conf
+- name: /etc/systemd/system/NetworkManager.service.d/override.conf
   become: yes
   notify: restart
   copy:
-    dest: /etc/systemd/system/docker.service.d/override.conf
+    dest: /etc/systemd/system/NetworkManager.service.d/override.conf
     content: |
       [Unit]
-      Before=NetworkManager.service
+      Wants=docker.service
+      After=docker.service
 
 - name: /etc/NetworkManager/conf.d/dns.conf
   become: yes
@@ -58,7 +59,8 @@
 - name: Install docker-py
   pip:
     name: docker-py
-    state: present
+    state: latest
+    extra_args: --user
 
 - name: /etc/NetworkManager/dnsmasq.d/docker
   become: yes

@@ -9,6 +9,11 @@
   apt_repository:
     repo: ppa:serge-rider/dbeaver-ce
 
+- name: Install Yubico repository
+  become: yes
+  apt_repository:
+    repo: ppa:yubico/stable
+
 - name: vscode | Set gpg key
   become: true
   apt_key:
@@ -102,6 +107,8 @@
       - libnss3-tools
       - peek
       - keepassx
+      - keepass2
+      - gnupg2
       - entr
       - code
       - gdebi
@@ -109,6 +116,7 @@
       - fonts-roboto
       - insomnia
       - dbeaver-ce
+      - libpam-u2f
 
 - name: 'Ensure /usr/local/bin belongs to {{ ansible_user }}'
   become: yes
@@ -117,6 +125,16 @@
     owner: '{{ ansible_user }}'
     group: '{{ ansible_user }}'
     recurse: yes
+
+- name: Install pip packages
+  pip:
+    name: '{{ packages }}'
+    state: latest
+    extra_args: --user
+  vars:
+    packages:
+      - pip
+      - awscli
 
 - name: Firefox dev | Check for existing install
   stat:
