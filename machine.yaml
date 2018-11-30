@@ -11,13 +11,15 @@
     fd_version: 7.1.0
     bat_version: 0.8.0
     slack_version: 3.3.3
+    docker_compose_version: 1.23.2
   vars_files:
     - vault.yaml
   roles:
     - software
     - user
     - repositories
-    - docker
+    - role: docker
+      tags: [docker]
     - jaredhocutt.jetbrains_toolbox
     - system
     - nodejs

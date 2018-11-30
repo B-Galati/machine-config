@@ -44,7 +44,7 @@
     dest: /etc/systemd/system/NetworkManager.service.d/override.conf
     content: |
       [Unit]
-      Wants=docker.service
+      Requires=docker.service
       After=docker.service
 
 - name: /etc/NetworkManager/conf.d/dns.conf
