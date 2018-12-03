@@ -23,4 +23,5 @@
     - jaredhocutt.jetbrains_toolbox
     - system
     - nodejs
-    - php
+    - role: php
+      tags: [php]

@@ -3,10 +3,15 @@ default:
 	@echo 'You must specify a target'
 
 .PHONY: install
-install: install.lock vault.yaml
-	ansible-galaxy install --role-file requirements.yaml --roles-path ./roles --force
+install: install.lock vault.yaml requirements
 	ansible-playbook machine.yaml --vault-id vault.txt --verbose
 	~/dotfiles/bootstrap.sh --force
+
+.PHONY: requirements
+requirements: requirements.lock
+requirements.lock: requirements.yaml
+	ansible-galaxy install --role-file requirements.yaml --roles-path ./roles --force
+	@touch requirements.lock
 
 vault.yaml: vault.txt
 	@echo "[PAUSE] you will need to specify ansible variable ansible_become_pass in the vault"

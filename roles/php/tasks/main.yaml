@@ -12,6 +12,7 @@
       - php-mysql
       - php-pgsql
       - php-gd
+      - php-xdebug
       - phpmd
       - php7.2-common
       - php7.2-curl
@@ -58,6 +59,10 @@
 
       [Date]
       date.timezone = Europe/Paris
+
+- name: Php | Disable xdebug
+  become: yes
+  shell: phpdismod xdebug
 
 - name: phive | Check for existing phive install
   stat:
