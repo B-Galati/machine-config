@@ -64,7 +64,30 @@
   become: yes
   shell: phpdismod xdebug
 
-- name: phive | Check for existing phive install
+- name: Symfony | Check for existing Symfony bin
+  stat:
+    path: '~/.symfony/bin/symfony'
+  register: symfony_install
+  changed_when: False
+
+- block:
+    - name: Symfony | Install Symfony CLI
+      shell: curl -Ss | bash //get.symfony.com/cli/installer
+  when: not symfony_install.stat.exists
+
+- name: Symfony | Add symfony bin to PATH
+  become: yes
+  copy:
+    dest: /etc/profile.d/symfony.sh
+    mode: 0644
+    content: |
+      PATH="$HOME/.symfony/bin:$PATH"
+
+      # https://remysharp.com/2018/08/23/cli-improved
+      # add support for ctrl+o to open selected file in VS Code
+      export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
+
+- name: phive | Check for existing phive bin
   stat:
     path: '/usr/local/bin/phive'
   register: phive_install
