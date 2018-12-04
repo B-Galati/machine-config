@@ -7,6 +7,11 @@ install: install.lock vault.yaml requirements
 	ansible-playbook machine.yaml --vault-id vault.txt --verbose
 	~/dotfiles/bootstrap.sh --force
 
+.PHONY: install-force
+install-force:
+	rm -rf requirements.lock
+	$(MAKE) install
+
 .PHONY: requirements
 requirements: requirements.lock
 requirements.lock: requirements.yaml
