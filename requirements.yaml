@@ -2,4 +2,6 @@
 
 - src: jaredhocutt.jetbrains_toolbox
 - src: geerlingguy.nodejs
+  version: 4.2.2
 - src: geerlingguy.composer
+  version: 1.7.3
