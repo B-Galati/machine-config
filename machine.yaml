@@ -17,7 +17,8 @@
   roles:
     - software
     - user
-    - repositories
+    - role: repositories
+      tags: [repositories]
     - role: docker
       tags: [docker]
     - jaredhocutt.jetbrains_toolbox

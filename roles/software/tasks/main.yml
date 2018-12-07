@@ -117,6 +117,7 @@
       - insomnia
       - dbeaver-ce
       - libpam-u2f
+      - wondershaper
 
 - name: 'Ensure /usr/local/bin belongs to {{ ansible_user }}'
   become: yes
