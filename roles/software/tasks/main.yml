@@ -81,6 +81,9 @@
       - net-tools
       - powerline
       - tmux
+      - openvpn
+      - openssl
+      - network-manager-openvpn-gnome
       - tzdata
       - locales
       - shellcheck
@@ -117,6 +120,7 @@
       - insomnia
       - dbeaver-ce
       - libpam-u2f
+      - yubioath-desktop
       - wondershaper
 
 - name: 'Ensure /usr/local/bin belongs to {{ ansible_user }}'
@@ -174,6 +178,31 @@
         dest: '/usr/local/bin'
         remote_src: yes
   when: not croncape_install.stat.exists or croncape_version not in croncape_installed_version.stdout
+
+- name: gitlab-runner | Check for existing gitlab-runner install
+  command: 'which gitlab-runner'
+  register: gitlab_runner_install
+  changed_when: False
+  ignore_errors: True
+
+- block:
+    - name: gitlab-runner | Download gitlab-runner repository script
+      get_url:
+        url: https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh
+        dest: /tmp/gitlab-script.deb.sh
+        force: yes
+
+    - name: gitlab-runner | Install gitlab-runner repository
+      become: true
+      shell: bash /tmp/gitlab-script.deb.sh
+  when: gitlab_runner_install.failed
+
+- name: gitlab-runner | Install
+  become: yes
+  apt:
+    cache_valid_time: 3600
+    name: gitlab-runner
+    state: present
 
 - name: mkcert | Check for existing mkcert install
   stat:

@@ -130,12 +130,13 @@
   changed_when: "'Downloading' in phive_update_repo_list.stdout"
 
 - name: phive | Intall packages
-  shell: phive install --target /usr/local/bin {{ item }} --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C,E82B2FB314E9906E,D2CCAC42F6295E7D,AFA6EAAB339B841E,E82B2FB314E9906E
+  shell: phive install -g {{ item }}
   register: phive_install
   with_items:
     - phpunit
     - infection
     - php-cs-fixer
+    - phpstan
     - phan
     - composer-require-checker
     - php-coveralls

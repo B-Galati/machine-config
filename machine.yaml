@@ -15,14 +15,19 @@
   vars_files:
     - vault.yaml
   roles:
-    - software
-    - user
+    - role: software
+      tags: [software]
+    - role: user
+      tags: [user]
     - role: repositories
       tags: [repositories]
     - role: docker
       tags: [docker]
-    - jaredhocutt.jetbrains_toolbox
-    - system
-    - nodejs
+    - role: jaredhocutt.jetbrains_toolbox
+      tags: [jetbrains_toolbox]
+    - role: system
+      tags: [system]
+    - role: nodejs
+      tags: [nodejs]
     - role: php
       tags: [php]

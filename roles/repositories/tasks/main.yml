@@ -12,7 +12,6 @@
   git:
     repo: git@github.com:B-Galati/dotfiles
     dest: ~/dotfiles
-    recursive: yes
     track_submodules: yes
     update: no
 
@@ -20,6 +19,5 @@
   git:
     repo: git@gitlab.com:B-Galati/docs.git
     dest: ~/docs
-    recursive: yes
     track_submodules: yes
     update: no
