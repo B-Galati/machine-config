@@ -70,6 +70,7 @@
       - fio
       - multitail
       - git
+      - git-extras
       - ssh
       - vim
       - vim-gui-common
