@@ -59,6 +59,11 @@
   vars:
     packages:
       - man
+      - linux-generic-hwe-18.04
+      - xserver-xorg-hwe-18.04
+      - lnav
+      - stress
+      - meld
       - bash-completion
       - screenfetch
       - htop
@@ -141,6 +146,7 @@
     packages:
       - pip
       - awscli
+      - s-tui
 
 - name: Firefox dev | Check for existing install
   stat:
@@ -320,3 +326,13 @@
 - name: phpstorm-url-handler | Install desktop file
   become: yes
   shell: 'desktop-file-install "{{ role_path}}/files/phpstorm-url-handler.desktop" && update-desktop-database'
+
+- name: JetBrains Toolbox | Import jaredhocutt.jetbrains_toolbox
+  import_role:
+    name: jaredhocutt.jetbrains_toolbox
+
+- name: JetBrains Toolbox | Create symbolic link to binary
+  file:
+    src: '/home/{{ ansible_user }}/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox'
+    dest: '/usr/local/bin/jetbrains-toolbox'
+    state: link
