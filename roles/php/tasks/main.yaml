@@ -107,7 +107,7 @@
         force: yes
 
     - name: phive | Add GPG key
-      shell: gpg --keyserver pool.sks-keyservers.net --recv-keys 0x9D8A98B29B2D5D79
+      shell: gpg --keyserver keys.gnupg.net --recv-keys 0x9D8A98B29B2D5D79
 
     - name: phive | Verify GPG archive
       shell: gpg --verify /tmp/phive.phar.asc /tmp/phive.phar
@@ -130,7 +130,7 @@
   changed_when: "'Downloading' in phive_update_repo_list.stdout"
 
 - name: phive | Import gpg keys manually in phive because of issue https://github.com/phar-io/phive/issues/175
-  shell: GNUPGHOME=~/.phive/gpg gpg --keyserver pool.sks-keyservers.net --recv-keys 8E730BA25823D8B5 4AA394086372C20A 2A8299CE842DD38C C5095986493B4AA0 8E730BA25823D8B5
+  shell: GNUPGHOME=~/.phive/gpg gpg --keyserver keys.gnupg.net --recv-keys 8E730BA25823D8B5 4AA394086372C20A 2A8299CE842DD38C C5095986493B4AA0 8E730BA25823D8B5
   register: phive_import_gpg_keys
   changed_when: "'imported:' in phive_update_repo_list.stdout"
 
