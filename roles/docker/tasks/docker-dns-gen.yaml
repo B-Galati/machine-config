@@ -71,8 +71,8 @@
       bind-interfaces
       interface=lo
       interface=docker0
-      server=/docker/127.0.0.1#54
-      address=/code/127.0.0.1
+      server=/docker/lan/127.0.0.1#54
+#      address=/code/127.0.0.1
 
 - name: Disable systemd-resolved
   become: yes

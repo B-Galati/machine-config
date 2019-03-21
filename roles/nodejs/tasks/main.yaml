@@ -13,7 +13,7 @@
   vars:
     npm_config_prefix: '/home/{{ ansible_user }}/.npm-global'
     nodejs_version: 8.x
-    nodejs_npm_global_packages: [ngrok, doctoc, diff-so-fancy, tldr, prettier]
+    nodejs_npm_global_packages: [yarn, ngrok, doctoc, diff-so-fancy, tldr, prettier]
 
 - name: 'Ensure npm global belongs to {{ ansible_user }}'
   become: yes
