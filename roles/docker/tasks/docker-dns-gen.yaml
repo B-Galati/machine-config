@@ -34,7 +34,7 @@
   become: yes
   file:
     path: /etc/systemd/system/NetworkManager.service.d
-    state: directory 
+    state: directory
     mode: 0755
 
 - name: /etc/systemd/system/NetworkManager.service.d/override.conf
@@ -44,8 +44,8 @@
     dest: /etc/systemd/system/NetworkManager.service.d/override.conf
     content: |
       [Unit]
-      Requires=docker.service
       After=docker.service
+      Wants=docker.service
 
 - name: /etc/NetworkManager/conf.d/dns.conf
   become: yes
@@ -74,13 +74,21 @@
       server=/docker/lan/127.0.0.1#54
 #      address=/code/127.0.0.1
 
-- name: Disable systemd-resolved
+- name: Create /etc/systemd/resolved.conf.d directory
+  become: yes
+  file:
+    path: /etc/systemd/resolved.conf.d
+    state: directory
+    mode: 0755
+
+- name: /etc/systemd/resolved.conf.d/resolved.conf
   become: yes
   notify: restart
-  systemd:
-    name: systemd-resolved
-    state: stopped
-    enabled: no
+  copy:
+    dest: /etc/systemd/resolved.conf.d/resolved.conf
+    content: |
+      [Resolve]
+      DNSStubListener=no
 
 - name: Disable dnsmasq
   become: yes
