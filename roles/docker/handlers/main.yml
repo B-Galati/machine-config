@@ -1,14 +1,19 @@
 ---
 - name: restart
   become: yes
-  notify: restart NetworkManager
+  notify: resolvconf update
   shell: systemctl daemon-reload
 
-- name: restart NetworkManager
+- name: resolvconf update
   become: yes
-  notify: restart docker
-  service: name=NetworkManager state=restarted
+  notify: restart services
+  shell: resolvconf -u
 
-- name: restart docker
+- name: restart services
   become: yes
-  service: name=docker state=restarted
+  service: name={{ item }} state=restarted
+  with_items:
+    - NetworkManager
+    - resolvconf
+    - systemd-resolved
+    - docker
