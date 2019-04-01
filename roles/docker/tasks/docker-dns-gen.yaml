@@ -36,6 +36,22 @@
         "bip": "172.17.42.1/24"
       }
 
+- name: Create /etc/systemd/resolved.conf.d directory
+  become: yes
+  file:
+    path: /etc/systemd/resolved.conf.d
+    state: directory
+    mode: 0755
+
+- name: /etc/systemd/resolved.conf.d/resolved.conf
+  become: yes
+  notify: restart
+  copy:
+    dest: /etc/systemd/resolved.conf.d/resolved.conf
+    content: |
+      [Resolve]
+      DNS=82.229.244.191 1.1.1.1
+
 - name: /etc/resolvconf/resolv.conf.d/head
   become: yes
   notify: restart
