@@ -1,12 +1,12 @@
 ---
-- name: Create /etc/profile.d directory
+- name: Node | Create /etc/profile.d directory
   become: yes
   file:
     path: /etc/profile.d
     state: directory
     mode: 0755
 
-- name: Import role geerlingguy.nodejs
+- name: Node | Import role geerlingguy.nodejs
   become: yes
   import_role:
     name: geerlingguy.nodejs
@@ -15,10 +15,17 @@
     nodejs_version: 8.x
     nodejs_npm_global_packages: [yarn, ngrok, doctoc, diff-so-fancy, tldr, prettier, npm]
 
-- name: 'Ensure npm global belongs to {{ ansible_user }}'
+- name: 'Node | Ensure npm global belongs to {{ ansible_user }}'
   become: yes
   file:
     path: '/home/{{ ansible_user }}/.npm-global'
     owner: '{{ ansible_user }}'
     group: '{{ ansible_user }}'
     recurse: yes
+
+- name: 'Node | Remove NODE_PATH env variable'
+  become: yes
+  replace:
+    path: /etc/profile.d/npm.sh
+    regexp: '^export NODE_PATH=(.*)'
+    replace: '#export NODE_PATH=\1'
