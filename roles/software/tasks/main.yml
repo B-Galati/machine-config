@@ -306,6 +306,19 @@
         deb: https://discordapp.com/api/download?platform=linux&format=deb
   when: discord_installed.rc == 1
 
+- name: keybase | Check for existing keybase install
+  command: dpkg-query -W keybase
+  register: keybase_installed
+  failed_when: false
+  changed_when: false
+
+- block:
+    - name: keybase | Download and install
+      become: yes
+      apt:
+        deb: https://prerelease.keybase.io/keybase_amd64.deb
+  when: keybase_installed.rc == 1
+
 - name: Remove useless packages
   become: yes
   apt:
