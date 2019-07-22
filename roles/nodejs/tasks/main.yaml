@@ -12,7 +12,7 @@
     name: geerlingguy.nodejs
   vars:
     npm_config_prefix: '/home/{{ ansible_user }}/.npm-global'
-    nodejs_version: 8.x
+    nodejs_version: 10.x
     nodejs_npm_global_packages: [yarn, ngrok, doctoc, diff-so-fancy, tldr, prettier, npm]
 
 - name: 'Node | Ensure npm global belongs to {{ ansible_user }}'
