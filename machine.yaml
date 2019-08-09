@@ -11,7 +11,7 @@
     fd_version: 7.1.0
     bat_version: 0.8.0
     slack_version: 3.3.3
-    docker_compose_version: 1.23.2
+    docker_compose_version: 1.24.1
   vars_files:
     - vault.yaml
   roles:
