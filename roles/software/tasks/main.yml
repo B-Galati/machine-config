@@ -90,6 +90,7 @@
       - openvpn
       - openssl
       - network-manager-openvpn-gnome
+      - resolvconf
       - tzdata
       - locales
       - shellcheck
