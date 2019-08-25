@@ -130,12 +130,12 @@
   changed_when: "'Downloading' in phive_update_repo_list.stdout"
 
 #- name: phive | Import gpg keys manually in phive because of issue https://github.com/phar-io/phive/issues/175
-#  shell: GNUPGHOME=~/.phive/gpg gpg --keyserver keys.gnupg.net --recv-keys 8E730BA25823D8B5 4AA394086372C20A 2A8299CE842DD38C C5095986493B4AA0 8E730BA25823D8B5
+#  shell: GNUPGHOME=~/.phive/gpg gpg --keyserver keys.gnupg.net --recv-keys
 #  register: phive_import_gpg_keys
 #  changed_when: "'imported:' in phive_update_repo_list.stdout"
 
 - name: phive | Intall packages
-  shell: phive install -g {{ item }}
+  shell: phive install --trust-gpg-keys 8E730BA25823D8B5,4AA394086372C20A,2A8299CE842DD38C,C5095986493B4AA0,8E730BA25823D8B5,E82B2FB314E9906E,AFA6EAAB339B841E,D2CCAC42F6295E7D -g {{ item }}
   register: phive_install
   with_items:
     - phpunit

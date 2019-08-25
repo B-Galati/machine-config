@@ -23,9 +23,20 @@
     group: '{{ ansible_user }}'
     recurse: yes
 
+- name: 'Node | Ensure npm cache belongs to {{ ansible_user }}'
+  become: yes
+  file:
+    path: '/home/{{ ansible_user }}/.npm'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    recurse: yes
+
 - name: 'Node | Remove NODE_PATH env variable'
   become: yes
   replace:
     path: /etc/profile.d/npm.sh
     regexp: '^export NODE_PATH=(.*)'
     replace: '#export NODE_PATH=\1'
+
+- name: 'Node | Update global packages'
+  shell: 'npm update -g'
