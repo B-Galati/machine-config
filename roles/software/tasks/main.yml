@@ -116,7 +116,7 @@
       - pandoc
       - libnss3-tools
       - peek
-      - keepassx
+      - keepassxc
       - keepass2
       - gnupg2
       - entr
@@ -131,6 +131,8 @@
       - wondershaper
       - chrome-gnome-shell
       - flameshot
+      - jq
+      - vlc
 
 - name: Apply gnome config
   shell: |
