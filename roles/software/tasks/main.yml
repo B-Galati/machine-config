@@ -330,6 +330,19 @@
         deb: https://discordapp.com/api/download?platform=linux&format=deb
   when: discord_installed.rc == 1
 
+- name: vagrant | Check for existing vagrant install
+  command: dpkg-query -W vagrant
+  register: vagrant_installed
+  failed_when: false
+  changed_when: false
+
+- block:
+    - name: vagrant | Download and install
+      become: yes
+      apt:
+        deb: https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.deb
+  when: vagrant_installed.rc == 1
+
 - name: keybase | Check for existing keybase install
   command: dpkg-query -W keybase
   register: keybase_installed
