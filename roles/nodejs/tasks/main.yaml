@@ -1,4 +1,8 @@
 ---
+- name: Node | Ensure apt-transport-https is installed.
+  become: yes
+  apt: name=apt-transport-https state=present
+
 - name: Node | Create /etc/profile.d directory
   become: yes
   file:
@@ -6,31 +10,46 @@
     state: directory
     mode: 0755
 
-- name: Node | Import role geerlingguy.nodejs
+- name: Node | Add Nodesource apt key.
   become: yes
-  import_role:
-    name: geerlingguy.nodejs
-  vars:
-    npm_config_prefix: '/home/{{ ansible_user }}/.npm-global'
-    nodejs_version: 10.x
-    nodejs_npm_global_packages:
-      - yarn
-      - ngrok
-      - doctoc
-      - diff-so-fancy
-      - tldr
-      - prettier
-      - npm
-      - semantic-release-cli
-      - semantic-release
+  apt_key:
+    url: https://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x1655A0AB68576280
+    id: "68576280"
+    state: present
 
-- name: 'Node | Ensure npm global belongs to {{ ansible_user }}'
+- name: Node | Add NodeSource repositories for Node.js.
+  become: yes
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - "deb https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main"
+    - "deb-src https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main"
+  register: node_repo
+
+- name: 'Node | Update apt cache if repo was added.'
+  become: yes
+  apt: update_cache=yes
+  when: node_repo.changed
+
+- name: 'Node | Ensure Node.js and npm are installed.'
+  become: yes
+  apt: "name=nodejs={{ nodejs_version|regex_replace('x', '') }}* state=present"
+
+- name: 'Node | Create npm global directory'
   become: yes
   file:
-    path: '/home/{{ ansible_user }}/.npm-global'
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
-    recurse: yes
+    path: "{{ npm_config_prefix }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    state: directory
+
+- name: 'Node | Add npm_config_prefix bin directory to global $PATH.'
+  become: yes
+  template:
+    src: npm.sh.j2
+    dest: /etc/profile.d/npm.sh
+    mode: 0644
 
 - name: 'Node | Ensure npm cache belongs to {{ ansible_user }}'
   become: yes
@@ -40,12 +59,34 @@
     group: '{{ ansible_user }}'
     recurse: yes
 
-- name: 'Node | Remove NODE_PATH env variable'
+- name: 'Node | Ensure npm global belongs to {{ ansible_user }}'
   become: yes
-  replace:
-    path: /etc/profile.d/npm.sh
-    regexp: '^export NODE_PATH=(.*)'
-    replace: '#export NODE_PATH=\1'
+  file:
+    path: '{{ npm_config_prefix }}'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    recurse: yes
+
+- name: 'Node | Ensure npm global packages are installed.'
+  npm:
+    name: "{{ item.name | default(item) }}"
+    version: "{{ item.version | default('latest') }}"
+    global: true
+    state: latest
+  environment:
+    NPM_CONFIG_PREFIX: "{{ npm_config_prefix }}"
+    NODE_PATH: "{{ npm_config_prefix }}/lib/node_modules"
+    NPM_CONFIG_UNSAFE_PERM: true
+  with_items:
+    - yarn
+    - ngrok
+    - doctoc
+    - diff-so-fancy
+    - tldr
+    - prettier
+    - npm
+    - semantic-release-cli
+    - semantic-release
 
 - name: 'Node | Update global packages'
   shell: 'npm update -g'
