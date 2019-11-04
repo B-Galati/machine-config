@@ -333,7 +333,7 @@
 - name: vagrant | Check vagrant version to know if an update is needed or not
   command: '/usr/bin/vagrant --version'
   register: vagrant_installed_version
-  changed_when: vagrant_installed_version is defined and vagrant_version not in vagrant_installed_version.stdout
+  changed_when: vagrant_version not in vagrant_installed_version.stdout | default('')
   failed_when: False
 
 - block:
@@ -341,7 +341,7 @@
       become: yes
       apt:
         deb: https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.deb
-  when: vagrant_installed_version is defined and vagrant_version not in vagrant_installed_version.stdout
+  when: vagrant_version not in vagrant_installed_version.stdout | default('')
 
 - name: keybase | Check for existing keybase install
   command: dpkg-query -W keybase
@@ -355,6 +355,32 @@
       apt:
         deb: https://prerelease.keybase.io/keybase_amd64.deb
   when: keybase_installed.rc == 1
+
+- name: hexyl | Check hexyl version to know if an update is needed or not
+  command: '/usr/bin/hexyl --version'
+  register: hexyl_installed_version
+  changed_when: hexyl_version not in hexyl_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: hexyl | Download and install
+      become: yes
+      apt:
+        deb: https://github.com/sharkdp/hexyl/releases/download/v{{ hexyl_version }}/hexyl_{{ hexyl_version }}_amd64.deb
+  when: hexyl_version not in hexyl_installed_version.stdout | default('')
+
+- name: hyperfine | Check hyperfine version to know if an update is needed or not
+  command: '/usr/bin/hyperfine --version'
+  register: hyperfine_installed_version
+  changed_when: hyperfine_version not in hyperfine_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: hyperfine | Download and install
+      become: yes
+      apt:
+        deb: https://github.com/sharkdp/hyperfine/releases/download/v{{ hyperfine_version }}/hyperfine_{{ hyperfine_version }}_amd64.deb
+  when: hyperfine_version not in hyperfine_installed_version.stdout | default('')
 
 - name: Remove useless packages
   become: yes

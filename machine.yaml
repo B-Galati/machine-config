@@ -2,6 +2,7 @@
 - name: Main playbook to setup machine
   hosts: localhost
   gather_facts: yes
+  gather_subset: [min]
   vars:
     ansible_user: benoit
     jetbrains_toolbox_version: 1.11
@@ -13,6 +14,8 @@
     slack_version: 3.3.3
     docker_compose_version: 1.24.1
     vagrant_version: 2.2.6
+    hexyl_version: 0.6.0
+    hyperfine_version: 1.8.0
   vars_files:
     - vault.yaml
   roles:
