@@ -72,7 +72,7 @@
 
 - block:
     - name: Symfony | Install Symfony CLI
-      shell: curl -Ss | bash //get.symfony.com/cli/installer
+      shell: wget https://get.symfony.com/cli/installer -O - | bash
   when: not symfony_install.stat.exists
 
 - name: Symfony | Add symfony bin to PATH
