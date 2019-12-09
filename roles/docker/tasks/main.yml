@@ -56,4 +56,4 @@
     dest: "{{ docker_compose_path }}"
     mode: 0755
 
-- include_tasks: docker-dns-gen.yaml
+#- include_tasks: docker-dns-gen.yaml
