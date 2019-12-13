@@ -69,6 +69,7 @@
       - htop
       - nmon
       - hdparm
+      - xclip
       - smartmontools
       - sysbench
       - iotop
@@ -171,6 +172,8 @@
       - pip
       - awscli
       - s-tui
+      - psutil
+      - powerline-mem-segment
 
 - name: Firefox dev | Check for existing install
   stat:

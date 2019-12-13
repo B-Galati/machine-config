@@ -87,6 +87,7 @@
     - npm
     - semantic-release-cli
     - semantic-release
+    - gitmoji-cli
 
 - name: 'Node | Update global packages'
   shell: 'npm update -g'
