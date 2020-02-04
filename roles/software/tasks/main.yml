@@ -1,34 +1,4 @@
 ---
-- name: Install peek repository
-  become: yes
-  apt_repository:
-    repo: ppa:peek-developers/stable
-
-- name: Install DBeaver repository
-  become: yes
-  apt_repository:
-    repo: ppa:serge-rider/dbeaver-ce
-
-- name: Install Yubico repository
-  become: yes
-  apt_repository:
-    repo: ppa:yubico/stable
-
-- name: vscode | Set gpg key
-  become: true
-  apt_key:
-    url: https://packages.microsoft.com/keys/microsoft.asc
-    id: BC528686B50D79E339D3721CEB3E94ADBE1229CF
-    state: present
-
-- name: vscode | Add repository
-  become: true
-  apt_repository:
-    repo: 'deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main'
-    filename: vscode
-    state: present
-    update_cache: no
-
 - name: insomnia | Set gpg key
   become: true
   apt_key:
@@ -116,19 +86,14 @@
       - ncdu
       - pandoc
       - libnss3-tools
-      - peek
       - keepassxc
       - keepass2
       - gnupg2
       - entr
-      - code
       - gdebi
       - chromium-browser
       - fonts-roboto
       - insomnia
-      - dbeaver-ce
-      - libpam-u2f
-      - yubioath-desktop
       - wondershaper
       - chrome-gnome-shell
       - flameshot
@@ -174,6 +139,10 @@
       - s-tui
       - psutil
       - powerline-mem-segment
+      - youtube-dl
+
+      - stellar
+      - psycopg2-binary # Needed to let stellar communicate with PG
 
 - name: Firefox dev | Check for existing install
   stat:
@@ -371,19 +340,6 @@
       apt:
         deb: https://github.com/sharkdp/hexyl/releases/download/v{{ hexyl_version }}/hexyl_{{ hexyl_version }}_amd64.deb
   when: hexyl_version not in hexyl_installed_version.stdout | default('')
-
-- name: hyperfine | Check hyperfine version to know if an update is needed or not
-  command: '/usr/bin/hyperfine --version'
-  register: hyperfine_installed_version
-  changed_when: hyperfine_version not in hyperfine_installed_version.stdout | default('')
-  failed_when: False
-
-- block:
-    - name: hyperfine | Download and install
-      become: yes
-      apt:
-        deb: https://github.com/sharkdp/hyperfine/releases/download/v{{ hyperfine_version }}/hyperfine_{{ hyperfine_version }}_amd64.deb
-  when: hyperfine_version not in hyperfine_installed_version.stdout | default('')
 
 - name: Remove useless packages
   become: yes
