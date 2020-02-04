@@ -1,0 +1,19 @@
+---
+- name: vscode | Set gpg key
+  become: true
+  apt_key:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    id: BC528686B50D79E339D3721CEB3E94ADBE1229CF
+    state: present
+
+- name: vscode | Add repository
+  become: true
+  apt_repository:
+    repo: 'deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main'
+    filename: vscode
+    state: present
+    update_cache: no
+
+- name: vscode | Install
+  apt:
+    name: [code]
