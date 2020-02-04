@@ -1,0 +1,9 @@
+---
+- name: Install DBeaver repository
+  become: yes
+  apt_repository:
+    repo: ppa:serge-rider/dbeaver-ce
+
+- name: Install dbeaver
+  apt:
+    name: [dbeaver-ce]
