@@ -15,12 +15,17 @@
     docker_compose_version: 1.24.1
     vagrant_version: 2.2.6
     hexyl_version: 0.6.0
-    hyperfine_version: 1.8.0
   vars_files:
     - vault.yaml
   roles:
     - role: software
       tags: [software]
+    - mutagen
+    - peek
+    - dbeaver
+    - vscode
+    - yubico
+    - hyperfine
     - role: user
       tags: [user]
     - role: repositories

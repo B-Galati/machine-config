@@ -1,0 +1,11 @@
+---
+- name: Install Yubico repository
+  become: yes
+  apt_repository:
+    repo: ppa:yubico/stable
+
+- name: Install Yubicp
+  apt:
+    name:
+      - libpam-u2f
+      - yubioath-desktop
