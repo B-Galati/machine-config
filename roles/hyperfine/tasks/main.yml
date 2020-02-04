@@ -1,0 +1,13 @@
+---
+- name: hyperfine | Check hyperfine version to know if an update is needed or not
+  command: '/usr/bin/hyperfine --version'
+  register: hyperfine_installed_version
+  changed_when: hyperfine_version not in hyperfine_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: hyperfine | Download and install
+      become: yes
+      apt:
+        deb: https://github.com/sharkdp/hyperfine/releases/download/v{{ hyperfine_version }}/hyperfine_{{ hyperfine_version }}_amd64.deb
+  when: hyperfine_version not in hyperfine_installed_version.stdout | default('')
