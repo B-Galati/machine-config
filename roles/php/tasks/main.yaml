@@ -38,7 +38,8 @@
 - name: Ensure /etc/profile.d/composer.sh file is present
   become: yes
   copy:
-      content: 'export PATH=$PATH:~/.composer/vendor/bin'
+      content: |
+        export PATH="${PATH}:~/.composer/vendor/bin"
       dest: /etc/profile.d/composer.sh
       mode: 0644
 
@@ -81,11 +82,7 @@
     dest: /etc/profile.d/symfony.sh
     mode: 0644
     content: |
-      PATH="$HOME/.symfony/bin:$PATH"
-
-      # https://remysharp.com/2018/08/23/cli-improved
-      # add support for ctrl+o to open selected file in VS Code
-      export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
+      export PATH="${PATH}:${HOME}/.symfony/bin"
 
 - name: phive | Check for existing phive bin
   stat:
@@ -135,7 +132,7 @@
 #  changed_when: "'imported:' in phive_update_repo_list.stdout"
 
 - name: phive | Intall packages
-  shell: phive install --trust-gpg-keys 8E730BA25823D8B5,4AA394086372C20A,2A8299CE842DD38C,C5095986493B4AA0,8E730BA25823D8B5,E82B2FB314E9906E,AFA6EAAB339B841E,D2CCAC42F6295E7D -g {{ item }}
+  shell: phive install --trust-gpg-keys 8E730BA25823D8B5,4AA394086372C20A,2A8299CE842DD38C,C5095986493B4AA0,8E730BA25823D8B5,E82B2FB314E9906E,AFA6EAAB339B841E,D2CCAC42F6295E7D,CF1A108D0E7AE720 -g {{ item }}
   register: phive_install
   with_items:
     - phpunit
