@@ -1,0 +1,13 @@
+---
+- name: Check version to know if an update is needed or not
+  command: '/usr/bin/vagrant --version'
+  register: vagrant_installed_version
+  changed_when: vagrant_version not in vagrant_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download and install
+      become: yes
+      apt:
+        deb: https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.deb
+  when: vagrant_version not in vagrant_installed_version.stdout | default('')
