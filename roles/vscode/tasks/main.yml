@@ -15,5 +15,6 @@
     update_cache: no
 
 - name: vscode | Install
+  become: true
   apt:
     name: [code]

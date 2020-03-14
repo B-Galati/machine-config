@@ -27,6 +27,7 @@
     - yubico
     - hyperfine
     - vagrant
+    - spotify
     - role: user
       tags: [user]
     - role: repositories
