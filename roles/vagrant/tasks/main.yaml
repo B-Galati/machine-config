@@ -7,7 +7,7 @@
 
 - block:
     - name: Download and install
-      become: yes
+      become: true
       apt:
         deb: https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.deb
   when: vagrant_version not in vagrant_installed_version.stdout | default('')

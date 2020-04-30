@@ -7,7 +7,7 @@
 
 - block:
     - name: hyperfine | Download and install
-      become: yes
+      become: true
       apt:
         deb: https://github.com/sharkdp/hyperfine/releases/download/v{{ hyperfine_version }}/hyperfine_{{ hyperfine_version }}_amd64.deb
   when: hyperfine_version not in hyperfine_installed_version.stdout | default('')

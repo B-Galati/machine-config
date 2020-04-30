@@ -1,6 +1,6 @@
 ---
 - name: Write /etc/sysctl.d/local.conf file
-  become: yes
+  become: true
   notify: restart systemctl
   copy:
     dest: /etc/sysctl.d/local.conf
@@ -12,7 +12,7 @@
       vm.max_map_count=262144
 
 - name: Write /etc/systemd/system/btsync@.service file
-  become: yes
+  become: true
   notify: restart systemctl
   copy:
     dest: /etc/systemd/system/btsync@.service

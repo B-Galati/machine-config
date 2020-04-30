@@ -1,33 +1,33 @@
 ---
 - name: Remove bind9 if present
-  become: yes
+  become: true
   failed_when: false
   apt:
     name: bind9
     state: absent
 
 - name: Remove dnsmasq if present
-  become: yes
+  become: true
   failed_when: false
   apt:
     name: dnsmasq
     state: absent
 
 - name: Install resolvconf
-  become: yes
+  become: true
   apt:
     name: resolvconf
     state: present
 
 - name: Create /etc/docker directory
-  become: yes
+  become: true
   file: 
     path: /etc/docker
     state: directory 
     mode: 0755
 
 - name: /etc/docker/daemon.json
-  become: yes
+  become: true
   notify: restart
   copy:
     dest: /etc/docker/daemon.json
@@ -37,14 +37,14 @@
       }
 
 - name: Create /etc/systemd/resolved.conf.d directory
-  become: yes
+  become: true
   file:
     path: /etc/systemd/resolved.conf.d
     state: directory
     mode: 0755
 
 - name: /etc/systemd/resolved.conf.d/resolved.conf
-  become: yes
+  become: true
   notify: restart
   copy:
     dest: /etc/systemd/resolved.conf.d/resolved.conf
@@ -53,7 +53,7 @@
       DNS=82.229.244.191 1.1.1.1
 
 - name: /etc/resolvconf/resolv.conf.d/head
-  become: yes
+  become: true
   notify: restart
   copy:
     dest: /etc/resolvconf/resolv.conf.d/head

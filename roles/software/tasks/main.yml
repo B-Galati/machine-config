@@ -11,17 +11,17 @@
     repo: 'deb https://dl.bintray.com/getinsomnia/Insomnia /'
     filename: insomnia
     state: present
-    update_cache: no
+    update_cache: false
 
 - name: Upgrade packages
-  become: yes
+  become: true
   apt:
-    update_cache: yes
-    upgrade: yes
+    update_cache: true
+    upgrade: true
     cache_valid_time: 3600
 
 - name: Install packages
-  become: yes
+  become: true
   apt:
     cache_valid_time: 3600
     name: "{{ packages }}"
@@ -86,8 +86,6 @@
       - ncdu
       - pandoc
       - libnss3-tools
-      - keepassxc
-      - keepass2
       - gnupg2
       - entr
       - gdebi
@@ -120,7 +118,7 @@
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding 'Mail'
 
 - name: 'Ensure /usr/local/bin belongs to {{ ansible_user }}'
-  become: yes
+  become: true
   file:
     path: /usr/local/bin
     owner: '{{ ansible_user }}'
@@ -201,7 +199,7 @@
   when: gitlab_runner_install.failed
 
 - name: gitlab-runner | Install
-  become: yes
+  become: true
   apt:
     cache_valid_time: 3600
     name: gitlab-runner
@@ -251,7 +249,7 @@
 
 - block:
     - name: fd | Download and install
-      become: yes
+      become: true
       apt:
         deb: https://github.com/sharkdp/fd/releases/download/v{{ fd_version }}/fd_{{ fd_version }}_amd64.deb
   when: not fd_install.stat.exists or fd_version not in fd_installed_version.stdout
@@ -271,7 +269,7 @@
 
 - block:
     - name: bat | Download and install
-      become: yes
+      become: true
       apt:
         deb: https://github.com/sharkdp/bat/releases/download/v{{ bat_version }}/bat_{{ bat_version }}_amd64.deb
   when: not bat_install.stat.exists or bat_version not in bat_installed_version.stdout
@@ -284,7 +282,7 @@
 
 - block:
     - name: slack | Download and install
-      become: yes
+      become: true
       apt:
         deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack_version }}-amd64.deb
   when: slack_installed.rc == 1
@@ -297,7 +295,7 @@
 
 - block:
     - name: discord | Download and install
-      become: yes
+      become: true
       apt:
         deb: https://discordapp.com/api/download?platform=linux&format=deb
   when: discord_installed.rc == 1
@@ -310,7 +308,7 @@
 
 - block:
     - name: keybase | Download and install
-      become: yes
+      become: true
       apt:
         deb: https://prerelease.keybase.io/keybase_amd64.deb
   when: keybase_installed.rc == 1
@@ -323,19 +321,19 @@
 
 - block:
     - name: hexyl | Download and install
-      become: yes
+      become: true
       apt:
         deb: https://github.com/sharkdp/hexyl/releases/download/v{{ hexyl_version }}/hexyl_{{ hexyl_version }}_amd64.deb
   when: hexyl_version not in hexyl_installed_version.stdout | default('')
 
 - name: Remove useless packages
-  become: yes
+  become: true
   apt:
     purge: yes
     autoremove: yes
 
 - name: Remove useless packages from the cache
-  become: yes
+  become: true
   apt:
     autoclean: yes
 
@@ -346,7 +344,7 @@
     dest: /usr/local/bin/phpstorm-url-handler
 
 - name: phpstorm-url-handler | Install desktop file
-  become: yes
+  become: true
   shell: 'desktop-file-install "{{ role_path}}/files/phpstorm-url-handler.desktop" && update-desktop-database'
 
 - name: JetBrains Toolbox | Import jaredhocutt.jetbrains_toolbox

@@ -1,5 +1,5 @@
 ---
 - name: restart systemctl
-  become: yes
+  become: true
   notify: restart systemctl
   shell: systemctl daemon-reload && sysctl --system

@@ -1,9 +1,9 @@
 - name: Set ZSH shell for {{ ansible_user }}
-  become: yes
+  become: true
   user: name={{ ansible_user }} shell=/bin/zsh state=present
 
 - name: install sudo, aptitude and locales
-  become: yes
+  become: true
   apt:
     name: '{{ packages }}'
     update_cache: yes
@@ -15,22 +15,22 @@
       - locales
 
 - name: Install locales
-  become: yes
+  become: true
   locale_gen: name={{ item }} state=present
   with_items:
   - en_US.UTF-8
   - fr_FR.UTF-8
 
 - name: Set LANG to en_US.UTF-8
-  become: yes
+  become: true
   shell: update-locale LANG=en_US.UTF-8
 
 - name: Add user {{ ansible_user }}
-  become: yes
+  become: true
   user: name={{ ansible_user }} groups=adm,sudo append=yes createhome=no
 
 - name: Add ENV vars in /etc/profile.d/custom.sh
-  become: yes
+  become: true
   copy:
     dest: /etc/profile.d/custom.sh
     mode: 0644

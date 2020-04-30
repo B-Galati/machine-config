@@ -20,7 +20,8 @@
   roles:
     - role: software
       tags: [software]
-    - mutagen
+#    - mutagen
+    - keepassxc
     - peek
     - dbeaver
     - vscode

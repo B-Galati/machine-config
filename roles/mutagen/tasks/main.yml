@@ -13,7 +13,7 @@
         force: yes
 
     - name: Create opt directory
-      become: yes
+      become: true
       file:
         path: /opt/mutagen
         state: directory
@@ -28,7 +28,7 @@
         remote_src: yes
 
     - name: Add to PATH
-      become: yes
+      become: true
       copy:
         dest: /etc/profile.d/mutagen.sh
         mode: 0644

@@ -1,6 +1,6 @@
 ---
 - name: Install peek repository
-  become: yes
+  become: true
   apt_repository:
     repo: ppa:peek-developers/stable
 

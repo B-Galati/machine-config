@@ -1,47 +1,55 @@
 ---
 - name: Add Docker apt key.
-  become: yes
+  become: true
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     state: present
 
 - name: Add Docker repository.
-  become: yes
+  become: true
   apt_repository:
     repo: "{{ apt_repository }}"
     state: present
     update_cache: yes
 
 - name: install docker
-  become: yes
+  become: true
   apt:
     name: "docker-ce"
     force: yes
 
 - name: Ensure docker users are added to the docker group.
-  become: yes
+  become: true
   user:
     name: "{{ ansible_user }}"
     groups: docker
     append: yes
 
+- name: Add docker config with environment variables
+  become: true
+  copy:
+    dest: /etc/profile.d/docker.sh
+    mode: 0644
+    content: |
+      export DOCKER_BUILDKIT=1
+
 - name: ensure docker is running
-  become: yes
+  become: true
   service:
     name: docker
     enabled: yes
     state: started
 
 - name: Check current docker-compose version.
-  become: yes
+  become: true
   command: docker-compose --version
   register: docker_compose_current_version
   changed_when: false
   failed_when: false
 
 - name: Delete existing docker-compose version if it's different.
-  become: yes
+  become: true
   file:
     path: "{{ docker_compose_path }}"
     state: absent
@@ -50,7 +58,7 @@
     and docker_compose_version not in docker_compose_current_version.stdout
 
 - name: Install Docker Compose
-  become: yes
+  become: true
   get_url:
     url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
     dest: "{{ docker_compose_path }}"

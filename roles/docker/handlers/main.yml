@@ -1,16 +1,16 @@
 ---
 - name: restart
-  become: yes
+  become: true
   notify: resolvconf update
   shell: systemctl daemon-reload
 
 - name: resolvconf update
-  become: yes
+  become: true
   notify: restart services
   shell: resolvconf -u
 
 - name: restart services
-  become: yes
+  become: true
   service: name={{ item }} state=restarted
   with_items:
     - NetworkManager

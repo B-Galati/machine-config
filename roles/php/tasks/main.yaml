@@ -1,6 +1,6 @@
 ---
 - name: Install php packages
-  become: yes
+  become: true
   apt:
     name: '{{ packages }}'
     update_cache: yes
@@ -36,7 +36,7 @@
     composer_keep_updated: true
 
 - name: Ensure /etc/profile.d/composer.sh file is present
-  become: yes
+  become: true
   copy:
       content: |
         export PATH="${PATH}:~/.composer/vendor/bin"
@@ -44,7 +44,7 @@
       mode: 0644
 
 - name: Write /etc/php/7.2/cli/conf.d/99-custom.ini file
-  become: yes
+  become: true
   copy:
     dest: /etc/php/7.2/cli/conf.d/99-custom.ini
     content: |
@@ -62,7 +62,7 @@
       date.timezone = Europe/Paris
 
 - name: Php | Disable xdebug
-  become: yes
+  become: true
   shell: phpdismod xdebug
 
 - name: Symfony | Check for existing Symfony bin
@@ -77,79 +77,79 @@
   when: not symfony_install.stat.exists
 
 - name: Symfony | Add symfony bin to PATH
-  become: yes
+  become: true
   copy:
     dest: /etc/profile.d/symfony.sh
     mode: 0644
     content: |
       export PATH="${PATH}:${HOME}/.symfony/bin"
 
-- name: phive | Check for existing phive bin
-  stat:
-    path: '/usr/local/bin/phive'
-  register: phive_install
-  changed_when: False
-
-- block:
-    - name: phive | Download phive phar
-      get_url:
-        url: https://phar.io/releases/phive.phar
-        dest: /tmp/phive.phar
-        force: yes
-
-    - name: phive | Download phive gpg key
-      get_url:
-        url: https://phar.io/releases/phive.phar.asc
-        dest: /tmp/phive.phar.asc
-        force: yes
-
-    - name: phive | Add GPG key
-      shell: gpg --keyserver keys.gnupg.net --recv-keys 0x9D8A98B29B2D5D79
-
-    - name: phive | Verify GPG archive
-      shell: gpg --verify /tmp/phive.phar.asc /tmp/phive.phar
-
-    - name: phive | Install phive
-      copy:
-        src: /tmp/phive.phar
-        dest: /usr/local/bin/phive
-        mode: 0755
-  when: not phive_install.stat.exists
-
-- name: phive | Self update
-  shell: phive selfupdate
-  register: phive_selfupdate
-  changed_when: "'Downloading' in phive_selfupdate.stdout"
-
-- name: phive | Update repository list
-  shell: phive update-repository-list
-  register: phive_update_repo_list
-  changed_when: "'Downloading' in phive_update_repo_list.stdout"
-
-#- name: phive | Import gpg keys manually in phive because of issue https://github.com/phar-io/phive/issues/175
-#  shell: GNUPGHOME=~/.phive/gpg gpg --keyserver keys.gnupg.net --recv-keys
-#  register: phive_import_gpg_keys
-#  changed_when: "'imported:' in phive_update_repo_list.stdout"
-
-- name: phive | Intall packages
-  shell: phive install --trust-gpg-keys 8E730BA25823D8B5,4AA394086372C20A,2A8299CE842DD38C,C5095986493B4AA0,8E730BA25823D8B5,E82B2FB314E9906E,AFA6EAAB339B841E,D2CCAC42F6295E7D,CF1A108D0E7AE720 -g {{ item }}
-  register: phive_install
-  with_items:
-    - phpunit
-    - infection
-    - php-cs-fixer
-    - phpstan
-    - phan
-    - composer-require-checker
-    - php-coveralls
-    - phploc
-    - phpcpd
-  changed_when: "'Downloading' in phive_install.stdout"
-  
-- name: phive | Update packages
-  shell: (cd ~/.phive;phive update)
-  register: phive_update
-  changed_when: "'Downloading' in phive_update.stdout"
+#- name: phive | Check for existing phive bin
+#  stat:
+#    path: '/usr/local/bin/phive'
+#  register: phive_install
+#  changed_when: False
+#
+#- block:
+#    - name: phive | Download phive phar
+#      get_url:
+#        url: https://phar.io/releases/phive.phar
+#        dest: /tmp/phive.phar
+#        force: yes
+#
+#    - name: phive | Download phive gpg key
+#      get_url:
+#        url: https://phar.io/releases/phive.phar.asc
+#        dest: /tmp/phive.phar.asc
+#        force: yes
+#
+#    - name: phive | Add GPG key
+#      shell: gpg --keyserver keys.gnupg.net --recv-keys 0x9D8A98B29B2D5D79
+#
+#    - name: phive | Verify GPG archive
+#      shell: gpg --verify /tmp/phive.phar.asc /tmp/phive.phar
+#
+#    - name: phive | Install phive
+#      copy:
+#        src: /tmp/phive.phar
+#        dest: /usr/local/bin/phive
+#        mode: 0755
+#  when: not phive_install.stat.exists
+#
+#- name: phive | Self update
+#  shell: phive selfupdate
+#  register: phive_selfupdate
+#  changed_when: "'Downloading' in phive_selfupdate.stdout"
+#
+#- name: phive | Update repository list
+#  shell: phive update-repository-list
+#  register: phive_update_repo_list
+#  changed_when: "'Downloading' in phive_update_repo_list.stdout"
+#
+##- name: phive | Import gpg keys manually in phive because of issue https://github.com/phar-io/phive/issues/175
+##  shell: GNUPGHOME=~/.phive/gpg gpg --keyserver keys.gnupg.net --recv-keys
+##  register: phive_import_gpg_keys
+##  changed_when: "'imported:' in phive_update_repo_list.stdout"
+#
+#- name: phive | Intall packages
+#  shell: phive install --trust-gpg-keys 8E730BA25823D8B5,4AA394086372C20A,2A8299CE842DD38C,C5095986493B4AA0,8E730BA25823D8B5,E82B2FB314E9906E,AFA6EAAB339B841E,D2CCAC42F6295E7D,CF1A108D0E7AE720 -g {{ item }}
+#  register: phive_install
+#  with_items:
+#    - phpunit
+#    - infection
+#    - php-cs-fixer
+#    - phpstan
+#    - phan
+#    - composer-require-checker
+#    - php-coveralls
+#    - phploc
+#    - phpcpd
+#  changed_when: "'Downloading' in phive_install.stdout"
+#
+#- name: phive | Update packages
+#  shell: (cd ~/.phive;phive update)
+#  register: phive_update
+#  changed_when: "'Downloading' in phive_update.stdout"
 
 - name: Composer global update
   shell: composer global update

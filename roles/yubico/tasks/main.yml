@@ -1,6 +1,6 @@
 ---
 - name: Install Yubico repository
-  become: yes
+  become: true
   apt_repository:
     repo: ppa:yubico/stable
 

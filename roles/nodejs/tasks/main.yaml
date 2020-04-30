@@ -1,24 +1,24 @@
 ---
 - name: Node | Ensure apt-transport-https is installed.
-  become: yes
+  become: true
   apt: name=apt-transport-https state=present
 
 - name: Node | Create /etc/profile.d directory
-  become: yes
+  become: true
   file:
     path: /etc/profile.d
     state: directory
     mode: 0755
 
 - name: Node | Add Nodesource apt key.
-  become: yes
+  become: true
   apt_key:
     url: https://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x1655A0AB68576280
     id: "68576280"
     state: present
 
 - name: Node | Add NodeSource repositories for Node.js.
-  become: yes
+  become: true
   apt_repository:
     repo: "{{ item }}"
     state: present
@@ -28,16 +28,16 @@
   register: node_repo
 
 - name: 'Node | Update apt cache if repo was added.'
-  become: yes
+  become: true
   apt: update_cache=yes
   when: node_repo.changed
 
 - name: 'Node | Ensure Node.js and npm are installed.'
-  become: yes
+  become: true
   apt: "name=nodejs={{ nodejs_version|regex_replace('x', '') }}* state=present"
 
 - name: 'Node | Create npm global directory'
-  become: yes
+  become: true
   file:
     path: "{{ npm_config_prefix }}"
     owner: "{{ ansible_user }}"
@@ -45,14 +45,14 @@
     state: directory
 
 - name: 'Node | Add npm_config_prefix bin directory to global $PATH.'
-  become: yes
+  become: true
   template:
     src: npm.sh.j2
     dest: /etc/profile.d/npm.sh
     mode: 0644
 
 - name: 'Node | Ensure npm cache belongs to {{ ansible_user }}'
-  become: yes
+  become: true
   file:
     path: '/home/{{ ansible_user }}/.npm'
     owner: '{{ ansible_user }}'
@@ -60,7 +60,7 @@
     recurse: yes
 
 - name: 'Node | Ensure npm global belongs to {{ ansible_user }}'
-  become: yes
+  become: true
   file:
     path: '{{ npm_config_prefix }}'
     owner: '{{ ansible_user }}'
@@ -87,6 +87,7 @@
     - npm
     - semantic-release-cli
     - semantic-release
+    - git-standup
 #    - https://github.com/Yousign/gitmoji-cli#custom
 
 - name: 'Node | Update global packages'
