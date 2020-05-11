@@ -1,5 +1,8 @@
 ---
 - name: restart systemctl
   become: true
-  notify: restart systemctl
   shell: systemctl daemon-reload && sysctl --system
+
+- name: update grub
+  become: true
+  shell: update-grub
