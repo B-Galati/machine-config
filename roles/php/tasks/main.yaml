@@ -1,5 +1,10 @@
 ---
-- name: Install php packages
+- name: Add php's ppa
+  become: true
+  apt_repository:
+    repo: ppa:ondrej/php
+
+- name: Install php 7.2 packages
   become: true
   apt:
     name: '{{ packages }}'
@@ -24,6 +29,38 @@
       - php7.2-sqlite3
       - php7.2-xml
 
+- name: Install php 7.4 packages
+  become: true
+  apt:
+    name: '{{ packages }}'
+    update_cache: yes
+    cache_valid_time: 3600
+  vars:
+    packages:
+      - php7.4-cli
+      - php7.4-opcache
+      - php7.4-common
+      - php7.4-amqp
+      - php7.4-curl
+      - php7.4-fpm
+      - php7.4-intl
+      - php7.4-json
+      - php7.4-mbstring
+      - php7.4-pgsql
+      - php7.4-mysql
+      - php7.4-redis
+      - php7.4-readline
+      - php7.4-sqlite3
+      - php7.4-xml
+      - php7.4-xdebug
+      - php7.4-zip
+
+- name: Correct PHP version selected
+  become: true
+  alternatives:
+    name: php
+    path: /usr/bin/php7.4
+
 - name: Import role geerlingguy.composer
   import_role:
     name: geerlingguy.composer
@@ -43,10 +80,10 @@
       dest: /etc/profile.d/composer.sh
       mode: 0644
 
-- name: Write /etc/php/7.2/cli/conf.d/99-custom.ini file
+- name: Write /etc/php/{{ item }}/conf.d/99-custom.ini file
   become: true
   copy:
-    dest: /etc/php/7.2/cli/conf.d/99-custom.ini
+    dest: /etc/php/{{ item }}/conf.d/99-custom.ini
     content: |
       [PHP]
       error_reporting = E_ALL
@@ -56,10 +93,14 @@
       #log_errors_max_len = 1024
       report_memleaks = On
       default_charset = "UTF-8"
-      auto_prepend_file = ${HOME}/.composer/vendor/autoload.php
+      #auto_prepend_file = ${HOME}/.composer/vendor/autoload.php
 
       [Date]
       date.timezone = Europe/Paris
+  with_items:
+    - 7.2/cli
+    - 7.4/cli
+    - 7.4/fpm
 
 - name: Php | Disable xdebug
   become: true
