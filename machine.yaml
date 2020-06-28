@@ -6,8 +6,6 @@
   vars:
     ansible_user: benoit
     jetbrains_toolbox_version: latest
-    croncape_version: v1.2.1
-    croncape_archive_checksum: 28a5da07e6168799aae9e7aa656b5faa9694f3b915f40ffdac3c14991c26c409
     fd_version: 7.1.0
     bat_version: 0.8.0
     hexyl_version: 0.6.0
@@ -19,7 +17,6 @@
       apt:
         update_cache: true
         upgrade: true
-        cache_valid_time: 3600
   roles:
     - role: software
       tags: [software]
@@ -37,6 +34,7 @@
     - stellar
     - slack
     - mkcert
+    - croncape
     - role: user
       tags: [user]
     - role: repositories

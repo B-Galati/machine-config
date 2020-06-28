@@ -128,34 +128,6 @@
   shell: umake web firefox-dev /home/{{ ansible_user }}/.local/share/umake/web/firefox-dev --lang en-US
   when: not firefox_dev.stat.exists
 
-- name: Croncape | Check for existing croncape install
-  stat:
-    path: '/usr/local/bin/croncape'
-  register: croncape_install
-  changed_when: False
-
-- name: Croncape | Check croncape version to know if an update is needed or not
-  command: '/usr/local/bin/croncape --version'
-  register: croncape_installed_version
-  when: 'croncape_install.stat.exists'
-  changed_when: 'croncape_version not in croncape_installed_version.stdout'
-  failed_when: False
-
-- block:
-    - name: Croncape | Download croncape
-      get_url:
-        url: https://github.com/symfonycorp/croncape/releases/download/{{ croncape_version }}/croncape_linux_amd64.tar.gz
-        checksum: 'sha256:{{ croncape_archive_checksum }}'
-        dest: /tmp/croncape_linux_amd64.tar.gz
-        force: yes
-
-    - name: Croncape | Install croncape
-      unarchive:
-        src: /tmp/croncape_linux_amd64.tar.gz
-        dest: '/usr/local/bin'
-        remote_src: yes
-  when: not croncape_install.stat.exists or croncape_version not in croncape_installed_version.stdout
-
 - name: gitlab-runner | Check for existing gitlab-runner install
   command: 'which gitlab-runner'
   register: gitlab_runner_install

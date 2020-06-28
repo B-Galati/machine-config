@@ -1,0 +1,21 @@
+---
+- name: Check croncape version to know if an update is needed or not
+  command: /usr/local/bin/croncape -version
+  register: croncape_installed_version
+  changed_when: croncape_version not in croncape_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download croncape
+      get_url:
+        url: https://github.com/symfonycorp/croncape/releases/download/{{ croncape_version }}/croncape_linux_amd64.tar.gz
+        checksum: 'sha256:{{ croncape_archive_checksum }}'
+        dest: /tmp/croncape_linux_amd64.tar.gz
+        force: yes
+
+    - name: Install croncape
+      unarchive:
+        src: /tmp/croncape_linux_amd64.tar.gz
+        dest: '/usr/local/bin'
+        remote_src: yes
+  when: croncape_version not in croncape_installed_version.stdout | default('')
