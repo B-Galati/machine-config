@@ -1,0 +1,10 @@
+---
+- name: Install pip packages
+  pip:
+    name: '{{ packages }}'
+    state: latest
+    extra_args: --user
+  vars:
+    packages:
+      - stellar
+      - psycopg2-binary # Needed to let stellar communicate with PG

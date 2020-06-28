@@ -36,6 +36,7 @@
     - spotify
     - hub
     - insomnia
+    - stellar
     - role: user
       tags: [user]
     - role: repositories

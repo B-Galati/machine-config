@@ -118,9 +118,6 @@
       - powerline-mem-segment
       - youtube-dl
 
-      - stellar
-      - psycopg2-binary # Needed to let stellar communicate with PG
-
 - name: Firefox dev | Check for existing install
   stat:
     path: '/home/{{ ansible_user }}/.local/share/umake/web/firefox-dev'
