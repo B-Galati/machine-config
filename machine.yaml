@@ -18,8 +18,20 @@
         update_cache: true
         upgrade: true
   roles:
+    - role: user
+      tags: [user]
+    - role: system
+      tags: [system]
     - role: software
       tags: [software]
+    - role: repositories
+      tags: [repositories]
+    - role: php
+      tags: [php]
+    - role: docker
+      tags: [docker]
+    - role: nodejs
+      tags: [nodejs]
 #    - mutagen
     - keepassxc
     - peek
@@ -35,15 +47,3 @@
     - slack
     - mkcert
     - croncape
-    - role: user
-      tags: [user]
-    - role: repositories
-      tags: [repositories]
-    - role: docker
-      tags: [docker]
-    - role: system
-      tags: [system]
-    - role: nodejs
-      tags: [nodejs]
-    - role: php
-      tags: [php]
