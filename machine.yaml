@@ -11,7 +11,6 @@
     mkcert_version: v1.3.0
     fd_version: 7.1.0
     bat_version: 0.8.0
-    slack_version: 3.3.3
     hexyl_version: 0.6.0
   vars_files:
     - vault.yaml
@@ -37,6 +36,7 @@
     - hub
     - insomnia
     - stellar
+    - slack
     - role: user
       tags: [user]
     - role: repositories

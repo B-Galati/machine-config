@@ -250,19 +250,6 @@
         deb: https://github.com/sharkdp/bat/releases/download/v{{ bat_version }}/bat_{{ bat_version }}_amd64.deb
   when: not bat_install.stat.exists or bat_version not in bat_installed_version.stdout
 
-- name: slack | Check for existing slack install
-  command: dpkg-query -W slack-desktop
-  register: slack_installed
-  failed_when: false
-  changed_when: false
-
-- block:
-    - name: slack | Download and install
-      become: true
-      apt:
-        deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack_version }}-amd64.deb
-  when: slack_installed.rc == 1
-
 - name: discord | Check for existing discord install
   command: dpkg-query -W discord
   register: discord_installed
