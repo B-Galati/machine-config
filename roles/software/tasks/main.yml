@@ -181,26 +181,6 @@
     name: gitlab-runner
     state: present
 
-- name: mkcert | Check for existing mkcert install
-  stat:
-    path: '/usr/local/bin/mkcert'
-  register: mkcert_install
-  changed_when: False
-
-- block:
-    - name: mkcert | Download and install mkcert
-      get_url:
-        url: https://github.com/FiloSottile/mkcert/releases/download/{{ mkcert_version }}/mkcert-{{ mkcert_version }}-linux-amd64
-        dest: /usr/local/bin/mkcert
-        mode: 0755
-        force: yes
-
-    - name: mkcert | Create local CA
-      shell: /usr/local/bin/mkcert -install
-      register: mkcert_install
-      changed_when: "'Created a new local CA' in mkcert_install.stdout"
-  when: not mkcert_install.stat.exists
-
 - name: fzf | Clone repository
   git:
     repo: https://github.com/junegunn/fzf.git

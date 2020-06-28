@@ -1,0 +1,20 @@
+---
+- name: Check for existing mkcert install
+  command: /usr/local/bin/mkcert -version
+  register: mkcert_installed_version
+  changed_when: mkcert_version not in mkcert_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download and install mkcert
+      get_url:
+        url: https://github.com/FiloSottile/mkcert/releases/download/{{ mkcert_version }}/mkcert-{{ mkcert_version }}-linux-amd64
+        dest: /usr/local/bin/mkcert
+        mode: 0755
+        force: yes
+
+    - name: Create local CA
+      shell: /usr/local/bin/mkcert -install
+      register: mkcert_install
+      changed_when: "'Created a new local CA' in mkcert_install.stdout"
+  when: mkcert_version not in mkcert_installed_version.stdout | default('')
