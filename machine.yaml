@@ -5,7 +5,7 @@
   gather_subset: [min]
   vars:
     ansible_user: benoit
-    jetbrains_toolbox_version: 1.11
+    jetbrains_toolbox_version: latest
     croncape_version: v1.2.1
     croncape_archive_checksum: 28a5da07e6168799aae9e7aa656b5faa9694f3b915f40ffdac3c14991c26c409
     fd_version: 7.1.0
