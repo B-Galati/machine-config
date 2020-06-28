@@ -35,6 +35,7 @@
     - vagrant
     - spotify
     - hub
+    - insomnia
     - role: user
       tags: [user]
     - role: repositories

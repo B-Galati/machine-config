@@ -1,18 +1,4 @@
 ---
-- name: insomnia | Set gpg key
-  become: true
-  apt_key:
-    url: https://insomnia.rest/keys/debian-public.key.asc
-    state: present
-
-- name: insomnia | Add repository
-  become: true
-  apt_repository:
-    repo: 'deb https://dl.bintray.com/getinsomnia/Insomnia /'
-    filename: insomnia
-    state: present
-    update_cache: false
-
 - name: Install packages
   become: true
   apt:
