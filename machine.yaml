@@ -6,9 +6,6 @@
   vars:
     ansible_user: benoit
     jetbrains_toolbox_version: latest
-    fd_version: 7.1.0
-    bat_version: 0.8.0
-    hexyl_version: 0.6.0
   vars_files:
     - vault.yaml
   pre_tasks:
@@ -47,3 +44,6 @@
     - slack
     - mkcert
     - croncape
+    - fd
+    - bat
+    - hexyl

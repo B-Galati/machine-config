@@ -162,46 +162,6 @@
 - name: fzf | Install
   shell: ~/.fzf/install --completion --64 --key-bindings --update-rc
 
-- name: fd | Check for existing fd install
-  stat:
-    path: '/usr/bin/fd'
-  register: fd_install
-  changed_when: False
-
-- name: fd | Check fd version to know if an update is needed or not
-  command: '/usr/bin/fd --version'
-  register: fd_installed_version
-  when: 'fd_install.stat.exists'
-  changed_when: 'fd_version not in fd_installed_version.stdout'
-  failed_when: False
-
-- block:
-    - name: fd | Download and install
-      become: true
-      apt:
-        deb: https://github.com/sharkdp/fd/releases/download/v{{ fd_version }}/fd_{{ fd_version }}_amd64.deb
-  when: not fd_install.stat.exists or fd_version not in fd_installed_version.stdout
-
-- name: bat | Check for existing bat install
-  stat:
-    path: '/usr/bin/bat'
-  register: bat_install
-  changed_when: False
-
-- name: bat | Check bat version to know if an update is needed or not
-  command: '/usr/bin/bat --version'
-  register: bat_installed_version
-  when: 'bat_install.stat.exists'
-  changed_when: 'bat_version not in bat_installed_version.stdout'
-  failed_when: False
-
-- block:
-    - name: bat | Download and install
-      become: true
-      apt:
-        deb: https://github.com/sharkdp/bat/releases/download/v{{ bat_version }}/bat_{{ bat_version }}_amd64.deb
-  when: not bat_install.stat.exists or bat_version not in bat_installed_version.stdout
-
 - name: discord | Check for existing discord install
   command: dpkg-query -W discord
   register: discord_installed
@@ -227,19 +187,6 @@
       apt:
         deb: https://prerelease.keybase.io/keybase_amd64.deb
   when: keybase_installed.rc == 1
-
-- name: hexyl | Check hexyl version to know if an update is needed or not
-  command: '/usr/bin/hexyl --version'
-  register: hexyl_installed_version
-  changed_when: hexyl_version not in hexyl_installed_version.stdout | default('')
-  failed_when: False
-
-- block:
-    - name: hexyl | Download and install
-      become: true
-      apt:
-        deb: https://github.com/sharkdp/hexyl/releases/download/v{{ hexyl_version }}/hexyl_{{ hexyl_version }}_amd64.deb
-  when: hexyl_version not in hexyl_installed_version.stdout | default('')
 
 - name: Remove useless packages
   become: true
