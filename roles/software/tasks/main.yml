@@ -96,14 +96,6 @@
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command 'amixer set Capture toggle'
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding 'Mail'
 
-- name: 'Ensure /usr/local/bin belongs to {{ ansible_user }}'
-  become: true
-  file:
-    path: /usr/local/bin
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
-    recurse: yes
-
 - name: Install pip packages
   pip:
     name: '{{ packages }}'
@@ -187,17 +179,6 @@
       apt:
         deb: https://prerelease.keybase.io/keybase_amd64.deb
   when: keybase_installed.rc == 1
-
-- name: Remove useless packages
-  become: true
-  apt:
-    purge: yes
-    autoremove: yes
-
-- name: Remove useless packages from the cache
-  become: true
-  apt:
-    autoclean: yes
 
 # Source https://github.com/sanduhrs/phpstorm-url-handler
 - name: phpstorm-url-handler | Install shell script

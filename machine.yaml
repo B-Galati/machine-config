@@ -14,6 +14,17 @@
       apt:
         update_cache: true
         upgrade: true
+  post_tasks:
+    - name: Remove useless packages
+      become: true
+      apt:
+        purge: yes
+        autoremove: yes
+
+    - name: Remove useless packages from the cache
+      become: true
+      apt:
+        autoclean: yes
   roles:
     - role: user
       tags: [user]

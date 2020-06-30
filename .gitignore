@@ -4,5 +4,7 @@
 /roles/geerlingguy.nodejs
 /roles/geerlingguy.composer
 /roles/geerlingguy.php
+/roles/jaredhocutt.dconf_settings
+/roles/jaredhocutt.gnome_extensions
 /requirements.lock
 /ansible.log
