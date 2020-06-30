@@ -1,0 +1,10 @@
+---
+- name: Firefox dev | Check for existing install
+  stat:
+    path: '/home/{{ ansible_user }}/.local/share/umake/web/firefox-dev'
+  register: firefox_dev
+  changed_when: False
+
+- name: Firefox dev | Install
+  shell: umake web firefox-dev /home/{{ ansible_user }}/.local/share/umake/web/firefox-dev --lang en-US
+  when: not firefox_dev.stat.exists

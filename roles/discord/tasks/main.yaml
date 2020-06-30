@@ -1,0 +1,13 @@
+---
+- name: Check for existing discord install
+  command: dpkg-query -W discord
+  register: discord_installed
+  failed_when: false
+  changed_when: false
+
+- block:
+    - name: Download and install
+      become: true
+      apt:
+        deb: https://discordapp.com/api/download?platform=linux&format=deb
+  when: discord_installed.rc == 1

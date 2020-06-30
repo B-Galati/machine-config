@@ -1,0 +1,13 @@
+---
+- name: Check for existing keybase install
+  command: dpkg-query -W keybase
+  register: keybase_installed
+  failed_when: false
+  changed_when: false
+
+- block:
+    - name: Download and install
+      become: true
+      apt:
+        deb: https://prerelease.keybase.io/keybase_amd64.deb
+  when: keybase_installed.rc == 1

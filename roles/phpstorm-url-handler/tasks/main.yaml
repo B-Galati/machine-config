@@ -1,0 +1,11 @@
+---
+# Source https://github.com/sanduhrs/phpstorm-url-handler
+- name: Install shell script
+  become: true
+  copy:
+    src: phpstorm-url-handler
+    dest: /usr/local/bin/phpstorm-url-handler
+
+- name: Install desktop file
+  become: true
+  shell: 'desktop-file-install "{{ role_path}}/files/phpstorm-url-handler.desktop" && update-desktop-database'

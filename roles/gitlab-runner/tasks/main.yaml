@@ -1,0 +1,25 @@
+---
+- name: Check for existing gitlab-runner install
+  command: 'which gitlab-runner'
+  register: gitlab_runner_install
+  changed_when: False
+  ignore_errors: True
+
+- block:
+    - name: Download gitlab-runner repository script
+      get_url:
+        url: https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh
+        dest: /tmp/gitlab-script.deb.sh
+        force: yes
+
+    - name: Install gitlab-runner repository
+      become: true
+      shell: bash /tmp/gitlab-script.deb.sh
+  when: gitlab_runner_install.failed
+
+- name: Install
+  become: true
+  apt:
+    cache_valid_time: 3600
+    name: gitlab-runner
+    state: present

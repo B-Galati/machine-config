@@ -1,23 +1,23 @@
 ---
-- name: Node | Ensure apt-transport-https is installed.
+- name: Ensure apt-transport-https is installed.
   become: true
   apt: name=apt-transport-https state=present
 
-- name: Node | Create /etc/profile.d directory
+- name: Create /etc/profile.d directory
   become: true
   file:
     path: /etc/profile.d
     state: directory
     mode: 0755
 
-- name: Node | Add Nodesource apt key.
+- name: Add Nodesource apt key.
   become: true
   apt_key:
     url: https://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x1655A0AB68576280
     id: "68576280"
     state: present
 
-- name: Node | Add NodeSource repositories for Node.js.
+- name: Add NodeSource repositories for Node.js.
   become: true
   apt_repository:
     repo: "{{ item }}"
@@ -27,16 +27,16 @@
     - "deb-src https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main"
   register: node_repo
 
-- name: 'Node | Update apt cache if repo was added.'
+- name: 'Update apt cache if repo was added.'
   become: true
   apt: update_cache=yes
   when: node_repo.changed
 
-- name: 'Node | Ensure Node.js and npm are installed.'
+- name: 'Ensure Node.js and npm are installed.'
   become: true
   apt: "name=nodejs={{ nodejs_version|regex_replace('x', '') }}* state=present"
 
-- name: 'Node | Create npm global directory'
+- name: 'Create npm global directory'
   become: true
   file:
     path: "{{ npm_config_prefix }}"
@@ -44,14 +44,14 @@
     group: "{{ ansible_user }}"
     state: directory
 
-- name: 'Node | Add npm_config_prefix bin directory to global $PATH.'
+- name: 'Add npm_config_prefix bin directory to global $PATH.'
   become: true
   template:
     src: npm.sh.j2
     dest: /etc/profile.d/npm.sh
     mode: 0644
 
-- name: 'Node | Ensure npm cache belongs to {{ ansible_user }}'
+- name: 'Ensure npm cache belongs to {{ ansible_user }}'
   become: true
   file:
     path: '/home/{{ ansible_user }}/.npm'
@@ -59,7 +59,7 @@
     group: '{{ ansible_user }}'
     recurse: yes
 
-- name: 'Node | Ensure npm global belongs to {{ ansible_user }}'
+- name: 'Ensure npm global belongs to {{ ansible_user }}'
   become: true
   file:
     path: '{{ npm_config_prefix }}'
@@ -67,7 +67,7 @@
     group: '{{ ansible_user }}'
     recurse: yes
 
-- name: 'Node | Ensure npm global packages are installed.'
+- name: 'Ensure npm global packages are installed.'
   npm:
     name: "{{ item.name | default(item) }}"
     version: "{{ item.version | default('latest') }}"
@@ -90,7 +90,7 @@
     - git-standup
 #    - https://github.com/Yousign/gitmoji-cli#custom
 
-- name: 'Node | Update global packages'
+- name: 'Update global packages'
   shell: 'npm update -g'
   environment:
     NPM_CONFIG_PREFIX: "{{ npm_config_prefix }}"
