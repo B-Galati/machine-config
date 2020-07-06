@@ -1,8 +1,14 @@
 # Usage
 
-Install `make` then:
-
 ```bash
+# Fedora
+sudo dnf install -y make git
+
+# Ubuntu
+sudo apt install -y make git
+
+git clone git@github.com:B-Galati/machine-config.git
+cd machine-config
 make install
 ```
 

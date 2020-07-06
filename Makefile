@@ -29,9 +29,8 @@ vault.txt:
 
 install.lock:
 	@echo "1st time run, let's install required tools"
-	sudo apt update -y
-	sudo apt install -y software-properties-common
-	sudo apt-add-repository -y ppa:ansible/ansible
-	sudo apt install ansible git ssh -y
+	if which dnf; then sudo dnf install -y python3 python3-pip; fi
+	if which apt; then sudo apt install -y python3 python3-pip; fi
+	pip3 install --user ansible
 	# Success! let's create the lock file not to run this step again
 	@touch $@
