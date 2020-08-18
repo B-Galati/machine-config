@@ -26,20 +26,13 @@
       apt:
         autoclean: yes
   roles:
-    - role: user
-      tags: [user]
-    - role: system
-      tags: [system]
-    - role: software
-      tags: [software]
-    - role: repositories
-      tags: [repositories]
-    - role: php
-      tags: [php]
-    - role: docker
-      tags: [docker]
-    - role: nodejs
-      tags: [nodejs]
+    - user
+    - system
+    - software
+    - repositories
+    - php
+    - docker
+    - nodejs
 #    - mutagen
     - keepassxc
     - peek
@@ -65,3 +58,4 @@
     - phpstorm-url-handler
     - fzf
     - firefox-dev
+    - drawio

@@ -24,6 +24,7 @@ make install
 - [Disable boot screen](https://www.kevin-custer.com/blog/disabling-the-plymouth-boot-screen-in-ubuntu-20-04/)
 - [Disable error report dialog](https://www.kevin-custer.com/blog/how-to-turn-off-the-error-report-dialog-in-ubuntu-20-04/)
 - [Docker and Fedora 32](https://fedoramagazine.org/docker-and-fedora-32/)
+- [Fedora: Use DNS over TLS](https://fedoramagazine.org/use-dns-over-tls/)
 
 # Credits
 
