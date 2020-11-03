@@ -42,7 +42,8 @@
     - hyperfine
     - vagrant
     - spotify
-    - hub
+#    - hub
+    - unipdf-cli
     - insomnia
     - stellar
     - slack

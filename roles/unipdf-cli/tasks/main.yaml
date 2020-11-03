@@ -1,0 +1,29 @@
+---
+- name: Check for existing unipdf-cli install
+  command: /usr/local/bin/unipdf version
+  register: unipdf_cli_installed_version
+  changed_when: unipdf_cli_version not in unipdf_cli_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download
+      get_url:
+        url: https://github.com/unidoc/unipdf-cli/releases/download/v{{ unipdf_cli_version }}/unipdf-{{ unipdf_cli_version }}-linux-amd64.tar.gz
+        dest: /tmp/unipdf-cli.tar.gz
+        mode: 0755
+        force: yes
+        checksum: "sha256:https://github.com/unidoc/unipdf-cli/releases/download/v{{ unipdf_cli_version }}/unipdf-cli-{{ unipdf_cli_version }}-checksums.txt"
+
+    - name: Install
+      unarchive:
+        src: /tmp/unipdf-cli.tar.gz
+        dest: /usr/local/bin
+        extra_opts: # https://github.com/ansible/ansible/issues/27081
+          - --strip=1
+          - --wildcards
+          - '*/unipdf'
+        remote_src: yes
+
+    - name: Check
+      command: /usr/local/bin/unipdf version
+  when: unipdf_cli_version not in unipdf_cli_installed_version.stdout | default('')
