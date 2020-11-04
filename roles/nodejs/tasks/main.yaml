@@ -88,6 +88,8 @@
     - semantic-release-cli
     - semantic-release
     - git-standup
+    - commitizen
+    - cz-emoji
 #    - https://github.com/Yousign/gitmoji-cli#custom
 
 - name: 'Update global packages'
