@@ -4,6 +4,7 @@ default:
 
 .PHONY: install
 install: install.lock vault.yaml requirements
+	sudo apt update && sudo apt upgrade --autoremove --purge
 	ansible-playbook machine.yaml --vault-id vault.txt --verbose
 	~/dotfiles/bootstrap.sh --force
 

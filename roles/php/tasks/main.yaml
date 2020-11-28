@@ -55,11 +55,37 @@
       - php7.4-xdebug
       - php7.4-zip
 
+- name: Install php 8.0 packages
+  become: true
+  apt:
+    name: '{{ packages }}'
+    update_cache: yes
+    cache_valid_time: 3600
+  vars:
+    packages:
+      - php8.0-cli
+      - php8.0-opcache
+      - php8.0-common
+      - php8.0-amqp
+      - php8.0-curl
+      - php8.0-fpm
+      - php8.0-intl
+#      - php8.0-json
+      - php8.0-mbstring
+      - php8.0-pgsql
+      - php8.0-mysql
+      - php8.0-redis
+      - php8.0-readline
+      - php8.0-sqlite3
+      - php8.0-xml
+      - php8.0-xdebug
+      - php8.0-zip
+
 - name: Correct PHP version selected
   become: true
   alternatives:
     name: php
-    path: /usr/bin/php7.4
+    path: /usr/bin/php8.0
 
 - name: Import role geerlingguy.composer
   import_role:
@@ -101,6 +127,8 @@
     - 7.2/cli
     - 7.4/cli
     - 7.4/fpm
+    - 8.0/cli
+    - 8.0/fpm
 
 - name: Php | Disable xdebug
   become: true
