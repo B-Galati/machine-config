@@ -4,8 +4,11 @@ default:
 
 .PHONY: install
 install: install.lock vault.yaml requirements
-	sudo apt update && sudo apt upgrade --autoremove --purge
+	if which dnf; then sudo dnf upgrade --refresh; fi
+	if which apt; then sudo apt update && sudo apt upgrade --autoremove --purge; fi
 	ansible-playbook machine.yaml --vault-id vault.txt --verbose
+	if which dnf; then sudo dnf dnf autoremove; fi
+	if which apt; then sudo apt-get autoclean; fi
 	~/dotfiles/bootstrap.sh --force
 
 .PHONY: install-force
@@ -30,8 +33,11 @@ vault.txt:
 
 install.lock:
 	@echo "1st time run, let's install required tools"
-	if which dnf; then sudo dnf install -y python3 python3-pip; fi
-	if which apt; then sudo apt install -y python3 python3-pip; fi
-	pip3 install --user ansible
+	@echo "Check that python3 is installed and press any key..."
+	@python --version
+	@pip --version
+	@read var
+	@echo "Install Ansible..."
+	pip install --user ansible
 	# Success! let's create the lock file not to run this step again
 	@touch $@
