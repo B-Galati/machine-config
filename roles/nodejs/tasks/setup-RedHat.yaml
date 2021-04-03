@@ -1,0 +1,9 @@
+---
+- name: Install version {{ nodejs_version }}
+  become: true
+  shell: |
+    dnf module list nodejs
+    dnf module enable -y nodejs:{{ nodejs_version }}
+    dnf module install -y nodejs:{{ nodejs_version }}/default # DNF modules not supported yet
+    dnf module list nodejs
+
