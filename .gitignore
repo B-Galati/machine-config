@@ -8,3 +8,4 @@
 /roles/jaredhocutt.gnome_extensions
 /requirements.lock
 /ansible.log
+__pycache__/
