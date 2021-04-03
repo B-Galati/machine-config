@@ -1,20 +1,6 @@
 ---
-- name: bat | Check for existing bat install
-  stat:
-    path: '/usr/bin/bat'
-  register: bat_install
-  changed_when: False
+- import_tasks: setup-RedHat.yaml
+  when: ansible_os_family == 'RedHat'
 
-- name: bat | Check bat version to know if an update is needed or not
-  command: '/usr/bin/bat --version'
-  register: bat_installed_version
-  when: 'bat_install.stat.exists'
-  changed_when: 'bat_version not in bat_installed_version.stdout'
-  failed_when: False
-
-- block:
-    - name: bat | Download and install
-      become: true
-      apt:
-        deb: https://github.com/sharkdp/bat/releases/download/v{{ bat_version }}/bat_{{ bat_version }}_amd64.deb
-  when: not bat_install.stat.exists or bat_version not in bat_installed_version.stdout
+- import_tasks: setup-Debian.yaml
+  when: ansible_os_family == 'Debian'
