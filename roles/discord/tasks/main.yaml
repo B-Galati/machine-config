@@ -1,13 +1,41 @@
 ---
 - name: Check for existing discord install
-  command: dpkg-query -W discord
-  register: discord_installed
-  failed_when: false
-  changed_when: false
+  stat:
+    path: /opt/Discord/Discord
+  register: discord_install
+  changed_when: False
 
 - block:
-    - name: Download and install
+    - name: Create opt directory
       become: true
-      apt:
-        deb: https://discordapp.com/api/download?platform=linux&format=deb
-  when: discord_installed.rc == 1
+      file:
+        path: /opt/Discord
+        state: directory
+        mode: 0755
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
+
+    - name: Install
+      unarchive:
+        src: https://discordapp.com/api/download?platform=linux&format=tar.gz
+        dest: ~/
+        remote_src: yes
+  when: not discord_install.stat.exists
+
+- name: Install .desktop
+  copy:
+    dest: ~/.local/share/applications/discord.desktop
+    content: |
+      [Desktop Entry]
+      Name=Discord
+      StartupWMClass=discord
+      Comment=All-in-one voice and text chat for gamers that's free, secure, and works on both your desktop and phone.
+      GenericName=Internet Messenger
+      Exec=/opt/Discord/Discord
+      Icon=/opt/Discord/discord.png
+      Type=Application
+      Categories=Network;InstantMessaging;
+      Path=/usr/bin
+
+- name: Update desktop files
+  command: update-desktop-database ~/.local/share/applications -v
