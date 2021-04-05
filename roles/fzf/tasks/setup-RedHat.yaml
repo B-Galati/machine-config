@@ -1,0 +1,6 @@
+---
+- name: Install
+  become: true
+  dnf:
+    name: fzf
+    state: present

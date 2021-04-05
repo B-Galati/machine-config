@@ -1,17 +1,3 @@
 ---
-- name: Check version to know if an update is needed or not
-  command: '/home/{{ ansible_user }}/.fzf/bin/fzf --version'
-  register: fzf_installed_version
-  changed_when: fzf_version not in fzf_installed_version.stdout | default('')
-  failed_when: False
-
-- block:
-    - name: Clone repository
-      git:
-        repo: https://github.com/junegunn/fzf.git
-        dest: ~/.fzf
-        depth: 1
-
-    - name: Install
-      shell: ~/.fzf/install --completion --64 --key-bindings
-  when: fzf_version not in fzf_installed_version.stdout | default('')
+- import_tasks: setup-RedHat.yaml
+  when: ansible_os_family == 'RedHat'
