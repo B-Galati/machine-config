@@ -3,6 +3,8 @@
 ```bash
 # Fedora
 sudo dnf install -y make git
+sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf install tmux-powerline vim-powerline zsh
 
 # Ubuntu
 sudo apt install -y make git

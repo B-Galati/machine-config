@@ -3,4 +3,4 @@
   become: true
   dnf:
     name: bat
-    state: latest
+    state: present

@@ -18,9 +18,9 @@
     - nodejs
 #    - mutagen
 #    - hub
+#    - dbeaver
     - keepassxc
     - peek
-    - dbeaver
     - vscode
     - yubico
     - hyperfine
