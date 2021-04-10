@@ -62,5 +62,3 @@
         dest: "{{ docker_compose_path }}"
         mode: 0755
   when: docker_compose_version not in docker_compose_current_version.stdout | default('')
-
-#- include_tasks: docker-dns-gen.yaml
