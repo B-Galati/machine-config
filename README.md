@@ -1,17 +1,26 @@
 # Usage
 
 ```bash
-# Fedora
+# Requirements - Fedora
 sudo dnf install -y make git
 sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf install tmux-powerline vim-powerline zsh
 
-# Ubuntu
+# Requirements - Ubuntu
 sudo apt install -y make git
 
+# Clone the repository 
 git clone git@github.com:B-Galati/machine-config.git
-cd machine-config
+
+# To configure local machine
 make install
+make install-force # To re-install ansible dependencies
+
+# To update everything on the machine
+make update
+
+# To install a particular role
+make role ROLE=<role_name>
 ```
 
 # Things to do manually 

@@ -4,17 +4,33 @@ default:
 
 .PHONY: install
 install: install.lock vault.yaml requirements
-	if which dnf; then sudo dnf upgrade --refresh; fi
-	if which apt; then sudo apt update && sudo apt upgrade --autoremove --purge; fi
-	ansible-playbook machine.yaml --vault-id vault.txt --verbose
-	if which dnf; then sudo dnf dnf autoremove; fi
-	if which apt; then sudo apt-get autoclean; fi
-	~/dotfiles/bootstrap.sh --force
+	@echo 'Install system config'
+	@ansible-playbook machine.yaml --vault-id vault.txt --verbose
+	@echo 'Install dotfiles'
+	@~/dotfiles/bootstrap.sh --force
 
 .PHONY: install-force
 install-force:
-	rm -rf requirements.lock
+	rm -f requirements.lock
 	$(MAKE) install
+
+.PHONY: role
+role:
+	@if [[ -z "$(ROLE)" ]]; then echo 'You must specify a value for ROLE variable' && exit 1; fi
+	@echo 'Install role "$(ROLE)"'
+	@ansible-playbook machine.yaml --vault-id vault.txt --verbose --tag $(ROLE)
+
+.PHONY: update
+update:
+	@echo 'Update system'
+	@if which dnf > /dev/null 2>&1; then sudo dnf upgrade --refresh; fi
+	@if which apt > /dev/null 2>&1; then sudo apt update && sudo apt upgrade --autoremove --purge; fi
+	@echo 'Cleanup'
+	@if which dnf > /dev/null 2>&1; then sudo dnf autoremove; fi
+	@if which apt > /dev/null 2>&1; then sudo apt-get autoclean; fi
+	@echo 'Update dotfiles'
+	@cd ~/dotfiles && git pull
+	@~/dotfiles/bootstrap.sh --force
 
 .PHONY: requirements
 requirements: requirements.lock
@@ -26,7 +42,7 @@ vault.yaml: vault.txt
 	@echo "[PAUSE] you will need to specify ansible variable ansible_become_pass in the vault"
 	@echo "Press a key to continue..."
 	@read var
-	ansible-vault create --vault-password-file vault.txt vault.yaml
+	@ansible-vault create --vault-password-file vault.txt vault.yaml
 
 vault.txt:
 	@dd if=/dev/urandom bs=1 count=32 2>/dev/null | base64 -w 0 > vault.txt
@@ -38,6 +54,6 @@ install.lock:
 	@pip --version
 	@read var
 	@echo "Install Ansible..."
-	pip install --user ansible
+	@pip install --user ansible
 	# Success! let's create the lock file not to run this step again
 	@touch $@
