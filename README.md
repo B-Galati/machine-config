@@ -28,6 +28,7 @@ make role ROLE=<role_name>
 - Remove Ubuntu report popup `sudo apt-get remove --purge apport`
 - [Doc](http://richardbenjaminrush.com/keechallenge/) to set up keepass and U2F
 - [Doc](https://support.yubico.com/support/solutions/articles/15000011356-ubuntu-linux-login-guide-u2f) to configure U2F on ubuntu.
+- Consider HWE packages for Ubuntu: `linux-generic-hwe-18.04`, `xserver-xorg-hwe-18.04`
 
 # References
 

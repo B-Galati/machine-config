@@ -8,6 +8,7 @@ install: install.lock vault.yaml requirements
 	@ansible-playbook machine.yaml --vault-id vault.txt --verbose
 	@echo 'Install dotfiles'
 	@~/dotfiles/bootstrap.sh --force
+	@echo $$'Logout and login if it\'s the very first install'
 
 .PHONY: install-force
 install-force:
@@ -25,9 +26,11 @@ update:
 	@echo 'Update system'
 	@if which dnf > /dev/null 2>&1; then sudo dnf upgrade --refresh; fi
 	@if which apt > /dev/null 2>&1; then sudo apt update && sudo apt upgrade --autoremove --purge; fi
-	@echo 'Cleanup'
+	@echo 'Clean up'
 	@if which dnf > /dev/null 2>&1; then sudo dnf autoremove; fi
 	@if which apt > /dev/null 2>&1; then sudo apt-get autoclean; fi
+	@echo 'Update node deps'
+	@npm -g update
 	@echo 'Update dotfiles'
 	@cd ~/dotfiles && git pull
 	@~/dotfiles/bootstrap.sh --force
