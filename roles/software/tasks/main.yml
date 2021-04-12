@@ -1,100 +1,28 @@
 ---
-- name: Install packages
-  become: true
-  apt:
-    cache_valid_time: 3600
-    name: "{{ packages }}"
-    state: present
-  vars:
-    packages:
-      - man
-      - linux-generic-hwe-18.04
-      - xserver-xorg-hwe-18.04
-      - lnav
-      - stress
-      - meld
-      - bash-completion
-      - screenfetch
-      - htop
-      - nmon
-      - hdparm
-      - xclip
-      - smartmontools
-      - sysbench
-      - iotop
-      - fio
-      - multitail
-      - git
-      - git-extras
-      - ssh
-      - vim
-      - vim-gui-common
-      - zsh
-      - tar
-      - fonts-hack
-      - unzip
-      - netstat-nat
-      - net-tools
-      - powerline
-      - tmux
-      - openvpn
-      - openssl
-      - network-manager-openvpn-gnome
-      - resolvconf
-      - tzdata
-      - locales
-      - shellcheck
-      - gnome-tweak-tool
-      - gnome-shell-extensions
-      - menulibre
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - imagemagick
-      - gthumb
-      - nautilus-image-converter
-      - gir1.2-gtop-2.0
-      - gir1.2-networkmanager-1.0
-      - arc-theme
-      - python-pip
-      - ubuntu-make
-      - keychain
-      - postfix
-      - mailutils
-      - python-jmespath
-      - ncdu
-      - pandoc
-      - libnss3-tools
-      - gnupg2
-      - entr
-      - gdebi
-      - chromium-browser
-      - fonts-roboto
-      - insomnia
-      - wondershaper
-      - chrome-gnome-shell
-      - flameshot
-      - jq
-      - vlc
+- import_tasks: setup-RedHat.yaml
+  when: ansible_os_family == 'RedHat'
 
-- name: Apply gnome config
-  shell: |
-    set -x
+- import_tasks: setup-Debian.yaml
+  when: ansible_os_family == 'Debian'
 
-    # Reset shortcut for screenshot
-    gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot ''
-
-    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
-
-    # Use flameshot for screenshot and bind shortcut see https://askubuntu.com/questions/1036473/ubuntu-18-how-to-change-screenshot-application-to-flameshot
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'flameshot'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command '/usr/bin/flameshot gui'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding 'Print'
-
-    # Set shortcut to mute mic
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name 'Toggle mic'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command 'amixer set Capture toggle'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding 'Mail'
+#- name: Apply gnome config
+#  shell: |
+#    set -x
+#
+#    # Reset shortcut for screenshot
+#    gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot ''
+#
+#    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
+#
+#    # Use flameshot for screenshot and bind shortcut see https://askubuntu.com/questions/1036473/ubuntu-18-how-to-change-screenshot-application-to-flameshot
+#    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'flameshot'
+#    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command '/usr/bin/flameshot gui'
+#    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding 'Print'
+#
+#    # Set shortcut to mute mic
+#    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name 'Toggle mic'
+#    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command 'amixer set Capture toggle'
+#    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding 'Mail'
 
 - name: Install pip packages
   pip:

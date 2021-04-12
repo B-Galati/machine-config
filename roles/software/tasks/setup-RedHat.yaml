@@ -1,0 +1,45 @@
+---
+- name: Install packages
+  become: true
+  dnf:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - lnav
+      - stress
+      - meld
+      - bash-completion
+      - screenfetch
+      - htop
+      - nmon
+      - hdparm
+      - smartmontools
+      - sysbench
+      - iotop
+      - fio
+      - multitail
+      - git
+      - git-extras
+      - vim
+      - zsh
+      - tar
+      - unzip
+      - powerline
+      - tmux
+      - openvpn
+      - openssl
+      - resolvconf
+      - ShellCheck
+      - gnome-tweak-tool
+      - ca-certificates
+      - curl
+      - nautilus-image-converter
+      - postfix
+      - ncdu
+      - gnupg2
+      - google-roboto-fonts
+      - google-roboto-mono-fonts
+      - flameshot
+      - jq
+      - vlc

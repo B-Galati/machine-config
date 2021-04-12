@@ -1,0 +1,75 @@
+---
+- name: Install packages
+  become: true
+  apt:
+    cache_valid_time: 3600
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - lnav
+      - stress
+      - meld
+      - bash-completion
+      - screenfetch
+      - htop
+      - nmon
+      - hdparm
+      - xclip
+      - smartmontools
+      - sysbench
+      - iotop
+      - fio
+      - multitail
+      - git
+      - git-extras
+      - ssh
+      - vim
+      - vim-gui-common
+      - zsh
+      - tar
+      - fonts-hack
+      - unzip
+      - netstat-nat
+      - net-tools
+      - powerline
+      - tmux
+      - openvpn
+      - openssl
+      - network-manager-openvpn-gnome
+      - resolvconf
+      - tzdata
+      - locales
+      - shellcheck
+      - gnome-tweak-tool
+      - gnome-shell-extensions
+      - menulibre
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - imagemagick
+      - gthumb
+      - nautilus-image-converter
+      - gir1.2-gtop-2.0
+      - gir1.2-networkmanager-1.0
+      - arc-theme
+      - python-pip
+      - ubuntu-make
+      - keychain
+      - postfix
+      - mailutils
+      - python-jmespath
+      - ncdu
+      - pandoc
+      - libnss3-tools
+      - gnupg2
+      - entr
+      - gdebi
+      - chromium-browser
+      - fonts-roboto
+      - insomnia
+      - wondershaper
+      - chrome-gnome-shell
+      - flameshot
+      - jq
+      - vlc
