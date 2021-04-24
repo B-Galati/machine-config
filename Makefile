@@ -29,10 +29,12 @@ update:
 	@echo 'Clean up'
 	@if which dnf > /dev/null 2>&1; then sudo dnf autoremove; fi
 	@if which apt > /dev/null 2>&1; then sudo apt-get autoclean; fi
+	@echo 'Update python deps'
+	@pip install --upgrade --user pip awscli s-tui psutil powerline-mem-segment youtube-dl
 	@echo 'Update node deps'
 	@npm -g update
 	@echo 'Update dotfiles'
-	@cd ~/dotfiles && git pull
+	@cd ~/dotfiles && git pull && git submodule update --remote --rebase
 	@~/dotfiles/bootstrap.sh --force
 
 .PHONY: requirements
