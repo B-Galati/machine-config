@@ -8,12 +8,7 @@ install: install.lock vault.yaml requirements
 	@ansible-playbook machine.yaml --vault-id vault.txt --verbose
 	@echo 'Install dotfiles'
 	@~/dotfiles/bootstrap.sh --force
-	@echo $$'Logout and login if it\'s the very first install'
-
-.PHONY: install-force
-install-force:
-	rm -f requirements.lock
-	$(MAKE) install
+	@echo "Logout and login if it's the very first install"
 
 .PHONY: role
 role:
