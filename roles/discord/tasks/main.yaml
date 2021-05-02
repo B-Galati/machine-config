@@ -18,7 +18,7 @@
     - name: Install
       unarchive:
         src: https://discordapp.com/api/download?platform=linux&format=tar.gz
-        dest: ~/
+        dest: /opt
         remote_src: yes
   when: not discord_install.stat.exists
 
