@@ -18,6 +18,8 @@ role:
 
 .PHONY: update
 update:
+	@echo 'Update repo'
+	@git pull
 	@echo 'Update system'
 	@if which dnf > /dev/null 2>&1; then sudo dnf upgrade --refresh; fi
 	@if which apt > /dev/null 2>&1; then sudo apt update && sudo apt upgrade --autoremove --purge; fi
