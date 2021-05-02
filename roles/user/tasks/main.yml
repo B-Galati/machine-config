@@ -36,7 +36,3 @@
     mode: 0644
     content: |
       PATH="$PATH:/snap/bin"
-
-      # https://remysharp.com/2018/08/23/cli-improved
-      # add support for ctrl+o to open selected file in VS Code
-      export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"

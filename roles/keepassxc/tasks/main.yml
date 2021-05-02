@@ -1,10 +1,6 @@
 ---
-- name: Install keepassxc repository
-  become: true
-  apt_repository:
-    repo: ppa:phoerious/keepassxc
+- import_tasks: setup-RedHat.yaml
+  when: ansible_os_family == 'RedHat'
 
-- name: Install keepassxc
-  become: true
-  apt:
-    name: [keepassxc]
+- import_tasks: setup-Debian.yaml
+  when: ansible_os_family == 'Debian'

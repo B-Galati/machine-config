@@ -73,3 +73,7 @@
       - flameshot
       - jq
       - vlc
+      - fd-find # find like: https://github.com/sharkdp/fd
+      - bat # find like: https://github.com/sharkdp/bat
+      - hyperfine # benchmarking: https://github.com/sharkdp/hyperfine
+      - fzf # cli fuzzy search and more: https://github.com/junegunn/fzf

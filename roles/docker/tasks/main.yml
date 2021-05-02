@@ -1,23 +1,9 @@
 ---
-- name: Add Docker apt key.
-  become: true
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
-    state: present
+- import_tasks: setup-RedHat.yaml
+  when: ansible_os_family == 'RedHat'
 
-- name: Add Docker repository.
-  become: true
-  apt_repository:
-    repo: "{{ apt_repository }}"
-    state: present
-    update_cache: yes
-
-- name: install docker
-  become: true
-  apt:
-    name: "docker-ce"
-    force: yes
+- import_tasks: setup-Debian.yaml
+  when: ansible_os_family == 'Debian'
 
 - name: Ensure docker users are added to the docker group.
   become: true
@@ -41,24 +27,4 @@
     enabled: yes
     state: started
 
-- name: Check current docker-compose version.
-  become: true
-  command: docker-compose --version
-  register: docker_compose_current_version
-  changed_when: false
-  failed_when: false
-
-- block:
-    - name: Delete existing docker-compose version if it's different.
-      become: true
-      file:
-        path: "{{ docker_compose_path }}"
-        state: absent
-
-    - name: Install Docker Compose
-      become: true
-      get_url:
-        url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
-        dest: "{{ docker_compose_path }}"
-        mode: 0755
-  when: docker_compose_version not in docker_compose_current_version.stdout | default('')
+- import_tasks: docker-compose.yaml

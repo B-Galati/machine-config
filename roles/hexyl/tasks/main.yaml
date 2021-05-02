@@ -1,13 +1,22 @@
 ---
-- name: hexyl | Check hexyl version to know if an update is needed or not
-  command: '/usr/bin/hexyl --version'
+- name: Check hexyl version to know if an update is needed or not
+  command: /usr/local/bin/hexyl --version
   register: hexyl_installed_version
   changed_when: hexyl_version not in hexyl_installed_version.stdout | default('')
   failed_when: False
 
 - block:
-    - name: hexyl | Download and install
-      become: true
-      apt:
-        deb: https://github.com/sharkdp/hexyl/releases/download/v{{ hexyl_version }}/hexyl_{{ hexyl_version }}_amd64.deb
+    - name: Download
+      get_url:
+        url: https://github.com/sharkdp/hexyl/releases/download/v{{ hexyl_version }}/hexyl-v{{ hexyl_version }}-x86_64-unknown-linux-gnu.tar.gz
+        dest: /tmp/hexyl.tar.gz
+        force: yes
+
+    - name: Install
+      become: yes
+      unarchive:
+        src: /tmp/hexyl.tar.gz
+        dest: /usr/local/bin
+        remote_src: yes
+        extra_opts: [--strip=1, --wildcards, '*/hexyl']
   when: hexyl_version not in hexyl_installed_version.stdout | default('')

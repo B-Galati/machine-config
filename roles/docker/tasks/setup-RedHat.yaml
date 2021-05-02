@@ -1,0 +1,18 @@
+---
+- name: Enable docker repo
+  become: true
+  dnf:
+    enablerepo: https://download.docker.com/linux/fedora/docker-ce.repo
+
+- name: Install
+  become: true
+  dnf:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+
+

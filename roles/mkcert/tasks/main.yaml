@@ -7,11 +7,14 @@
 
 - block:
     - name: Download and install mkcert
+      become: true
       get_url:
         url: https://github.com/FiloSottile/mkcert/releases/download/{{ mkcert_version }}/mkcert-{{ mkcert_version }}-linux-amd64
         dest: /usr/local/bin/mkcert
         mode: 0755
         force: yes
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
 
     - name: Create local CA
       shell: /usr/local/bin/mkcert -install

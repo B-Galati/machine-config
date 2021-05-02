@@ -2,5 +2,5 @@
 - name: Install
   become: true
   dnf:
-    name: bat
+    name: [keepassxc]
     state: present
