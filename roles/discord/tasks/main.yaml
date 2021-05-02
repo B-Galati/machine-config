@@ -36,6 +36,8 @@
       Type=Application
       Categories=Network;InstantMessaging;
       Path=/usr/bin
+  register: discord_desktop_file
 
 - name: Update desktop files
   command: update-desktop-database ~/.local/share/applications -v
+  when: discord_desktop_file.changed
