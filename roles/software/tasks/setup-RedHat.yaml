@@ -43,3 +43,5 @@
       - flameshot
       - jq
       - vlc
+      - exa # ls like: https://github.com/ogham/exa
+      - ripgrep # grep like: https://github.com/BurntSushi/ripgrep
