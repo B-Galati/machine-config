@@ -20,6 +20,7 @@ role:
 update:
 	@echo 'Update repo'
 	@git pull
+	@ansible-playbook machine.yaml --vault-id vault.txt --verbose --tag user # This line allow to unlock sudo as well for the commands below
 	@echo 'Update system'
 	@if which dnf > /dev/null 2>&1; then sudo dnf upgrade --refresh; fi
 	@if which apt > /dev/null 2>&1; then sudo apt update && sudo apt upgrade --autoremove --purge; fi
