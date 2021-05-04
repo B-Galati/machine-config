@@ -26,6 +26,8 @@
       - tar
       - unzip
       - powerline
+      - tmux-powerline
+      - vim-powerline
       - tmux
       - openvpn
       - openssl
