@@ -1,0 +1,10 @@
+---
+- name: Install
+  become: true
+  dnf:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - peek
+      - ffmpeg

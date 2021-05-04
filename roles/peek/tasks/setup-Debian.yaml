@@ -1,0 +1,9 @@
+---
+- name: Install peek repository
+  become: true
+  apt_repository:
+    repo: ppa:peek-developers/stable
+
+- name: Install peek
+  apt:
+    name: [peek]
