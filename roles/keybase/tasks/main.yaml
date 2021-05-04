@@ -1,13 +1,6 @@
 ---
-- name: Check for existing keybase install
-  command: dpkg-query -W keybase
-  register: keybase_installed
-  failed_when: false
-  changed_when: false
+- import_tasks: setup-RedHat.yaml
+  when: ansible_os_family == 'RedHat'
 
-- block:
-    - name: Download and install
-      become: true
-      apt:
-        deb: https://prerelease.keybase.io/keybase_amd64.deb
-  when: keybase_installed.rc == 1
+- import_tasks: setup-Debian.yaml
+  when: ansible_os_family == 'Debian'
