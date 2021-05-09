@@ -1,0 +1,10 @@
+---
+- name: Check for existing install
+  stat:
+    path: /home/{{ ansible_user }}/.cargo
+  register: cargo_install
+  changed_when: False
+
+- name: Install
+  shell: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+  when: not cargo_install.stat.exists

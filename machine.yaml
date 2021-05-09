@@ -13,6 +13,7 @@
     - system
     - software
     - repositories
+    - rust
     - php
     - docker
     - nodejs
