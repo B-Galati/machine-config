@@ -1,0 +1,56 @@
+---
+- name: Install system deps to compile
+  become: true
+  dnf:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - cmake
+      - freetype-devel
+      - fontconfig-devel
+      - libxcb-devel
+      - g++
+
+- name: Check for existing installation
+  stat:
+    path: /home/{{ ansible_user}}/.cargo/bin/alacritty
+  register: alacritty_install
+  changed_when: False
+
+- name: Install
+  command: cargo install alacritty
+  when: not alacritty_install.stat.exists
+
+- name: Install logo
+  become: true
+  copy:
+    src: alacritty-term.svg
+    dest: /usr/share/pixmaps/Alacritty.svg
+
+- name: Install .desktop
+  copy:
+    dest: ~/.local/share/applications/alacritty.desktop
+    content: |
+      [Desktop Entry]
+      Type=Application
+      TryExec=/home/{{ ansible_user}}/.cargo/bin/alacritty
+      Exec=/home/{{ ansible_user}}/.cargo/bin/alacritty
+      Icon=Alacritty
+      Terminal=false
+      Categories=System;TerminalEmulator;
+
+      Name=Alacritty
+      GenericName=Terminal
+      Comment=A fast, cross-platform, OpenGL terminal emulator
+      StartupWMClass=Alacritty
+      Actions=New;
+
+      [Desktop Action New]
+      Name=New Terminal
+      Exec=/home/{{ ansible_user}}/.cargo/bin/alacritty
+  register: alacritty_desktop_file
+
+- name: Update desktop files
+  command: update-desktop-database ~/.local/share/applications -v
+  when: alacritty_desktop_file.changed
