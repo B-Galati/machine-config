@@ -19,21 +19,23 @@ role:
 .PHONY: update
 update:
 	@echo 'Update repo'
-	@git pull
-	@ansible-playbook machine.yaml --vault-id vault.txt --verbose --tag user # This line allow to unlock sudo as well for the commands below
+	git pull
+	ansible-playbook machine.yaml --vault-id vault.txt --verbose --tag user # This line allow to unlock sudo as well for the commands below
 	@echo 'Update system'
-	@if which dnf > /dev/null 2>&1; then sudo dnf upgrade --refresh; fi
-	@if which apt > /dev/null 2>&1; then sudo apt update && sudo apt upgrade --autoremove --purge; fi
+	if which dnf > /dev/null 2>&1; then sudo dnf upgrade --refresh -y; fi
+	if which apt > /dev/null 2>&1; then sudo apt update -y && sudo apt upgrade -y --autoremove --purge; fi
 	@echo 'Clean up'
-	@if which dnf > /dev/null 2>&1; then sudo dnf autoremove; fi
-	@if which apt > /dev/null 2>&1; then sudo apt-get autoclean; fi
+	if which dnf > /dev/null 2>&1; then sudo dnf autoremove -y; fi
+	if which apt > /dev/null 2>&1; then sudo apt-get autoclean -y; fi
+	@echo 'Update rust and local binaries'
+	rustup update
 	@echo 'Update python deps'
-	@pip install --upgrade --user pip awscli s-tui psutil powerline-mem-segment youtube-dl
+	pip install --upgrade --user pip awscli s-tui psutil powerline-mem-segment youtube-dl
 	@echo 'Update node deps'
-	@npm -g update
+	npm -g update
 	@echo 'Update dotfiles'
-	@cd ~/dotfiles && git pull && git submodule update --remote --rebase
-	@~/dotfiles/bootstrap.sh --force
+	cd ~/dotfiles && git pull && git submodule update --remote --rebase
+	~/dotfiles/bootstrap.sh --force
 
 .PHONY: requirements
 requirements: requirements.lock
