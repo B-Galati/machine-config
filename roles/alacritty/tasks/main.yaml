@@ -1,5 +1,5 @@
 ---
-- name: Install system deps to compile
+- name: Install system deps to compile (Fedora)
   become: true
   dnf:
     name: "{{ packages }}"
@@ -11,6 +11,23 @@
       - fontconfig-devel
       - libxcb-devel
       - g++
+  when: ansible_os_family == 'RedHat'
+
+- name: Install system deps to compile (Ubuntu)
+  become: true
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - cmake
+      - pkg-config
+      - libfreetype6-dev
+      - libfontconfig1-dev
+      - libxcb-xfixes0-dev
+      - python3
+  when: ansible_os_family == 'Debian'
+
 
 - name: Check for existing installation
   stat:

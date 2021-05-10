@@ -2,7 +2,6 @@
 - name: Install packages
   become: true
   apt:
-    cache_valid_time: 3600
     name: "{{ packages }}"
     state: present
   vars:

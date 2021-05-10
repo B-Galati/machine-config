@@ -7,4 +7,16 @@
 
 - name: Add user {{ ansible_user }}
   become: true
-  user: name={{ ansible_user }} groups=adm,wheel,users append=yes createhome=no
+  user: name={{ ansible_user }} groups=adm,users append=yes createhome=no
+
+- name: Add user {{ ansible_user }}
+  become: true
+  user: name={{ ansible_user }} groups=adm,users append=yes createhome=no
+
+- name: Add group wheel to user {{ ansible_user }}
+  become: true
+  user:
+    name: '{{ ansible_user }}'
+    groups: wheel
+    append: yes
+  when: ansible_os_family == 'RedHat'
