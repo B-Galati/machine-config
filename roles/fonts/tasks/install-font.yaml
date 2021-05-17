@@ -1,0 +1,12 @@
+---
+- name: Copy font to src
+  become: true
+  copy:
+    src: "{{ path }}"
+    dest: /usr/share/fonts/
+  register: font_install
+
+- name: Build font information caches
+  shell: fc-cache -v
+  when: font_install.changed
+

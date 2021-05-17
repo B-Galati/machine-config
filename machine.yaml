@@ -11,6 +11,7 @@
   roles:
     - user
     - system
+    - fonts
     - software
     - repositories
     - rust

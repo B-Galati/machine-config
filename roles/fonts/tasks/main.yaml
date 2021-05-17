@@ -1,0 +1,9 @@
+---
+- include_tasks: install-font.yaml
+  vars:
+    path: "{{ item }}"
+  with_items:
+    - MesloLGS NF Bold.ttf
+    - MesloLGS NF Bold Italic.ttf
+    - MesloLGS NF Italic.ttf
+    - MesloLGS NF Regular.ttf
