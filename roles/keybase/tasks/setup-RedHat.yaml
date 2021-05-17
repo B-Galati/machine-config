@@ -1,4 +1,10 @@
 ---
+- name: Add GPG key
+  become: true
+  rpm_key:
+    key: https://keybase.io/docs/server_security/code_signing_key.asc
+    state: present
+
 - name: Check if already installed
   become: true
   dnf:
@@ -7,11 +13,9 @@
   register: keybase_installed
   failed_when: false
 
-# TODO lazy install
 - name: Install
   become: true
   dnf:
     name: https://prerelease.keybase.io/keybase_amd64.rpm
     state: present
-    disable_gpg_check: true
   when: keybase_installed.rc == 1
