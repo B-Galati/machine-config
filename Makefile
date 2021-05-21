@@ -27,6 +27,10 @@ update:
 	@echo 'Clean up'
 	if which dnf > /dev/null 2>&1; then sudo dnf autoremove -y; fi
 	if which apt > /dev/null 2>&1; then sudo apt-get autoclean -y; fi
+	@echo 'Update Symfony CLI'
+	symfony self:update -y
+	@echo 'Update composer'
+	composer selfupdate -n
 	@echo 'Update rust and local binaries'
 	rustup update
 	@echo 'Update python deps'
