@@ -1,0 +1,75 @@
+---
+- name: Import remi GPG key
+  become: true
+  rpm_key:
+    key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2020
+    state: present
+
+- name: Install remi repository
+  become: true
+  dnf:
+    name: https://rpms.remirepo.net/fedora/remi-release-{{ ansible_distribution_major_version }}.rpm
+    state: present
+
+- name: Enable remi repository
+  become: true
+  dnf:
+    enablerepo: remi
+
+- name: Install PHP 8.0 packages
+  become: true
+  dnf:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - php80
+      - php80-php-opcache
+      - php80-php-intl
+      - php80-php-pgsql
+      - php80-php-pecl-amqp
+      - php80-php-pecl-redis5
+      - php80-php-pecl-xdebug3
+      - php80-php-pecl-zip
+      - php80-php-fpm
+
+- name: Install PHP 7.4 packages
+  become: true
+  dnf:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - php74
+      - php74-php-opcache
+      - php74-php-intl
+      - php74-php-pgsql
+      - php74-php-pecl-amqp
+      - php74-php-pecl-redis5
+      - php74-php-pecl-xdebug3
+      - php74-php-pecl-zip
+      - php74-php-fpm
+
+- name: Correct PHP version selected
+  become: true
+  alternatives:
+    name: php
+    path: /usr/bin/php74
+    link: /usr/bin/php
+
+- name: Correct PHP version selected
+  become: true
+  alternatives:
+    name: php
+    path: /usr/bin/php80
+    link: /usr/bin/php
+    priority: 100
+
+- name: Write /etc/opt/remi/{{ item }}/php.d/99-custom.ini file
+  become: true
+  copy:
+    src: php.ini
+    dest: /etc/opt/remi/{{ item }}/php.d/99-custom.ini
+  with_items:
+    - php74
+    - php80

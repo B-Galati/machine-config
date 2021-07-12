@@ -1,0 +1,47 @@
+---
+- name: Set php_executable variable to a default if not defined.
+  set_fact:
+    php_executable: php
+  when: php_executable is not defined
+
+- name: Check if Composer is installed.
+  stat:
+    path: /usr/local/bin/composer
+  register: composer_bin
+
+- block:
+    - name: Get Composer installer signature.
+      uri:
+        url: https://composer.github.io/installer.sig
+        return_content: true
+      register: composer_installer_signature
+
+    - name: Download Composer installer.
+      get_url:
+        url: https://getcomposer.org/installer
+        dest: /tmp/composer-installer.php
+        mode: 0755
+        checksum: 'sha384:{{ composer_installer_signature.content }}'
+
+    - name: Run Composer installer.
+      command:
+        cmd: '{{ php_executable }} composer-installer.php'
+        chdir: /tmp
+
+    - name: Move Composer into globally-accessible location.
+      become: true
+      copy:
+        remote_src: true
+        src: /tmp/composer.phar
+        dest: /usr/local/bin/composer
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
+        mode: 0755
+  when: not composer_bin.stat.exists
+
+- name: Ensure /etc/profile.d/composer.sh file is present
+  become: true
+  copy:
+      content: export PATH="${PATH}:~/.composer/vendor/bin"
+      dest: /etc/profile.d/composer.sh
+      mode: 0644

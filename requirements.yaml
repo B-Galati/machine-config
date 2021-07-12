@@ -2,9 +2,6 @@
 
 - src: jaredhocutt.jetbrains_toolbox
 
-- src: geerlingguy.composer
-  version: 1.7.6
-
 - src: jaredhocutt.dconf_settings
   version: v0.1.2
 
