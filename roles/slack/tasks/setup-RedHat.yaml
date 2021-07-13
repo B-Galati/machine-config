@@ -1,0 +1,39 @@
+---
+- name: Check if already installed
+  become: true
+  dnf:
+    name: slack
+    state: present
+  register: slack_installed
+  failed_when: false
+
+- block:
+    - name: Add GPG key
+      become: true
+      rpm_key:
+        key: https://slack.com/gpg/slack_pubkey_2019.gpg
+        state: present
+
+    # See https://github.com/jdoss/slack-repo
+    - name: Install slack-repo
+      become: true
+      copy:
+        dest: /etc/yum.repos.d/slack.repo
+        # See https://github.com/jdoss/slack-repo/blob/master/slack.repo
+        content: |
+          [slack]
+          name=Slack
+          baseurl=https://packagecloud.io/slacktechnologies/slack/fedora/21/$basearch
+          gpgcheck=1
+          enabled=1
+          gpgkey=https://slack.com/gpg/slack_pubkey_2019.gpg
+          sslverify=1
+          sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+          metadata_expire=300
+
+    - name: Install
+      become: true
+      dnf:
+        name: slack
+        state: present
+  when: slack_installed.rc == 1
