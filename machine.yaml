@@ -17,6 +17,7 @@
     - rust
     - alacritty
     - php
+    - phpstorm-url-handler
     - docker
     - nodejs
 #    - dbeaver
@@ -35,6 +36,5 @@
     - keybase
     - gitlab-runner
     - jaredhocutt.jetbrains_toolbox
-    - phpstorm-url-handler
     - firefox-dev
     - drawio

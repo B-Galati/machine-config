@@ -1,11 +1,28 @@
 ---
 # Source https://github.com/sanduhrs/phpstorm-url-handler
 - name: Install shell script
-  become: true
   copy:
     src: phpstorm-url-handler
-    dest: /usr/local/bin/phpstorm-url-handler
+    dest: ~/.local/bin/phpstorm-url-handler
 
-- name: Install desktop file
-  become: true
-  shell: 'desktop-file-install "{{ role_path}}/files/phpstorm-url-handler.desktop" && update-desktop-database'
+- name: Install .desktop
+  copy:
+    dest: ~/.local/share/applications/phpstorm-url-handler.desktop
+    content: |
+      [Desktop Entry]
+      Version=1.0
+      Type=Application
+      Name=PhpStorm URL Handler
+      Comment=Handle URL Scheme phpstorm://open?url=file://@file&line=@line and phpstorm://open?file=@file&line=@line
+      Icon=phpstorm
+      NoDisplay=true
+      Categories=TextEditor;Utility;
+      Exec=phpstorm-url-handler %u
+      Terminal=false
+      MimeType=x-scheme-handler/phpstorm;x-scheme-handler/pstorm;
+      X-Desktop-File-Install-Version=0.21
+  register: phpstorm_url_handler_desktop_file
+
+- name: Update desktop files
+  command: update-desktop-database ~/.local/share/applications -v
+  when: phpstorm_url_handler_desktop_file.changed
