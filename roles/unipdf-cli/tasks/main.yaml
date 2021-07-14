@@ -15,9 +15,12 @@
         checksum: "sha256:https://github.com/unidoc/unipdf-cli/releases/download/v{{ unipdf_cli_version }}/unipdf-cli-{{ unipdf_cli_version }}-checksums.txt"
 
     - name: Install
+      become: true
       unarchive:
         src: /tmp/unipdf-cli.tar.gz
         dest: /usr/local/bin
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
         extra_opts: # https://github.com/ansible/ansible/issues/27081
           - --strip=1
           - --wildcards

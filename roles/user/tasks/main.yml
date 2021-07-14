@@ -5,18 +5,10 @@
 - name: Set ZSH shell for {{ ansible_user }}
   user: name={{ ansible_user }} shell=/bin/zsh state=present
 
-- name: Add user {{ ansible_user }}
-  become: true
-  user: name={{ ansible_user }} groups=adm,users append=yes createhome=no
-
-- name: Add user {{ ansible_user }}
-  become: true
-  user: name={{ ansible_user }} groups=adm,users append=yes createhome=no
-
-- name: Add group wheel to user {{ ansible_user }}
+- name: Add some groups to user {{ ansible_user }}
   become: true
   user:
     name: '{{ ansible_user }}'
-    groups: wheel
+    groups: wheel,adm,users
     append: yes
   when: ansible_os_family == 'RedHat'
