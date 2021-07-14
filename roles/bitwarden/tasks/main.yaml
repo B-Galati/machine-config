@@ -1,0 +1,48 @@
+---
+- name: Check for existing install
+  stat:
+    path: ~/AppImages/bitwarden.AppImage
+  register: bitwarden_install
+  changed_when: False
+
+- block:
+    - name: Create AppImages directory
+      file:
+        path: ~/AppImages/
+        state: directory
+        mode: 0755
+
+    - name: Install logo
+      become: true
+      copy:
+        src: bitwarden.png
+        dest: /usr/share/pixmaps/bitwarden.png
+
+    - name: Install
+      get_url:
+        url: https://vault.bitwarden.com/download/?app=desktop&platform=linux
+        dest: ~/AppImages/bitwarden.AppImage
+        mode: 0755
+  when: not bitwarden_install.stat.exists
+
+- name: Install .desktop
+  copy:
+    dest: ~/.local/share/applications/bitwarden.desktop
+    content: |
+      [Desktop Entry]
+      Name=Bitwarden
+      GenericName=Bitwarden
+      Comment=Password manager.
+      Exec=/home/{{ ansible_user }}/AppImages/bitwarden.AppImage
+      Icon=bitwarden
+      StartupNotify=false
+      StartupWMClass=bitwarden
+      Terminal=false
+      Type=Application
+      Categories=Utility;
+      Keywords=Bitwarden;Password manager;
+  register: bitwarden_desktop_file
+
+- name: Update desktop files
+  command: update-desktop-database ~/.local/share/applications -v
+  when: bitwarden_desktop_file.changed
