@@ -1,5 +1,5 @@
 ---
-- name: Install pip packages
+- name: Install
   pip:
     name: '{{ packages }}'
     state: latest

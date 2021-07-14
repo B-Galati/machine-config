@@ -3,6 +3,14 @@
   become: true
   shell: systemctl daemon-reload && sysctl --system
 
-- name: update grub
+- name: update grub Debian
   become: true
   shell: update-grub
+  when: ansible_os_family == 'Debian'
+  listen: update grub
+
+- name: update grub RedHat
+  become: true
+  shell: grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+  when: ansible_os_family == 'RedHat'
+  listen: update grub

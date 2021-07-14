@@ -22,6 +22,6 @@
     path: /etc/default/grub
     marker: "### {mark} machine-config ###"
     block: |
-      GRUB_TIMEOUT=10
+      GRUB_TIMEOUT=5
       GRUB_CMDLINE_LINUX=""
       GRUB_CMDLINE_LINUX_DEFAULT=""
