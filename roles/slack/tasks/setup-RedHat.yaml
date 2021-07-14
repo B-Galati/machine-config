@@ -15,7 +15,7 @@
         state: present
 
     # See https://github.com/jdoss/slack-repo
-    - name: Install slack-repo
+    - name: Install repo
       become: true
       copy:
         dest: /etc/yum.repos.d/slack.repo

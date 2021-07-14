@@ -1,0 +1,35 @@
+---
+- name: Check if already installed
+  become: true
+  dnf:
+    name: code
+    state: present
+  register: vscode_installed
+  failed_when: false
+
+- block:
+    - name: Add GPG key
+      become: true
+      rpm_key:
+        key: https://packages.microsoft.com/keys/microsoft.asc
+        state: present
+
+    # See https://code.visualstudio.com/docs/setup/linux
+    - name: Install repo
+      become: true
+      copy:
+        dest: /etc/yum.repos.d/vscode.repo
+        content: |
+          [code]
+          name=Visual Studio Code
+          baseurl=https://packages.microsoft.com/yumrepos/vscode
+          enabled=1
+          gpgcheck=1
+          gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+
+    - name: Install
+      become: true
+      dnf:
+        name: code
+        state: present
+  when: vscode_installed.rc == 1
