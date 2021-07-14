@@ -1,9 +1,3 @@
 ---
 
 - src: jaredhocutt.jetbrains_toolbox
-
-- src: jaredhocutt.dconf_settings
-  version: v0.1.2
-
-- src: jaredhocutt.gnome_extensions
-  version: v0.1.2
