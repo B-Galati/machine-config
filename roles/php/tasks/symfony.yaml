@@ -15,4 +15,4 @@
   copy:
     dest: /etc/profile.d/symfony.sh
     mode: 0644
-    content: export PATH="${PATH}:~/.symfony/bin"
+    content: export PATH="${PATH}:/home/{{ ansible_user }}/.symfony/bin"

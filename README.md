@@ -4,6 +4,7 @@
 # Requirements - Fedora
 sudo dnf install -y make git
 sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf group upgrade --with-optional Multimedia
 
 # Requirements - Ubuntu
 sudo apt install -y make git

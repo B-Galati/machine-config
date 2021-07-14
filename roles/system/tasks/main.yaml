@@ -1,4 +1,14 @@
 ---
+- name: Tweak dnf config
+  become: true
+  blockinfile:
+    path: /etc/dnf/dnf.conf
+    marker: "### {mark} machine-config ###"
+    block: |
+      fastestmirror=true
+      deltarpm=true
+  when: ansible_os_family == 'RedHat'
+
 - name: Write /etc/sysctl.d/local.conf file
   become: true
   notify: restart systemctl

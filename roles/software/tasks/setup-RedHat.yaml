@@ -34,6 +34,7 @@
       - resolvconf
       - ShellCheck
       - gnome-tweak-tool
+      - gnome-extensions-app
       - ca-certificates
       - curl
       - nautilus-image-converter
@@ -46,6 +47,7 @@
       - flameshot
       - jq
       - vlc
+      - sudo dnf group upgrade --with-optional Multimedia
       - exa # ls like: https://github.com/ogham/exa
       - ripgrep # grep like: https://github.com/BurntSushi/ripgrep
       - fd-find # find like: https://github.com/sharkdp/fd

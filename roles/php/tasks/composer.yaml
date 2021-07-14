@@ -42,6 +42,6 @@
 - name: Ensure /etc/profile.d/composer.sh file is present
   become: true
   copy:
-      content: export PATH="${PATH}:~/.composer/vendor/bin"
+      content: export PATH="${PATH}:/home/{{ ansible_user }}/.composer/vendor/bin"
       dest: /etc/profile.d/composer.sh
       mode: 0644
