@@ -38,6 +38,7 @@
       - curl
       - nautilus-image-converter
       - postfix
+      - flatpak
       - ncdu
       - gnupg2
       - google-roboto-fonts
@@ -51,3 +52,10 @@
       - bat # find like: https://github.com/sharkdp/bat
       - hyperfine # benchmarking: https://github.com/sharkdp/hyperfine
       - fzf # cli fuzzy search and more: https://github.com/junegunn/fzf
+
+- name: Add the flathub flatpak repository remote to the user installation
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+    method: user

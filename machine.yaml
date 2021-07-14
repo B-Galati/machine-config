@@ -20,7 +20,7 @@
     - phpstorm-url-handler
     - docker
     - nodejs
-#    - dbeaver
+    #- dbeaver
     - keepassxc
     - peek
     - vscode

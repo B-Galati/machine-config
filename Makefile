@@ -27,6 +27,8 @@ update:
 	@echo 'Clean up'
 	if which dnf > /dev/null 2>&1; then sudo dnf autoremove -y; fi
 	if which apt > /dev/null 2>&1; then sudo apt-get autoclean -y; fi
+	@echo 'Update flatpak packages'
+	if which flatpak > /dev/null 2>&1; then flatpak update; fi
 	@echo 'Update Symfony CLI'
 	symfony self:update -y
 	@echo 'Update composer'
@@ -45,6 +47,7 @@ update:
 requirements: requirements.lock
 requirements.lock: requirements.yaml
 	ansible-galaxy install --role-file requirements.yaml --roles-path ./roles --force
+	ansible-galaxy collection install community.general
 	@touch $@
 
 vault.yaml: vault.txt
