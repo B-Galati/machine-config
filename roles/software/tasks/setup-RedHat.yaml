@@ -15,6 +15,7 @@
       - nmon
       - hdparm
       - dnf-plugin-system-upgrade
+      - rpmconf
       - smartmontools
       - sysbench
       - iotop
