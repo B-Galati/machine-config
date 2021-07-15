@@ -34,7 +34,6 @@ make role ROLE=<role_name>
     - [Applications Menu](https://extensions.gnome.org/extension/6/applications-menu/)
     - [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
     - [Launch new instance](https://extensions.gnome.org/extension/600/launch-new-instance/)
-    - [Places Status Indicator](https://extensions.gnome.org/extension/8/places-status-indicator/)
     - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
 
 # References
