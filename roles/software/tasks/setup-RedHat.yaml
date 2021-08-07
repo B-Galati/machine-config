@@ -57,6 +57,15 @@
       - hyperfine # benchmarking: https://github.com/sharkdp/hyperfine
       - fzf # cli fuzzy search and more: https://github.com/junegunn/fzf
 
+# Make sure postfix is enabled to
+# Check Mail states with `mailq`
+- name: Ensure postfix is running
+  become: true
+  service:
+    name: postfix
+    enabled: yes
+    state: started
+
 - name: Add the flathub flatpak repository remote to the user installation
   community.general.flatpak_remote:
     name: flathub
