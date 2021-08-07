@@ -8,8 +8,7 @@
 - block:
     - name: Download croncape
       get_url:
-        url: https://github.com/symfonycorp/croncape/releases/download/{{ croncape_version }}/croncape_linux_amd64.tar.gz
-        checksum: 'sha256:{{ croncape_archive_checksum }}'
+        url: https://github.com/symfonycorp/croncape/releases/download/v{{ croncape_version }}/croncape_{{ croncape_version }}_linux_amd64.tar.gz
         dest: /tmp/croncape_linux_amd64.tar.gz
         force: yes
 
@@ -17,6 +16,7 @@
       become: yes
       unarchive:
         src: /tmp/croncape_linux_amd64.tar.gz
-        dest: '/usr/local/bin'
+        dest: /usr/local/bin
         remote_src: yes
+        extra_opts: [--wildcards, croncape]
   when: croncape_version not in croncape_installed_version.stdout | default('')
