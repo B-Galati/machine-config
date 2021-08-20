@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 .PHONY: default
 default:
 	@echo 'You must specify a target'

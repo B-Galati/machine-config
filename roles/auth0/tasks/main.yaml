@@ -1,0 +1,33 @@
+---
+- name: Check for existing auth0-cli install
+  command: /usr/local/bin/auth0 --version
+  register: auth0_cli_installed_version
+  changed_when: auth0_cli_version not in auth0_cli_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download
+      get_url:
+        url: https://github.com/auth0/auth0-cli/releases/download/v{{ auth0_cli_version }}/auth0-cli_{{ auth0_cli_version }}_Linux_x86_64.tar.gz
+        dest: /tmp/auth0-cli.tar.gz
+        mode: 0755
+        force: yes
+        checksum: "sha256:https://github.com/auth0/auth0-cli/releases/download/v{{ auth0_cli_version }}/checksums.txt"
+
+    - name: Install
+      become: true
+      unarchive:
+        src: /tmp/auth0-cli.tar.gz
+        dest: /usr/local/bin
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
+        extra_opts: [--wildcards, auth0]
+        remote_src: yes
+
+    - name: Check
+      command: /usr/local/bin/auth0 --version
+  when: auth0_cli_version not in auth0_cli_installed_version.stdout | default('')
+
+
+
+
