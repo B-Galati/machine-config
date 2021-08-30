@@ -41,3 +41,4 @@
     - bitwarden
     - pulumi
     - auth0
+    - k6
