@@ -38,7 +38,7 @@ update:
 	@echo 'Update rust and local binaries'
 	rustup update
 	@echo 'Update python deps'
-	pip install --upgrade --user pip awscli s-tui psutil powerline-mem-segment youtube-dl
+	pip install --upgrade --user pip awscli s-tui psutil powerline-mem-segment youtube-dl yubikey-manager
 	@echo 'Update node deps'
 	npm -g update
 	@echo 'Update dotfiles'

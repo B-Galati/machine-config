@@ -4,3 +4,9 @@
 
 - import_tasks: setup-Debian.yaml
   when: ansible_os_family == 'Debian'
+
+- name: Install ykman
+  pip:
+    name: yubikey-manager
+    state: present
+    extra_args: --user

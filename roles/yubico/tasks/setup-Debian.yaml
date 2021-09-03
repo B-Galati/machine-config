@@ -4,8 +4,9 @@
   apt_repository:
     repo: ppa:yubico/stable
 
-- name: Install Yubicp
+- name: Install Yubico
   apt:
     name:
       - libpam-u2f
       - yubioath-desktop
+      - yubikey-manager
