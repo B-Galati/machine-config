@@ -35,6 +35,7 @@ make role ROLE=<role_name>
     - [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
     - [Launch new instance](https://extensions.gnome.org/extension/600/launch-new-instance/)
     - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
+- Add entry `tmpfs /tmp tmpfs defaults,size=1g 0 0` to `/etc/fstab`
 
 # References
 
