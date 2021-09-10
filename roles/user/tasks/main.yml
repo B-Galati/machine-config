@@ -9,6 +9,6 @@
   become: true
   user:
     name: '{{ ansible_user }}'
-    groups: wheel,adm,users
+    groups: wheel,adm,users,mail
     append: yes
   when: ansible_os_family == 'RedHat'
