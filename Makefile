@@ -35,7 +35,7 @@ update:
 	symfony self:update -y
 	@echo 'Update composer'
 	composer selfupdate -n
-	@echo 'Update rust and local binaries'
+	@echo 'Update rust and local binaries (toolchains)'
 	rustup update
 	@echo 'Update python deps'
 	pip install --upgrade --user pip awscli s-tui psutil powerline-mem-segment youtube-dl yubikey-manager

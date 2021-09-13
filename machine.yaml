@@ -42,3 +42,4 @@
     - pulumi
     - auth0
     - k6
+    - grex # It generates regular expressions from examples
