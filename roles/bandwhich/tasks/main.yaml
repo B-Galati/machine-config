@@ -1,0 +1,17 @@
+---
+- name: Check for existing installation
+  stat:
+    path: /home/{{ ansible_user}}/.cargo/bin/bandwhich
+  register: bandwhich_install
+  changed_when: False
+
+- name: Install
+  command: cargo install bandwhich
+  when: not bandwhich_install.stat.exists
+
+- name: Set capabilities
+  become: true
+  capabilities:
+    path: /home/{{ ansible_user}}/.cargo/bin/bandwhich
+    capability: cap_sys_ptrace,cap_dac_read_search,cap_net_raw,cap_net_admin+ep
+    state: present
