@@ -10,7 +10,7 @@
     set -x
 
     # Reset shortcut for screenshot
-    gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot ''
+    gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot []
     gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
 
     # Use flameshot for screenshot and bind shortcut see https://askubuntu.com/questions/1036473/ubuntu-18-how-to-change-screenshot-application-to-flameshot
