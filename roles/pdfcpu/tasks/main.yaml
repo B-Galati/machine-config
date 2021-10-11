@@ -1,0 +1,32 @@
+---
+- name: Check for existing pdfcpu install
+  command: /usr/local/bin/pdfcpu version
+  register: pdfcpu_cli_installed_version
+  changed_when: pdfcpu_version not in pdfcpu_cli_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download
+      get_url:
+        url: https://github.com/pdfcpu/pdfcpu/releases/download/v{{ pdfcpu_version }}/pdfcpu_{{ pdfcpu_version }}_Linux_x86_64.tar.xz
+        dest: /tmp/pdfcpu.tar.gz
+        mode: 0755
+        force: yes
+        checksum: "sha256:https://github.com/pdfcpu/pdfcpu/releases/download/v{{ pdfcpu_version }}/checksums.txt"
+
+    - name: Install
+      become: true
+      unarchive:
+        src: /tmp/pdfcpu.tar.gz
+        dest: /usr/local/bin
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
+        extra_opts: # https://github.com/ansible/ansible/issues/27081
+          - --strip=1
+          - --wildcards
+          - '*/pdfcpu'
+        remote_src: yes
+
+    - name: Check
+      command: /usr/local/bin/pdfcpu version
+  when: pdfcpu_version not in pdfcpu_cli_installed_version.stdout | default('')

@@ -27,6 +27,7 @@
     - yubico
     - spotify
     - unipdf-cli
+    - pdfcpu
     - stellar
     - slack
     - mkcert
