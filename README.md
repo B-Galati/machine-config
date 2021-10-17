@@ -36,6 +36,18 @@ make role ROLE=<role_name>
     - [Launch new instance](https://extensions.gnome.org/extension/600/launch-new-instance/)
     - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
 - Add entry `tmpfs /tmp tmpfs defaults,size=1g 0 0` to `/etc/fstab`
+- L2TP https://github.com/nm-l2tp/network-manager-l2tp/wiki/Prebuilt-Packages#ubuntu
+- Configure CPU Governors (Intégrer dans Gnome 40+ dans la partie power)
+  - [ArchLinux Wiki - CPU frequency scaling](https://wiki.archlinux.org/title/CPU_frequency_scaling)
+  - [Doc Ubuntu Wiki fr](https://doc.ubuntu-fr.org/cpu-frequtils)
+  ```bash
+  for i in {0..7}; do sudo cpufreq-set -g performance -c $i; done
+  cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+  sudo vi /etc/default/cpufrequtils # to change default governor
+  GOVERNOR="performance"
+  ```
+- Configurer TLP pour optimiser la durée de vie de la batterie
+- [Laptop mode pour optimiser la conso](https://doc.ubuntu-fr.org/laptop-mode-tools)
 
 # References
 
