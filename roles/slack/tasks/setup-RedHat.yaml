@@ -11,7 +11,7 @@
     - name: Add GPG key
       become: true
       rpm_key:
-        key: https://slack.com/gpg/slack_pubkey_2019.gpg
+        key: https://slack.com/gpg/slack_pubkey_20210901.gpg
         state: present
 
     # See https://github.com/jdoss/slack-repo
@@ -26,7 +26,7 @@
           baseurl=https://packagecloud.io/slacktechnologies/slack/fedora/21/$basearch
           gpgcheck=1
           enabled=1
-          gpgkey=https://slack.com/gpg/slack_pubkey_2019.gpg
+          gpgkey=https://slack.com/gpg/slack_pubkey_20210901.gpg
           sslverify=1
           sslcacert=/etc/pki/tls/certs/ca-bundle.crt
           metadata_expire=300
