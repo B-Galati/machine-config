@@ -16,6 +16,23 @@
   dnf:
     enablerepo: remi
 
+- name: Install PHP 8.1 packages
+  become: true
+  dnf:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - php81
+      - php81-php-opcache
+      - php81-php-intl
+      - php81-php-pgsql
+      - php81-php-pecl-amqp
+      - php81-php-pecl-redis5
+      - php81-php-pecl-xdebug3
+      - php81-php-pecl-zip
+      - php81-php-fpm
+
 - name: Install PHP 8.0 packages
   become: true
   dnf:
@@ -63,6 +80,13 @@
     name: php
     path: /usr/bin/php80
     link: /usr/bin/php
+
+- name: Correct PHP version selected
+  become: true
+  alternatives:
+    name: php
+    path: /usr/bin/php81
+    link: /usr/bin/php
     priority: 100
 
 - name: Write /etc/opt/remi/{{ item }}/php.d/99-custom.ini file
@@ -73,3 +97,4 @@
   with_items:
     - php74
     - php80
+    - php81
