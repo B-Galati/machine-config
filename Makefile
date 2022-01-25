@@ -41,6 +41,8 @@ update:
 	pip install --upgrade --user pip awscli s-tui psutil powerline-mem-segment youtube-dl yubikey-manager
 	@echo 'Update node deps'
 	npm -g update
+	@echo 'Update OMZ'
+	omz update
 	@echo 'Update dotfiles'
 	cd ~/dotfiles && git pull && git submodule update --remote --rebase
 	~/dotfiles/bootstrap.sh --force
