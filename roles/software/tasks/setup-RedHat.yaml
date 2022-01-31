@@ -43,6 +43,11 @@
       - nautilus-image-converter
       - postfix
       - flatpak
+      - python3-pip
+      - pcsc-lite # dep for yubikey-manager
+      - pcsc-lite-devel # dep for yubikey-manager
+      - pcsc-lite-libs # dep for yubikey-manager
+      - python3-devel # dep for yubikey-manager
       - ncdu
       - gnupg2
       - google-roboto-fonts
