@@ -42,7 +42,7 @@ update:
 	@echo 'Update node deps'
 	npm -g update
 	@echo 'Update OMZ'
-	omz update
+	zsh -c 'source ~/.zshrc && omz update'
 	@echo 'Update dotfiles'
 	cd ~/dotfiles && git pull && git submodule update --remote --rebase
 	~/dotfiles/bootstrap.sh --force
