@@ -30,7 +30,7 @@ update:
 	if which dnf > /dev/null 2>&1; then sudo dnf autoremove -y; fi
 	if which apt > /dev/null 2>&1; then sudo apt-get autoclean -y; fi
 	@echo 'Update flatpak packages'
-	if which flatpak > /dev/null 2>&1; then flatpak update; fi
+	if which flatpak > /dev/null 2>&1; then flatpak update -y; fi
 	@echo 'Update Symfony CLI'
 	symfony self:update -y
 	@echo 'Update composer'
