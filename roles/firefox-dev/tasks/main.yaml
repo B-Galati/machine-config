@@ -42,7 +42,7 @@
       Actions=ProfileManager;new-window;new-private-window;
       Keywords=Internet;WWW;Browser;Web;Explorer
       Keywords[fr]=Internet;WWW;Browser;Web;Explorer;Fureteur;Surfer;Navigateur
-      StartupWMClass=Firefox Developer Edition
+      StartupWMClass=firefox-aurora
 
       [Desktop Action ProfileManager]
       Name=Profile Manager
