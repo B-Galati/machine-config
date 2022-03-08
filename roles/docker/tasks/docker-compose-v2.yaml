@@ -1,0 +1,24 @@
+---
+- name: Create docker cli-plugins directory
+  become: true
+  file:
+    path: /usr/local/lib/docker/cli-plugins
+    state: directory
+
+- name: Check current docker compose version.
+  become: true
+  command: /usr/local/lib/docker/cli-plugins/docker-compose --version
+  register: docker_compose_current_version
+  changed_when: false
+  failed_when: false
+
+- block:
+    - name: Install Docker Compose
+      become: true
+      get_url:
+        url: https://github.com/docker/compose/releases/download/v{{ docker_compose_v2_version }}/docker-compose-linux-x86_64
+        checksum: "sha256:https://github.com/docker/compose/releases/download/v{{ docker_compose_v2_version }}/docker-compose-linux-x86_64.sha256"
+        dest: /usr/local/lib/docker/cli-plugins/docker-compose
+        mode: 0755
+        force: true
+  when: docker_compose_v2_version not in docker_compose_current_version.stdout | default('')
