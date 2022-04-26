@@ -1,18 +1,29 @@
 ---
-- name: Check for existing Symfony bin
+- name: Check for existing Symfony CLI install
   stat:
-    path: ~/.symfony/bin/symfony
-  register: symfony_install
+    path: /usr/local/bin/symfony
+  register: symfony_cli_install
   changed_when: False
 
 - block:
-    - name: Install Symfony CLI
-      shell: wget https://get.symfony.com/cli/installer -O - | bash
-  when: not symfony_install.stat.exists
+    - name: Download
+      get_url:
+        url: https://github.com/symfony-cli/symfony-cli/releases/download/v5.4.8/symfony-cli_linux_amd64.tar.gz
+        dest: /tmp/symfony.tar.gz
+        mode: 0755
+        force: yes
+        checksum: "sha256:https://github.com/symfony-cli/symfony-cli/releases/download/v5.4.8/checksums.txt"
 
-- name: Add symfony bin to PATH
-  become: true
-  copy:
-    dest: /etc/profile.d/symfony.sh
-    mode: 0644
-    content: export PATH="${PATH}:/home/{{ ansible_user }}/.symfony/bin"
+    - name: Install
+      become: true
+      unarchive:
+        src: /tmp/symfony.tar.gz
+        dest: /usr/local/bin
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
+        extra_opts: [--wildcards, symfony]
+        remote_src: yes
+
+    - name: Check
+      command: /usr/local/bin/symfony version
+  when: not symfony_cli_install.stat.exists
