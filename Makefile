@@ -53,6 +53,7 @@ update:
 	composer selfupdate -n
 	@$(call log,Update rust and local binaries (toolchains))
 	rustup update
+	cargo install bandwhich grex alacritty
 	@$(call log,Update python deps)
 	pip install --upgrade --user awscli s-tui psutil powerline-mem-segment youtube-dl yubikey-manager
 	@$(call log,Update node deps)

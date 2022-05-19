@@ -36,7 +36,7 @@
   changed_when: False
 
 - name: Install
-  command: cargo install alacritty
+  command: ~/.cargo/bin/cargo install alacritty
   when: not alacritty_install.stat.exists
 
 - name: Install logo

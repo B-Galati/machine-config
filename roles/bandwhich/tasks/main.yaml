@@ -6,7 +6,7 @@
   changed_when: False
 
 - name: Install
-  command: cargo install bandwhich
+  command: ~/.cargo/bin/cargo install bandwhich
   when: not bandwhich_install.stat.exists
 
 - name: Set capabilities

@@ -6,5 +6,5 @@
   changed_when: False
 
 - name: Install
-  command: cargo install grex
+  command: ~/.cargo/bin/cargo install grex
   when: not grex_install.stat.exists
