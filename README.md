@@ -1,20 +1,8 @@
 # Usage
 
 ```bash
-# Requirements - Fedora
-sudo dnf install -y make git
-sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-sudo dnf group upgrade --with-optional Multimedia
-
-# Requirements - Ubuntu
-sudo apt install -y make git
-
-# Clone the repository 
-git clone git@github.com:B-Galati/machine-config.git
-
 # To configure local machine
 make install
-make install-force # To re-install ansible dependencies
 
 # To update everything on the machine
 make update
@@ -31,6 +19,7 @@ make role ROLE=<role_name>
 - Consider HWE packages for Ubuntu: `linux-generic-hwe-18.04`, `xserver-xorg-hwe-18.04`
 - Install Gnome Extensions:
     - [AppIndicator and KStatusNotifierItem Support](https://extensions.gnome.org/extension/615/appindicator-support/)
+    - [Sound Input & Output Device Chooser](https://extensions.gnome.org/extension/906/sound-output-device-chooser/)
     - [Applications Menu](https://extensions.gnome.org/extension/6/applications-menu/)
     - [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
     - [Launch new instance](https://extensions.gnome.org/extension/600/launch-new-instance/)
@@ -49,6 +38,33 @@ make role ROLE=<role_name>
   ```
 - Configurer TLP pour optimiser la durée de vie de la batterie
 - [Laptop mode pour optimiser la conso](https://doc.ubuntu-fr.org/laptop-mode-tools)
+
+## Bépo and keyboard configuration
+
+[source](https://bepo.fr/wiki/Console_GNU/Linux#Configuration_avanc.C3.A9e)
+[Keyboard Wiki Debian](https://wiki.debian.org/fr/Keyboard)
+[ArchLinux Wiki](https://wiki.archlinux.org/index.php/Keyboard_configuration_in_Xorg)
+
+Switch keyboard manually
+
+```bash
+setxkbmap fr bepo
+```
+
+To re-configure the keyboard :
+
+```bash
+sudo dpkg-reconfigure keyboard-configuration
+```
+
+Update file `/etc/default/keyboard` :
+
+```
+XKBMODEL="tm2030USB-102"
+XKBLAYOUT="fr,fr"
+XKBVARIANT="bepo,"
+XKBOPTIONS="grp:alt_caps_toggle"
+```
 
 # References
 

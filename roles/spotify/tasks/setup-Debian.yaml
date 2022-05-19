@@ -2,15 +2,13 @@
 - name: Set gpg key
   become: true
   apt_key:
-    url: https://download.spotify.com/debian/pubkey.gpg
-    state: present
+    url: https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg
 
 - name: Add repository
   become: true
   apt_repository:
     repo: 'deb http://repository.spotify.com stable non-free'
     filename: spotify
-    state: present
 
 - name: Install
   become: true

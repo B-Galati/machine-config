@@ -1,0 +1,48 @@
+---
+- name: Check for existing install
+  stat:
+    path: ~/AppImages/stoplight-studio-linux-x86_64.AppImage
+  register: stoplightstudio_install
+  changed_when: False
+
+- block:
+    - name: Create AppImages directory
+      file:
+        path: ~/AppImages/
+        state: directory
+        mode: 0755
+
+    - name: Install logo
+      become: true
+      copy:
+        src: stoplight-studio.png
+        dest: /usr/share/pixmaps/stoplight-studio.png
+
+    - name: Install
+      get_url:
+        url: https://github.com/stoplightio/studio/releases/download/v2.8.0-stable.7492.git-68a3857/stoplight-studio-linux-x86_64.AppImage
+        dest: ~/AppImages/stoplight-studio-linux-x86_64.AppImage
+        mode: 0755
+  when: not stoplightstudio_install.stat.exists
+
+- name: Install .desktop
+  copy:
+    dest: ~/.local/share/applications/stoplight-studio.desktop
+    content: |
+      [Desktop Entry]
+      Name=Stoplight Studio
+      GenericName=Stoplight Studio
+      Comment=Stoplight Studio, OpenAPI editor.
+      Exec=/home/{{ ansible_user }}/AppImages/stoplight-studio-linux-x86_64.AppImage
+      Icon=stoplight-studio
+      StartupNotify=false
+      StartupWMClass=Stoplight Studio
+      Terminal=false
+      Type=Application
+      Categories=Development;
+      Keywords=Stoplight;OpenAPI;
+  register: stoplightstudio_desktop_file
+
+- name: Update desktop files
+  command: update-desktop-database ~/.local/share/applications -v
+  when: stoplightstudio_desktop_file.changed

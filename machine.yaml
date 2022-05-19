@@ -2,12 +2,20 @@
 - name: Main playbook to setup machine
   hosts: localhost
   gather_facts: yes
-  gather_subset: [min]
+  gather_subset: [ min ]
   vars:
     ansible_user: benoit
     jetbrains_toolbox_version: latest
   vars_files:
     - vault.yaml
+  pre_tasks:
+    - name: Debug info
+      debug:
+        msg: |
+          Distribution: {{ ansible_distribution }}
+          Distribution release: {{ ansible_distribution_release }}
+          Distribution version: {{ ansible_distribution_version }}
+          Distribution major version: {{ ansible_distribution_major_version }}
   roles:
     - user
     - system
@@ -22,7 +30,7 @@
     - nodejs
     #- dbeaver
     - keepassxc
-    - peek
+    #- peek
     - vscode
     - yubico
     - spotify
@@ -35,13 +43,14 @@
     - hexyl
     - discord
     - keybase
-    - gitlab-runner
+    #- gitlab-runner
     - jaredhocutt.jetbrains_toolbox
     - firefox-dev
-    - drawio
+    #- drawio
     - bitwarden
     - pulumi
     - auth0
     - k6
     - grex # It generates regular expressions from examples
     - bandwhich # Terminal bandwidth utilization tool
+    - stoplight-studio

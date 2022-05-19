@@ -1,9 +1,10 @@
+# Install doc: https://developers.yubico.com/yubioath-desktop/
 ---
 - import_tasks: setup-RedHat.yaml
   when: ansible_os_family == 'RedHat'
 
-#- import_tasks: setup-Debian.yaml
-#  when: ansible_os_family == 'Debian'
+- import_tasks: setup-Debian.yaml
+  when: ansible_os_family == 'Debian'
 
 - name: Install ykman
   pip:

@@ -40,7 +40,6 @@
     extra_args: --user
   vars:
     packages:
-      - pip
       - awscli
       - s-tui
       - psutil

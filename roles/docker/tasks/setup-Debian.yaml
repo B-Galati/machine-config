@@ -5,17 +5,31 @@
     url: https://download.docker.com/linux/ubuntu/gpg
     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     state: present
+  register: add_repository_key
+  ignore_errors: true
+
+- name: Add Docker apt key (alternative for older systems without SNI).
+  become: true
+  shell: >
+    curl -sSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  args:
+    warn: false
+  when: add_repository_key is failed
 
 - name: Add Docker repository.
   become: true
   apt_repository:
-    repo: "{{ apt_repository }}"
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release|lower }} stable"
     state: present
     update_cache: yes
 
 - name: install docker
   become: true
   apt:
-    name: "docker-ce"
-    force: yes
-
+    name: '{{ packages }}'
+  vars:
+    packages:
+      - docker-ce
+      - docker-ce-cli 
+      - containerd.io 
+      - docker-compose-plugin

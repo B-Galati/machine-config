@@ -3,9 +3,9 @@
   become: true
   apt:
     name: "{{ packages }}"
-    state: present
   vars:
     packages:
+      - apt-file
       - lnav
       - stress
       - meld
@@ -40,7 +40,7 @@
       - tzdata
       - locales
       - shellcheck
-      - gnome-tweak-tool
+      - gnome-tweaks
       - gnome-shell-extensions
       - menulibre
       - apt-transport-https
@@ -49,24 +49,16 @@
       - imagemagick
       - gthumb
       - nautilus-image-converter
-      - gir1.2-gtop-2.0
-      - gir1.2-networkmanager-1.0
-      - arc-theme
-      - python-pip
-      - ubuntu-make
       - keychain
       - postfix
       - mailutils
-      - python-jmespath
       - ncdu
       - pandoc
       - libnss3-tools
       - gnupg2
       - entr
       - gdebi
-      - chromium-browser
       - fonts-roboto
-      - insomnia
       - wondershaper
       - chrome-gnome-shell
       - flameshot

@@ -7,7 +7,7 @@
 
 - block:
     - name: Install
-      shell: curl -fsSL https://get.pulumi.com | sh
+      shell: curl -fsSL https://get.pulumi.com | sh -s -- --version=3.22.0
   when: not pulumi_install.stat.exists
 
 - name: Add bin to PATH

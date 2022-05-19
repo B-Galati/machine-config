@@ -3,6 +3,7 @@
   when: ansible_os_family == 'Debian'
 
 - name: Set ZSH shell for {{ ansible_user }}
+  become: true
   user: name={{ ansible_user }} shell=/bin/zsh state=present
 
 - name: Add some groups to user {{ ansible_user }}

@@ -1,12 +1,21 @@
 ---
-- name: Install Yubico repository
+- name: Install requirements
   become: true
-  apt_repository:
-    repo: ppa:yubico/stable
-
-- name: Install Yubico
   apt:
     name:
-      - libpam-u2f
-      - yubioath-desktop
-      - yubikey-manager
+      - swig
+      - libpcsclite1
+      - libpcsclite-dev
+      - pcscd
+      - pcsc-tools
+      - opensc
+      - opensc-pkcs11
+      - yubico-piv-tool
+
+# See: https://github.com/ansible/ansible/issues/22303
+- name: Ensure pcscd service is running
+  become: true
+  service:
+    name: pcscd
+    state: started
+    enabled: true
