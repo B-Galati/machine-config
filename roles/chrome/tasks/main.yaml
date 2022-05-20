@@ -1,0 +1,18 @@
+---
+- name: Add apt key repository
+  become: true
+  apt_key:
+    url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+    state: present
+
+- name: Add apt repository
+  become: true
+  apt_repository:
+    filename: google-chrome
+    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    state: present
+
+- name: Install
+  become: true
+  apt:
+    name: google-chrome-stable
