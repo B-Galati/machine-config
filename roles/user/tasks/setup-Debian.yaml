@@ -8,19 +8,12 @@
 
 - name: Install locales
   become: true
-  locale_gen: name={{ item }} state=present
+  locale_gen:
+    name: '{{ item }}'
+    state: present
   with_items:
     - en_US.UTF-8
     - fr_FR.UTF-8
-
-- name: Add ENV vars in /etc/profile.d/custom.sh
-  become: true
-  copy:
-    dest: /etc/profile.d/custom.sh
-    mode: 0644
-    content: |
-      PATH="$PATH:/snap/bin"
-  when: ansible_os_family == 'Debian'
 
 - name: Set LANG to en_US.UTF-8
   become: true

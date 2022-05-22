@@ -1,22 +1,22 @@
 # Usage
 
 ```bash
-# To configure local machine
+# Set up everything
 make install
 
-# To update everything on the machine
-make update
-
-# To install a particular role
+# Install a given role
 make role ROLE=<role_name>
+
+# Update everything on the machine
+make update
 ```
 
-# Things to do manually 
+# Ideas of some things to do manually 
 
-- Remove Ubuntu report popup `sudo apt-get remove --purge apport`
-- [Doc](http://richardbenjaminrush.com/keechallenge/) to set up keepass and U2F
-- [Doc](https://support.yubico.com/support/solutions/articles/15000011356-ubuntu-linux-login-guide-u2f) to configure U2F on ubuntu.
-- Consider HWE packages for Ubuntu: `linux-generic-hwe-18.04`, `xserver-xorg-hwe-18.04`
+- Configure TLP to optimize battery lifetime
+- Add entry `tmpfs /tmp tmpfs defaults,size=1g 0 0` to `/etc/fstab`
+- Consider HWE packages for Ubuntu
+- Install [docker compose switch](https://github.com/docker/compose-switch) if needed
 - Install Gnome Extensions:
     - [AppIndicator and KStatusNotifierItem Support](https://extensions.gnome.org/extension/615/appindicator-support/)
     - [Sound Input & Output Device Chooser](https://extensions.gnome.org/extension/906/sound-output-device-chooser/)
@@ -25,19 +25,6 @@ make role ROLE=<role_name>
     - [Launch new instance](https://extensions.gnome.org/extension/600/launch-new-instance/)
     - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
     - [Nothing to Say](https://extensions.gnome.org/extension/1113/nothing-to-say/)
-- Add entry `tmpfs /tmp tmpfs defaults,size=1g 0 0` to `/etc/fstab`
-- L2TP https://github.com/nm-l2tp/network-manager-l2tp/wiki/Prebuilt-Packages#ubuntu
-- Configure CPU Governors (Intégrer dans Gnome 40+ dans la partie power)
-  - [ArchLinux Wiki - CPU frequency scaling](https://wiki.archlinux.org/title/CPU_frequency_scaling)
-  - [Doc Ubuntu Wiki fr](https://doc.ubuntu-fr.org/cpu-frequtils)
-  ```bash
-  for i in {0..7}; do sudo cpufreq-set -g performance -c $i; done
-  cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
-  sudo vi /etc/default/cpufrequtils # to change default governor
-  GOVERNOR="performance"
-  ```
-- Configurer TLP pour optimiser la durée de vie de la batterie
-- [Laptop mode pour optimiser la conso](https://doc.ubuntu-fr.org/laptop-mode-tools)
 
 ## Bépo and keyboard configuration
 

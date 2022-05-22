@@ -1,0 +1,17 @@
+---
+- name: Clone dotfiles
+  git:
+    repo: git@github.com:B-Galati/dotfiles
+    dest: ~/dotfiles
+    update: false
+
+- name: Link dotfiles
+  shell: ~/dotfiles/bootstrap.sh --force
+
+- name: Clone docs
+  git:
+    repo: git@gitlab.com:B-Galati/docs.git
+    dest: ~/docs
+    update: false
+
+- import_tasks: oh-my-zsh.yaml

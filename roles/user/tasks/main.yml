@@ -6,10 +6,20 @@
   become: true
   user: name={{ ansible_user }} shell=/bin/zsh state=present
 
-- name: Add some groups to user {{ ansible_user }}
+- name: Config user {{ ansible_user }}
+  become: true
+  user:
+    name: '{{ ansible_user }}'
+    groups: adm
+    append: yes
+    createhome: no
+  when: ansible_os_family == 'Debian'
+
+- name: Config user {{ ansible_user }}
   become: true
   user:
     name: '{{ ansible_user }}'
     groups: wheel,adm,users,mail
     append: yes
+    createhome: no
   when: ansible_os_family == 'RedHat'

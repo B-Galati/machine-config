@@ -1,0 +1,21 @@
+---
+- name: Clone Z
+  git:
+    repo: git@github.com:rupa/z.git
+    dest: ~/z
+    update: false
+    depth: 1
+
+- name: Create man1 directory
+  become: true
+  file:
+    path: /usr/local/share/man/man1
+    state: directory
+    mode: 0755
+
+- name: Copy man page
+  become: true
+  copy:
+    src: ~/z/z.1
+    dest: /usr/local/share/man/man1/z.1
+  notify: update manual database

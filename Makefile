@@ -23,12 +23,14 @@ default:
 	@$(call log_error, You must specify a target)
 
 .PHONY: install
-install: install.lock vault.yaml requirements
+install: ~/.ssh/id_rsa install.lock vault.yaml requirements
 	@$(call log,Install system config)
 	ansible-playbook machine.yaml --vault-id vault.txt --verbose
-	@$(call log,Install dotfiles)
-	~/dotfiles/bootstrap.sh --force
-	@$(call log,Restart the computer to make sure everything works)
+	@$(call log,Restart the computer to make sure everything works as expected)
+
+~/.ssh/id_rsa:
+	@$(call log_error, SSH key must be installed before installation)
+	@exit 1
 
 .PHONY: role
 role:
@@ -58,10 +60,13 @@ update:
 	pip install --upgrade --user awscli s-tui psutil powerline-mem-segment youtube-dl yubikey-manager
 	@$(call log,Update node deps)
 	npm -g update
-	@$(call log,Update OMZ)
+	@$(call log,Update some repositories)
 	zsh -c 'source ~/.zshrc && omz update'
+	git -C ~/.oh-my-zsh/custom/themes/powerlevel10k pull
+	git -C ~/z pull
+	git -C ~/docs pull
 	@$(call log,Update dotfiles)
-	cd ~/dotfiles && git pull && git submodule update --remote --rebase
+	git -C ~/dotfiles pull
 	~/dotfiles/bootstrap.sh --force
 
 .PHONY: requirements

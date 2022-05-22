@@ -12,6 +12,7 @@
     - name: Debug info
       debug:
         msg: |
+          OS Family: {{ ansible_os_family }}
           Distribution: {{ ansible_distribution }}
           Distribution release: {{ ansible_distribution_release }}
           Distribution version: {{ ansible_distribution_version }}
@@ -20,8 +21,9 @@
     - user
     - system
     - fonts
+    - dotfiles
+    - z
     - software
-    - repositories
     - rust
     - alacritty
     - php

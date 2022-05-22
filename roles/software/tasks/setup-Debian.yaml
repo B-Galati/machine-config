@@ -2,9 +2,8 @@
 - name: Install packages
   become: true
   apt:
-    name: "{{ packages }}"
-  vars:
-    packages:
+    state: present
+    name:
       - apt-file
       - lnav
       - stress

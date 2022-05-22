@@ -2,10 +2,8 @@
 - name: Install packages
   become: true
   dnf:
-    name: "{{ packages }}"
     state: present
-  vars:
-    packages:
+    name:
       - lnav
       - stress
       - meld
