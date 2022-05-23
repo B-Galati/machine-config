@@ -10,7 +10,7 @@
   become: true
   user:
     name: '{{ ansible_user }}'
-    groups: adm
+    groups: adm,mail,users
     append: yes
     createhome: no
   when: ansible_os_family == 'Debian'
