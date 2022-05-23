@@ -36,4 +36,4 @@
       GRUB_CMDLINE_LINUX=""
       GRUB_CMDLINE_LINUX_DEFAULT=""
   when:
-    - ansible_os_family == 'RedHat' or ansible_os_family == 'RedHat'
+    - ansible_os_family == 'RedHat' or Distribution == 'Ubuntu'
