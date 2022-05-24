@@ -12,18 +12,18 @@
         state: directory
         mode: 0755
 
-    - name: Install logo
-      become: true
-      copy:
-        src: bitwarden.png
-        dest: /usr/share/pixmaps/bitwarden.png
-
     - name: Install
       get_url:
         url: https://vault.bitwarden.com/download/?app=desktop&platform=linux
         dest: ~/AppImages/bitwarden.AppImage
         mode: 0755
   when: not bitwarden_install.stat.exists
+
+- name: Install logo
+  become: true
+  copy:
+    src: bitwarden.png
+    dest: /usr/share/pixmaps/bitwarden.png
 
 - name: Install .desktop
   copy:
