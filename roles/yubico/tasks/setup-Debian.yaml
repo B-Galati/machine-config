@@ -11,6 +11,7 @@
       - opensc
       - opensc-pkcs11
       - yubico-piv-tool
+      - libpam-sss
 
 # See: https://github.com/ansible/ansible/issues/22303
 - name: Ensure pcscd service is running
