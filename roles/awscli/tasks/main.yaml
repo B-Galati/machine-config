@@ -27,6 +27,11 @@
     - name: Verify archive
       shell: gpg --verify /tmp/awscliv2.sig /tmp/awscliv2.zip
 
+    - name: remove aws-cli directory if exists
+      file:
+        path: /tmp/aws
+        state: absent
+
     - name: Extract archive
       unarchive:
         src:  /tmp/awscliv2.zip
@@ -42,3 +47,17 @@
     - name: Check
       command: /usr/local/bin/aws --version
   when: aws_cli_version not in aws_cli_installed_version.stdout | default('')
+
+# https://github.com/awslabs/amazon-ecr-credential-helper
+- name: install amazon-ecr-credential-helper
+  become: true
+  apt:
+    name: amazon-ecr-credential-helper
+
+- name: Configure docker to use ECR login
+  copy:
+    dest: ~/.docker/config.json
+    content: |
+      {
+          "credsStore": "ecr-login"
+      }
