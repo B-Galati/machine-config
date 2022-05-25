@@ -30,6 +30,7 @@
     - phpstorm-url-handler
     - docker
     - nodejs
+    - awscli
     #- dbeaver
     - keepassxc
     #- peek

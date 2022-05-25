@@ -1,0 +1,44 @@
+# see https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+---
+- name: Check for existing installation and version
+  command: /usr/local/bin/aws --version
+  register: aws_cli_installed_version
+  changed_when: aws_cli_version not in aws_cli_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Add GPG key
+      shell: gpg --import files/aws-public-key.txt
+      args:
+        chdir: '{{ role_path }}'
+
+    - name: Download archive signature
+      get_url:
+        url: 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64-{{ aws_cli_version }}.zip.sig'
+        dest: /tmp/awscliv2.sig
+        force: yes
+
+    - name: Download archive
+      get_url:
+        url: 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64-{{ aws_cli_version }}.zip'
+        dest: /tmp/awscliv2.zip
+        force: yes
+
+    - name: Verify archive
+      shell: gpg --verify /tmp/awscliv2.sig /tmp/awscliv2.zip
+
+    - name: Extract archive
+      unarchive:
+        src:  /tmp/awscliv2.zip
+        dest: /tmp
+        remote_src: yes
+
+    - name: Install
+      become: true
+      shell: ./aws/install --bin-dir /usr/local/bin --install-dir /opt/aws-cli --update
+      args:
+        chdir: /tmp
+
+    - name: Check
+      command: /usr/local/bin/aws --version
+  when: aws_cli_version not in aws_cli_installed_version.stdout | default('')

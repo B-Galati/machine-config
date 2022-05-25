@@ -40,7 +40,6 @@
     extra_args: --user
   vars:
     packages:
-      - awscli
       - s-tui
       - psutil
       - powerline-mem-segment

@@ -57,7 +57,7 @@ update:
 	rustup update
 	cargo install bandwhich grex alacritty
 	@$(call log,Update python deps)
-	pip install --upgrade --user awscli s-tui psutil powerline-mem-segment youtube-dl yubikey-manager
+	pip install --upgrade --user s-tui psutil powerline-mem-segment youtube-dl yubikey-manager
 	@$(call log,Update node deps)
 	npm -g update
 	@$(call log,Update some repositories)
