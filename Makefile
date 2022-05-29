@@ -18,6 +18,9 @@ define log_error
 	echo -e "[$(COLOR_ERROR)$$(date +"%T")$(COLOR_RESET)][$(COLOR_ERROR)$(@)$(COLOR_RESET)] $(COLOR_ERROR)$(1)$(COLOR_RESET)"
 endef
 
+# Make sure the path is up-to-date for the 1st time setup, otherwise ansible may not be found
+export PATH:=$(HOME)/.local/bin:$(PATH)
+
 .PHONY: default
 default:
 	@$(call log_error, You must specify a target)
@@ -57,7 +60,7 @@ update:
 	rustup update
 	cargo install bandwhich grex alacritty
 	@$(call log,Update python deps)
-	pip install --upgrade --user s-tui psutil powerline-mem-segment youtube-dl yubikey-manager
+	pip install --upgrade --user s-tui psutil powerline-mem-segment youtube-dl yubikey-manager jmespath
 	@$(call log,Update node deps)
 	npm -g update
 	@$(call log,Update some repositories)
@@ -90,7 +93,7 @@ install.lock:
 	@$(call log,1st time run; installing required tools)
 	@if which apt > /dev/null 2>&1; then \
          sudo apt update -y && \
-         sudo apt install git python-is-python3 python3-pip \
+         sudo apt install -y git python-is-python3 python3-pip \
     ; fi
 	@if which dnf > /dev/null 2>&1; then \
          sudo dnf install -y git && \
