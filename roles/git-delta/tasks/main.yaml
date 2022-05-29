@@ -1,0 +1,14 @@
+---
+# https://github.com/dandavison/delta
+- name: Check version to know if an update is needed or not
+  command: '/usr/bin/delta --version'
+  register: git_delta_installed_version
+  changed_when: git_delta_version not in git_delta_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download and install
+      become: true
+      apt:
+        deb: https://github.com/dandavison/delta/releases/download/{{ git_delta_version }}/git-delta_{{ git_delta_version }}_amd64.deb
+  when: git_delta_version not in git_delta_installed_version.stdout | default('')
