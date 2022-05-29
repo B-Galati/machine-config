@@ -1,25 +1,23 @@
 ---
-- name: Add Docker apt key.
+- name: Check for existing GPG key
   become: true
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
-    state: present
-  register: add_repository_key
-  ignore_errors: true
+  stat:
+    path: /etc/apt/keyrings/docker.gpg
+  register: docker_gpg
+  changed_when: False
 
-- name: Add Docker apt key (alternative for older systems without SNI).
+- name: Import GPG key
   become: true
-  shell: >
-    curl -sSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-  args:
-    warn: false
-  when: add_repository_key is failed
+  shell: |
+    mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  when: not docker_gpg.stat.exists
 
 - name: Add Docker repository.
   become: true
   apt_repository:
-    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release|lower }} stable"
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release|lower }} stable"
+    filename: docker
     state: present
     update_cache: yes
 
