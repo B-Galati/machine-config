@@ -1,0 +1,78 @@
+---
+# To find some settings:
+#  -  gsettings list-recursively | grep -i <KEYWORD>
+#  -  dconf dump / | grep -i <KEYWORD>
+#  -  dconf watch <KEY>
+- name: Apply gnome config for Pop!_OS
+  shell: |
+    set -x
+    
+    # Workspace
+    gsettings set org.gnome.mutter workspaces-only-on-primary true
+    
+    # Dock
+    gsettings set org.gnome.shell.extensions.dash-to-dock intellihide true
+    gsettings set org.gnome.shell.extensions.dash-to-dock intellihide-mode 'ALL_WINDOWS'
+    
+    # Tiling
+    gsettings set org.gnome.shell.extensions.pop-shell active-hint true
+    gsettings set org.gnome.shell.extensions.pop-shell gap-inner 'uint32 1'
+    gsettings set org.gnome.shell.extensions.pop-shell gap-outer 'uint32 1'
+    gsettings set org.gnome.shell.extensions.pop-shell hint-color-rgba 'rgba(251,184,108,0.797297)'
+    gsettings set org.gnome.shell.extensions.pop-shell tile-by-default true
+  when: ansible_distribution == 'Pop!_OS'
+
+- name: Apply gnome config
+  shell: |
+    set -x
+    
+    # Reset shortcut for screenshot
+    gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot []
+    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
+    gsettings set org.gnome.shell.keybindings show-screenshot-ui []
+    
+    # Use flameshot for screenshot and bind shortcut see https://askubuntu.com/questions/1036473/ubuntu-18-how-to-change-screenshot-application-to-flameshot
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'flameshot'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command '/usr/bin/flameshot gui'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding 'Print'
+    
+    # Set shortcut to mute mic
+    gsettings set org.gnome.settings-daemon.plugins.media-keys email-static []
+    dconf write /org/gnome/shell/extensions/nothing-to-say/keybinding-toggle-mute '["Pause", "Mail", "<Ctrl>Mail"]'
+    dconf write /org/gnome/shell/extensions/nothing-to-say/icon-visibility "'always'"
+    dconf write /org/gnome/shell/extensions/nothing-to-say/play-feedback-sounds true
+    dconf write /org/gnome/shell/extensions/nothing-to-say/show-osd true
+    #gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name 'Toggle mic'
+    #gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command 'amixer set Capture toggle'
+    #gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding 'Mail'
+    
+    # Set shortcut to switch windows
+    gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Alt>Tab']"
+    gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab']"
+    gsettings set org.gnome.desktop.wm.keybindings switch-applications "['<Super>Tab']"
+    gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "['<Shift><Super>Tab']"
+    
+    # General settings
+    gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
+    gsettings set org.gnome.desktop.privacy report-technical-problems false
+    gsettings set org.gnome.system.location enabled false
+    gsettings set org.gnome.desktop.interface clock-format '24h'
+    gsettings set org.gnome.system.locale region 'fr_FR.UTF-8'
+    gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'nothing'
+    gsettings set org.gnome.GWeather temperature-unit 'centigrade'
+    
+    # Numlock
+    gsettings set org.gnome.desktop.peripherals.keyboard numlock-state true
+    gsettings set org.gnome.desktop.peripherals.keyboard remember-numlock-state true
+    
+    # Lock behaviors
+    gsettings set org.gnome.desktop.session idle-delay 'uint32 300'
+    gsettings set org.gnome.desktop.screensaver lock-delay 'uint32 0'
+    gsettings set org.gnome.desktop.screensaver lock-enabled false
+    
+    # Night mode display
+    gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
+    gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-automatic false
+    gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-from 0.0
+    gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-to 23.983333333333334
+    gsettings set org.gnome.settings-daemon.plugins.color night-light-temperature 'uint32 3200'  

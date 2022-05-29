@@ -45,6 +45,7 @@
       - apt-transport-https
       - ca-certificates
       - curl
+      - gir1.2-gst-plugins-base-1.0 # gstreamer for nothing-to-say plugin
       - imagemagick
       - gthumb
       - nautilus-image-converter

@@ -17,14 +17,13 @@ make update
 - Add entry `tmpfs /tmp tmpfs defaults,size=1g 0 0` to `/etc/fstab`
 - Consider HWE packages for Ubuntu
 - Install [docker compose switch](https://github.com/docker/compose-switch) if needed
-- Install Gnome Extensions:
-    - [AppIndicator and KStatusNotifierItem Support](https://extensions.gnome.org/extension/615/appindicator-support/)
+- Install (or enable) Gnome Extensions:
+    - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
+    - [Nothing to Say](https://extensions.gnome.org/extension/1113/nothing-to-say/)
     - [Sound Input & Output Device Chooser](https://extensions.gnome.org/extension/906/sound-output-device-chooser/)
     - [Applications Menu](https://extensions.gnome.org/extension/6/applications-menu/)
     - [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
     - [Launch new instance](https://extensions.gnome.org/extension/600/launch-new-instance/)
-    - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
-    - [Nothing to Say](https://extensions.gnome.org/extension/1113/nothing-to-say/)
 
 ## Bépo and keyboard configuration
 

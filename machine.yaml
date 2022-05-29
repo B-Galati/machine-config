@@ -20,6 +20,7 @@
   roles:
     - user
     - system
+    - gnome-settings
     - fonts
     - dotfiles
     - git-delta
