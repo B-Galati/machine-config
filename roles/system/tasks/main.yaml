@@ -37,3 +37,5 @@
       GRUB_CMDLINE_LINUX_DEFAULT=""
   when:
     - ansible_os_family == 'RedHat' or ansible_distribution == 'Ubuntu'
+
+- meta: flush_handlers

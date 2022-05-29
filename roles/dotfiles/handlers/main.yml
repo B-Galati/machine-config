@@ -1,5 +1,0 @@
----
-- name: update manual database
-  become: true
-  shell: mandb
-

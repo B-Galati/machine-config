@@ -19,3 +19,5 @@
     src: ~/z/z.1
     dest: /usr/local/share/man/man1/z.1
   notify: update manual database
+
+- meta: flush_handlers
