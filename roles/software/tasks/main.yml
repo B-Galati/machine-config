@@ -44,3 +44,4 @@
       - psutil
       - powerline-mem-segment
       - youtube-dl
+      - jmespath

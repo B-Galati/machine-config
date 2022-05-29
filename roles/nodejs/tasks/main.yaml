@@ -57,7 +57,6 @@
     - yarn
     - ngrok
     - doctoc
-    - diff-so-fancy
     - tldr
     - prettier
     - npm

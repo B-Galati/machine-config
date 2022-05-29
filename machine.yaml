@@ -22,14 +22,18 @@
     - system
     - fonts
     - dotfiles
+    - git-delta
     - z
     - software
+    - jaredhocutt.jetbrains_toolbox
+    - firefox-dev
+    - bitwarden
     - rust
     - alacritty
     - php
+    - nodejs
     - phpstorm-url-handler
     - docker
-    - nodejs
     - awscli
     #- dbeaver
     - keepassxc
@@ -47,10 +51,7 @@
     - discord
     - keybase
     #- gitlab-runner
-    - jaredhocutt.jetbrains_toolbox
-    - firefox-dev
     #- drawio
-    - bitwarden
     - pulumi
     - auth0
     - k6

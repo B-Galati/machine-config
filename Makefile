@@ -29,7 +29,7 @@ default:
 install: ~/.ssh/id_rsa install.lock vault.yaml requirements
 	@$(call log,Install system config)
 	ansible-playbook machine.yaml --vault-id vault.txt --verbose
-	@$(call log,Restart the computer to make sure everything works as expected)
+	@$(call log_success,Done! Restart the computer to make sure everything works as expected)
 
 ~/.ssh/id_rsa:
 	@$(call log_error, SSH key must be installed before installation)

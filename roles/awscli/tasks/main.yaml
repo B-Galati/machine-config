@@ -49,10 +49,15 @@
   when: aws_cli_version not in aws_cli_installed_version.stdout | default('')
 
 # https://github.com/awslabs/amazon-ecr-credential-helper
-- name: install amazon-ecr-credential-helper
+- name: Install amazon-ecr-credential-helper
   become: true
   apt:
     name: amazon-ecr-credential-helper
+
+- name: Ensure .docker directory exists
+  file:
+    path: ~/.docker
+    state: directory
 
 - name: Configure docker to use ECR login
   copy:
