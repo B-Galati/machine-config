@@ -71,6 +71,7 @@
       - ripgrep # grep like: https://github.com/BurntSushi/ripgrep
       - libnotify-bin
       - nfs-common
+      - openjdk-11-jre-headless
 
 - name: fd symlink
   become: true
