@@ -65,4 +65,5 @@
     - git-standup
     - commitizen
     - cz-emoji
-    - pnpm
+    - name: pnpm
+      version: 6
