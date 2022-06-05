@@ -6,7 +6,7 @@
 
 - name: Check if Composer is installed.
   stat:
-    path: /usr/local/bin/composer
+    path: ~/.local/bin/composer
   register: composer_bin
 
 - block:
@@ -28,12 +28,12 @@
         cmd: '{{ php_executable }} composer-installer.php'
         chdir: /tmp
 
-    - name: Move Composer into globally-accessible location.
+    - name: Move Composer.
       become: true
       copy:
         remote_src: true
         src: /tmp/composer.phar
-        dest: /usr/local/bin/composer
+        dest: ~/.local/bin/composer
         owner: '{{ ansible_user }}'
         group: '{{ ansible_user }}'
         mode: 0755
