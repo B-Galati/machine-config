@@ -29,13 +29,10 @@
         chdir: /tmp
 
     - name: Move Composer.
-      become: true
       copy:
         remote_src: true
         src: /tmp/composer.phar
         dest: ~/.local/bin/composer
-        owner: '{{ ansible_user }}'
-        group: '{{ ansible_user }}'
         mode: 0755
   when: not composer_bin.stat.exists
 

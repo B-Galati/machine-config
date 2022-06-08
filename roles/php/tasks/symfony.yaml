@@ -1,18 +1,18 @@
 ---
 - name: Check for existing Symfony CLI install
-  stat:
-    path: /usr/local/bin/symfony
+  command: /usr/local/bin/symfony version
   register: symfony_cli_install
-  changed_when: False
+  changed_when: symfony_cli_version not in symfony_cli_installed_version.stdout | default('')
+  failed_when: False
 
 - block:
     - name: Download
       get_url:
-        url: https://github.com/symfony-cli/symfony-cli/releases/download/v5.4.8/symfony-cli_linux_amd64.tar.gz
+        url: https://github.com/symfony-cli/symfony-cli/releases/download/v{{ symfony_cli_version }}/symfony-cli_linux_amd64.tar.gz
         dest: /tmp/symfony.tar.gz
         mode: 0755
         force: yes
-        checksum: "sha256:https://github.com/symfony-cli/symfony-cli/releases/download/v5.4.8/checksums.txt"
+        checksum: "sha256:https://github.com/symfony-cli/symfony-cli/releases/download/v{{ symfony_cli_version }}/checksums.txt"
 
     - name: Install
       become: true
@@ -26,4 +26,4 @@
 
     - name: Check
       command: /usr/local/bin/symfony version
-  when: not symfony_cli_install.stat.exists
+  when: symfony_cli_version not in symfony_cli_installed_version.stdout | default('')
