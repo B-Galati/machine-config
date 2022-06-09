@@ -27,19 +27,12 @@ default:
 
 .PHONY: install
 install: ~/.ssh/id_rsa install.lock vault.yaml requirements
-	@$(call log,Install system config)
-	ansible-playbook machine.yaml --vault-id vault.txt --verbose
-	@$(call log_success,Done! Restart the computer to make sure everything works as expected)
+	ansible-playbook machine.yaml --vault-id vault.txt --verbose $(ARGS)
+	@$(call log_success,Done! You may need to restart the computer to make sure everything works as expected)
 
 ~/.ssh/id_rsa:
 	@$(call log_error, SSH key must be installed before installation)
 	@exit 1
-
-.PHONY: role
-role:
-	@if [[ -z "$(ROLE)" ]]; then $(call log_error, You must specify a value for ROLE variable) && exit 1; fi
-	@echo 'Install role "$(ROLE)"'
-	ansible-playbook machine.yaml --vault-id vault.txt --verbose --tag $(ROLE)
 
 .PHONY: update
 update:
