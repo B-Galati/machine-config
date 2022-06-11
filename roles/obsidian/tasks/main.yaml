@@ -1,0 +1,47 @@
+---
+- name: Check for existing install
+  stat:
+    path: ~/AppImages/obsidian.AppImage
+  register: obsidian_install
+  changed_when: False
+
+- block:
+    - name: Create AppImages directory
+      file:
+        path: ~/AppImages/
+        state: directory
+        mode: 0755
+
+    - name: Install
+      get_url:
+        url: https://github.com/obsidianmd/obsidian-releases/releases/download/v{{ obsidian_version }}/Obsidian-{{ obsidian_version }}.AppImage
+        dest: ~/AppImages/obsidian.AppImage
+        mode: 0755
+  when: not obsidian_install.stat.exists
+
+- name: Install logo
+  become: true
+  copy:
+    src: obsidian.png
+    dest: /usr/share/pixmaps/obsidian.png
+
+- name: Install .desktop
+  copy:
+    dest: ~/.local/share/applications/obsidian.desktop
+    content: |
+      [Desktop Entry]
+      Name=Obsidian
+      GenericName=Obsidian
+      Comment=Second brain, notes.
+      Exec=/home/{{ ansible_user }}/AppImages/obsidian.AppImage
+      Icon=obsidian
+      StartupNotify=false
+      StartupWMClass=obsidian
+      Terminal=false
+      Type=Application
+      Categories=Utility;
+  register: obsidian_desktop_file
+
+- name: Update desktop files
+  command: update-desktop-database ~/.local/share/applications -v
+  when: obsidian_desktop_file.changed
