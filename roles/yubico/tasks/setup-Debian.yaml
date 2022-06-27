@@ -14,9 +14,16 @@
       - libpam-sss
 
 # See: https://github.com/ansible/ansible/issues/22303
-- name: Ensure pcscd service is running
+- name: Configure pcscd socket
   become: true
   service:
-    name: pcscd
+    name: pcscd.socket
     state: started
     enabled: true
+
+- name: Configure pcscd service
+  become: true
+  service:
+    name: pcscd.service
+    state: stopped
+    enabled: false
