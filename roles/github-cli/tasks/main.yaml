@@ -1,0 +1,27 @@
+---
+- name: Check for existing GPG key
+  become: true
+  stat:
+    path: /usr/share/keyrings/githubcli-archive-keyring.gpg
+  register: github_cli_gpg
+  changed_when: False
+
+- name: Import GPG key
+  become: true
+  shell: |
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+    chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+  when: not github_cli_gpg.stat.exists
+
+- name: Add GitHub CLI repository
+  become: true
+  apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+    filename: docker
+    state: present
+    update_cache: yes
+
+- name: Install GitHub CLI
+  become: true
+  apt:
+    name: gh

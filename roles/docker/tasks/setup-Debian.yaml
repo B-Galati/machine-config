@@ -13,7 +13,7 @@
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
   when: not docker_gpg.stat.exists
 
-- name: Add Docker repository.
+- name: Add Docker repository
   become: true
   apt_repository:
     repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release|lower }} stable"
@@ -21,7 +21,7 @@
     state: present
     update_cache: yes
 
-- name: install docker
+- name: Install docker
   become: true
   apt:
     name: '{{ packages }}'
