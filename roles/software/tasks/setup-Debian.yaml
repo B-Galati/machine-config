@@ -69,6 +69,7 @@
       - hyperfine # benchmarking: https://github.com/sharkdp/hyperfine
       - fzf # cli fuzzy search and more: https://github.com/junegunn/fzf
       - ripgrep # grep like: https://github.com/BurntSushi/ripgrep
+      - exa # ls like: https://github.com/ogham/exa
       - libnotify-bin
       - nfs-common
       - openjdk-11-jre-headless
