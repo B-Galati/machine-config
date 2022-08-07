@@ -41,6 +41,7 @@
       - shellcheck
       - gnome-tweaks
       - gnome-shell-extensions
+      - gnome-characters
       - menulibre
       - apt-transport-https
       - ca-certificates

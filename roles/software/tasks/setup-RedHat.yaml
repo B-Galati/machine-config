@@ -51,6 +51,7 @@
       - gnupg2
       - google-roboto-fonts
       - google-roboto-mono-fonts
+      - gnome-characters
       - flameshot
       - jq
       - vlc
