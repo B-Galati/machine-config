@@ -8,7 +8,7 @@ make install
 make install ARGS="-t docker"
 
 # Force install of discord
-make install ARGS="-t discord -e discord_force_install=true"
+make install ARGS="-t discord -e '{"discord_force_install": true}'"
 
 # Update everything on the machine
 make update

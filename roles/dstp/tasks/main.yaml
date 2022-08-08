@@ -1,0 +1,29 @@
+---
+- name: Check for existing install
+  stat:
+    path: /usr/local/bin/dstp
+  register: dstp_install
+  changed_when: False
+
+- block:
+    - name: Download
+      get_url:
+        url: https://github.com/ycd/dstp/releases/download/v{{ dstp_version }}/dstp_{{ dstp_version }}_linux_x86_64.tar.gz
+        dest: /tmp/dstp.tar.gz
+        mode: 0755
+        force: yes
+        checksum: "sha256:https://github.com/ycd/dstp/releases/download/v{{ dstp_version }}/checksums.txt"
+
+    - name: Install
+      become: true
+      unarchive:
+        src: /tmp/dstp.tar.gz
+        dest: /usr/local/bin
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
+        extra_opts: [--wildcards, dstp]
+        remote_src: yes
+
+    - name: Check
+      command: /usr/local/bin/dstp --help
+  when: not dstp_install.stat.exists or dstp_force_install is true
