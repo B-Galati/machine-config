@@ -56,6 +56,8 @@
       - ncdu
       - pandoc
       - libnss3-tools
+      - pdftk
+      - inkscape
       - gnupg2
       - entr
       - gdebi
