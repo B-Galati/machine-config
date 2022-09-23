@@ -1,5 +1,7 @@
+MAKEFLAGS+=--warn-undefined-variables
 MAKEFLAGS+=--no-builtin-rules # Disable built-in rules see https://www.gnu.org/software/make/manual/make.html#Canceling-Rules
-SHELL:=/bin/bash
+.SHELLFLAGS:=-eu -o pipefail -c # Exit on error, prevent undefined var usage, throw error if one of pipeline operation fails
+SHELL:=bash
 
 COLOR_RESET   = \033[0m
 COLOR_SUCCESS = \033[32m
@@ -38,6 +40,14 @@ install: ~/.ssh/id_rsa install.lock vault.yaml requirements
 update:
 	@$(call log,Update repo)
 	git pull
+	@$(call log,Update some repositories)
+	zsh -c 'source ~/.zshrc && omz update'
+	git -C ~/.oh-my-zsh/custom/themes/powerlevel10k pull
+	git -C ~/z pull
+	git -C ~/docs pull
+	@$(call log,Update dotfiles)
+	git -C ~/dotfiles pull
+	~/dotfiles/bootstrap.sh --force
 	ansible-playbook machine.yaml --vault-id vault.txt --verbose --tag user # This line allow to unlock sudo as well for the commands below
 	@$(call log,Update system)
 	if which dnf > /dev/null 2>&1; then sudo dnf upgrade --refresh -y; fi
@@ -56,14 +66,6 @@ update:
 	pip install --upgrade --user s-tui psutil powerline-mem-segment youtube-dl yubikey-manager jmespath
 	@$(call log,Update node deps)
 	npm -g update
-	@$(call log,Update some repositories)
-	zsh -c 'source ~/.zshrc && omz update'
-	git -C ~/.oh-my-zsh/custom/themes/powerlevel10k pull
-	git -C ~/z pull
-	git -C ~/docs pull
-	@$(call log,Update dotfiles)
-	git -C ~/dotfiles pull
-	~/dotfiles/bootstrap.sh --force
 
 .PHONY: requirements
 requirements: requirements.lock
