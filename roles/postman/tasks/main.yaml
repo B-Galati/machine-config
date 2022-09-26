@@ -1,0 +1,42 @@
+---
+- name: Check for existing postman install
+  stat:
+    path: /opt/Postman/Postman
+  register: postman_install
+  changed_when: False
+
+- block:
+    - name: Create opt directory
+      become: true
+      file:
+        path: /opt/Postman
+        state: directory
+        mode: 0755
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
+
+    - name: Install
+      unarchive:
+        src: https://dl.pstmn.io/download/latest/linux64
+        dest: /opt
+        remote_src: yes
+  when: not postman_install.stat.exists or postman_force_install is true
+
+- name: Install .desktop
+  copy:
+    dest: ~/.local/share/applications/postman.desktop
+    content: |
+      [Desktop Entry]
+      Encoding=UTF-8
+      Name=Postman
+      StartupWMClass=Postman
+      Exec=/opt/Postman/Postman %U
+      Icon=/opt/Postman/app/resources/app/assets/icon.png
+      Terminal=false
+      Type=Application
+      Categories=Development;
+  register: postman_desktop_file
+
+- name: Update desktop files
+  command: update-desktop-database ~/.local/share/applications -v
+  when: postman_desktop_file.changed
