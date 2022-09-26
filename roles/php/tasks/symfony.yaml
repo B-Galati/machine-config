@@ -1,12 +1,12 @@
 ---
-- name: Check for existing Symfony CLI install
+- name: Symfony CLI | Check for existing install
   command: /usr/local/bin/symfony version
-  register: symfony_cli_install
+  register: symfony_cli_installed_version
   changed_when: symfony_cli_version not in symfony_cli_installed_version.stdout | default('')
   failed_when: False
 
 - block:
-    - name: Download
+    - name: Symfony CLI | Download
       get_url:
         url: https://github.com/symfony-cli/symfony-cli/releases/download/v{{ symfony_cli_version }}/symfony-cli_linux_amd64.tar.gz
         dest: /tmp/symfony.tar.gz
@@ -14,7 +14,7 @@
         force: yes
         checksum: "sha256:https://github.com/symfony-cli/symfony-cli/releases/download/v{{ symfony_cli_version }}/checksums.txt"
 
-    - name: Install
+    - name: Symfony CLI | Install
       become: true
       unarchive:
         src: /tmp/symfony.tar.gz
@@ -24,6 +24,6 @@
         extra_opts: [--wildcards, symfony]
         remote_src: yes
 
-    - name: Check
+    - name: Symfony CLI | Check
       command: /usr/local/bin/symfony version
   when: symfony_cli_version not in symfony_cli_installed_version.stdout | default('')
