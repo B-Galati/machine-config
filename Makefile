@@ -65,7 +65,7 @@ update:
 	@$(call log,Update python deps)
 	pip install --upgrade --user s-tui psutil powerline-mem-segment youtube-dl yubikey-manager jmespath
 	@$(call log,Update node deps)
-	npm -g update
+	make install ARGS="-t nodejs"
 
 .PHONY: requirements
 requirements: requirements.lock
