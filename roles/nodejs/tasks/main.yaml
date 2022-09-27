@@ -67,3 +67,10 @@
     - cz-emoji
     - name: pnpm
       version: 6
+
+- name: NPM symlink (to override the global installed one)
+  become: true
+  file:
+    src: "{{ npm_config_prefix }}/bin/npm"
+    dest: /usr/local/bin/npm
+    state: link
