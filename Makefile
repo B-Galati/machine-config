@@ -41,7 +41,7 @@ update:
 	@$(call log,Update repo)
 	git pull
 	@$(call log,Update some repositories)
-	zsh -c 'source ~/.zshrc && omz update'
+	git -C ~/.oh-my-zsh pull
 	git -C ~/.oh-my-zsh/custom/themes/powerlevel10k pull
 	git -C ~/z pull
 	git -C ~/docs pull
