@@ -63,7 +63,7 @@ update:
 	rustup update
 	cargo install bandwhich grex alacritty sd
 	@$(call log,Update python deps)
-	pip install --upgrade --user s-tui psutil powerline-mem-segment youtube-dl yubikey-manager jmespath
+	pip install --upgrade --user s-tui psutil powerline-mem-segment youtube-dl yubikey-manager jmespath litra-driver
 	@$(call log,Update node deps)
 	make install ARGS="-t nodejs"
 
