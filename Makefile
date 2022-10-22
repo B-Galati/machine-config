@@ -42,7 +42,6 @@ update:
 	git pull
 	@$(call log,Update some repositories)
 	git -C ~/.oh-my-zsh pull
-	git -C ~/.oh-my-zsh/custom/themes/powerlevel10k pull
 	git -C ~/z pull
 	git -C ~/docs pull
 	@$(call log,Update dotfiles)

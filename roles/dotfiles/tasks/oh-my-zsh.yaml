@@ -5,10 +5,3 @@
     dest: ~/.oh-my-zsh
     depth: 1
     update: false
-
-- name: Clone PowerLevel10k
-  git:
-    repo: git@github.com:romkatv/powerlevel10k.git
-    dest: ~/.oh-my-zsh/custom/themes/powerlevel10k
-    depth: 1
-    update: false
