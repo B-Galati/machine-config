@@ -61,7 +61,7 @@ update:
 	composer selfupdate -n
 	@$(call log,Update rust and local binaries (toolchains))
 	rustup update
-	cargo install bandwhich grex alacritty sd
+	cargo install bandwhich grex alacritty sd starship
 	@$(call log,Update python deps)
 	pip install --upgrade --user s-tui psutil powerline-mem-segment youtube-dl yubikey-manager jmespath litra-driver
 	@$(call log,Update node deps)
