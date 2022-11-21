@@ -8,8 +8,8 @@
       - libpcsclite-dev
       - pcscd
       - pcsc-tools
-      - opensc
-      - opensc-pkcs11
+#      - opensc
+#      - opensc-pkcs11
       - yubico-piv-tool
       - libpam-sss
 
