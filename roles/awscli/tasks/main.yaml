@@ -54,15 +54,15 @@
   apt:
     name: amazon-ecr-credential-helper
 
-- name: Ensure .docker directory exists
-  file:
-    path: ~/.docker
-    state: directory
-
-- name: Configure docker to use ECR login
-  copy:
-    dest: ~/.docker/config.json
-    content: |
-      {
-          "credsStore": "ecr-login"
-      }
+#- name: Ensure .docker directory exists
+#  file:
+#    path: ~/.docker
+#    state: directory
+#
+#- name: Configure docker to use ECR login
+#  copy:
+#    dest: ~/.docker/config.json
+#    content: |
+#      {
+#          "credsStore": "ecr-login"
+#      }
