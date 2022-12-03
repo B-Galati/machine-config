@@ -1,9 +1,17 @@
 ---
-- include_tasks: install-font.yaml
-  vars:
-    path: "{{ item }}"
+- name: Copy font to src
+  become: true
+  copy:
+    src: "{{ item }}"
+    dest: /usr/share/fonts/
   with_items:
-    - MesloLGS NF Bold.ttf
-    - MesloLGS NF Bold Italic.ttf
-    - MesloLGS NF Italic.ttf
-    - MesloLGS NF Regular.ttf
+    - MesloLGS
+    - JetBrainsMono
+  notify: Build font information cache files
+
+- name: Copy font to src
+  become: true
+  copy:
+    src: fonts.conf
+    dest: /etc/fonts/local.conf
+  notify: Build font information cache files
