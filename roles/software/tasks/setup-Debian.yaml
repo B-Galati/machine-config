@@ -77,7 +77,8 @@
       - visidata
       - libnotify-bin
       - nfs-common
-      - openjdk-11-jre-headless
+      #- openjdk-11-jre-headless
+      #- klavaro # Typing tool
 
 - name: fd symlink
   become: true
