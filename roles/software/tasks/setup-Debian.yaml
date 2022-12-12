@@ -30,7 +30,6 @@
       - unzip
       - netstat-nat
       - net-tools
-      - powerline
       - tmux
       - openvpn
       - openssl
