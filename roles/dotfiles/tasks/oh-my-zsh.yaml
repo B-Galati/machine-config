@@ -5,3 +5,10 @@
     dest: ~/.oh-my-zsh
     depth: 1
     update: false
+
+- name: Clone K3D plugin
+  git:
+    repo: git@github.com:dwaynebradley/k3d-oh-my-zsh-plugin.git
+    dest: ~/.oh-my-zsh/custom/plugins/k3d
+    depth: 1
+    update: false
