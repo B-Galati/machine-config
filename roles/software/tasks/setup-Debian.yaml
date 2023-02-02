@@ -41,6 +41,7 @@
       - gnome-tweaks
       - gnome-shell-extensions
       - gnome-characters
+      - gnome-sound-recorder
       - menulibre
       - apt-transport-https
       - ca-certificates

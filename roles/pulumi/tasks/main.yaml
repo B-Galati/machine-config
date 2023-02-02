@@ -7,8 +7,16 @@
 
 - block:
     - name: Install
-      shell: curl -fsSL https://get.pulumi.com | sh -s -- --version=3.22.0
-  when: not pulumi_install.stat.exists
+      shell: curl -fsSL https://get.pulumi.com | sh
+
+    - name: Ensure OMZ completion directory exists
+      file:
+        path: ~/.oh-my-zsh/completions
+        state: directory
+
+    - name: Install auto complete
+      shell: ~/.pulumi/bin/pulumi gen-completion zsh > ~/.oh-my-zsh/completions/_pulumi
+  when: not pulumi_install.stat.exists or force_install is true
 
 - name: Add bin to PATH
   become: true

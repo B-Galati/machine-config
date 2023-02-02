@@ -27,6 +27,7 @@ make update
     - [Applications Menu](https://extensions.gnome.org/extension/6/applications-menu/)
     - [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
     - [Launch new instance](https://extensions.gnome.org/extension/600/launch-new-instance/)
+    - [Bluetooth Quick Connect ](https://extensions.gnome.org/extension/1401/bluetooth-quick-connect/)
 
 ## Bépo and keyboard configuration
 
