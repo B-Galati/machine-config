@@ -71,3 +71,9 @@
 - name: Update desktop files
   command: update-desktop-database ~/.local/share/applications -v
   when: alacritty_desktop_file.changed
+
+- name: Add themes
+  git:
+    repo: https://github.com/alacritty/alacritty-theme.git
+    dest: ~/.config/alacritty/themes
+    update: false
