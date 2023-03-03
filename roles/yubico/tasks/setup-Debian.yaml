@@ -12,6 +12,8 @@
 #      - opensc-pkcs11
       - yubico-piv-tool
       - libpam-sss
+      - yubikey-manager
+      - yubikey-manager-qt
 
 # See: https://github.com/ansible/ansible/issues/22303
 - name: Configure pcscd socket
