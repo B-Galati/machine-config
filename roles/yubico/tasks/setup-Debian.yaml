@@ -27,5 +27,5 @@
   become: true
   service:
     name: pcscd.service
-    state: stopped
-    enabled: false
+    state: started
+    enabled: true
