@@ -1,4 +1,15 @@
 ---
+- name: Symfony CLI | Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/symfony-cli/symfony-cli/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Symfony CLI | Get version number
+  set_fact:
+    symfony_cli_version: "{{ response.json | json_query('name') | regex_replace('^.', '') }}"
+
 - name: Symfony CLI | Check for existing install
   command: /usr/local/bin/symfony version
   register: symfony_cli_installed_version
