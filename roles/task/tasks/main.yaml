@@ -1,0 +1,54 @@
+---
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/go-task/task/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    task_cli_version: "{{ response.json | json_query('name') | regex_replace('^.', '') }}"
+
+- name: Check for existing install
+  command: /usr/local/bin/task --version
+  register: task_cli_installed_version
+  changed_when: task_cli_version not in task_cli_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download
+      get_url:
+        url: https://github.com/go-task/task/releases/download/v{{ task_cli_version }}/task_linux_amd64.tar.gz
+        dest: /tmp/task.tar.gz
+        mode: 0755
+        force: yes
+        checksum: "sha256:https://github.com/go-task/task/releases/download/v{{ task_cli_version }}/task_checksums.txt"
+
+    - name: Ensure OMZ completion directory exists
+      file:
+        path: ~/.oh-my-zsh/completions
+        state: directory
+
+    - name: Install auto complete
+      unarchive:
+        src: /tmp/task.tar.gz
+        dest: ~/.oh-my-zsh/completions
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
+        extra_opts: [ --strip=2, --wildcards, '*/_task' ]
+        remote_src: yes
+
+    - name: Install
+      become: true
+      unarchive:
+        src: /tmp/task.tar.gz
+        dest: /usr/local/bin
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
+        extra_opts: [--wildcards, task]
+        remote_src: yes
+
+    - name: Check
+      command: /usr/local/bin/task --version
+  when: task_cli_version not in task_cli_installed_version.stdout | default('')
