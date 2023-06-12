@@ -1,4 +1,10 @@
 ---
+- name: Install deps
+  become: true
+  apt:
+    name: libfuse2
+    state: present
+
 - name: Check for existing install
   stat:
     path: ~/AppImages/obsidian.AppImage
@@ -6,6 +12,17 @@
   changed_when: False
 
 - block:
+    - name: Get the latest release from GitHub API
+      uri:
+        url: "https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest"
+        return_content: yes
+      register: response
+      no_log: true
+
+    - name: Get version number
+      set_fact:
+        obsidian_version: "{{ response.json | json_query('tag_name') | regex_replace('^.', '') }}"
+
     - name: Create AppImages directory
       file:
         path: ~/AppImages/
