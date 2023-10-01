@@ -1,0 +1,45 @@
+---
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/noborus/trdsql/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    trdsql_version: "{{ response.json | json_query('tag_name') | regex_replace('^.', '') }}"
+
+- name: Check for existing install
+  command: /usr/local/bin/trdsql -version
+  register: trdsql_cli_installed_version
+  changed_when: trdsql_version not in trdsql_cli_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download
+      get_url:
+        url: https://github.com/noborus/trdsql/releases/download/v{{ trdsql_version }}/trdsql_v{{ trdsql_version }}_linux_amd64.zip
+        dest: /tmp/trdsql.zip
+        mode: 0755
+        force: yes
+
+    - name: Unzip
+      unarchive:
+        src: /tmp/trdsql.zip
+        dest: /tmp
+        remote_src: yes
+
+    - name: Install
+      become: true
+      copy:
+        src: /tmp/trdsql_v{{ trdsql_version }}_linux_amd64/trdsql
+        dest: /usr/local/bin/trdsql
+        mode: 0755
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
+        remote_src: yes
+
+    - name: Check
+      command: /usr/local/bin/trdsql -version
+  when: trdsql_version not in trdsql_cli_installed_version.stdout | default('')
