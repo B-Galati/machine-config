@@ -66,7 +66,7 @@
     gsettings set org.gnome.desktop.peripherals.keyboard remember-numlock-state true
     
     # Lock behaviors
-    gsettings set org.gnome.desktop.session idle-delay 'uint32 300'
+    gsettings set org.gnome.desktop.session idle-delay 'uint32 900'
     gsettings set org.gnome.desktop.screensaver lock-delay 'uint32 0'
     gsettings set org.gnome.desktop.screensaver lock-enabled false
     
