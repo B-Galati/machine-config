@@ -9,7 +9,6 @@
   apt:
     name: '{{ packages }}'
     update_cache: yes
-    cache_valid_time: 3600
   vars:
     packages:
       - php7.4-cli
@@ -29,7 +28,6 @@
       - php7.4-xml
       - php7.4-xdebug
       - php7.4-zip
-      - php7.4-imagick
       - php7.4-soap
 
 - name: Install php 8.1 packages
@@ -37,7 +35,6 @@
   apt:
     name: '{{ packages }}'
     update_cache: yes
-    cache_valid_time: 3600
   vars:
     packages:
       - php8.1-cli
@@ -56,14 +53,39 @@
       - php8.1-xml
       - php8.1-xdebug
       - php8.1-zip
-      - php8.1-imagick
       - php8.1-soap
+
+
+- name: Install php 8.2 packages
+  become: true
+  apt:
+    name: '{{ packages }}'
+    update_cache: yes
+  vars:
+    packages:
+      - php8.2-cli
+      - php8.2-opcache
+      - php8.2-common
+      - php8.2-amqp
+      - php8.2-curl
+      - php8.2-fpm
+      - php8.2-intl
+      - php8.2-mbstring
+      - php8.2-pgsql
+      - php8.2-mysql
+      - php8.2-redis
+      - php8.2-readline
+      - php8.2-sqlite3
+      - php8.2-xml
+      - php8.2-xdebug
+      - php8.2-zip
+      - php8.2-soap
 
 - name: Correct PHP version selected
   become: true
   alternatives:
     name: php
-    path: /usr/bin/php8.1
+    path: /usr/bin/php8.2
 
 - name: Disable xdebug
   become: true
@@ -79,3 +101,5 @@
     - 7.4/fpm
     - 8.1/cli
     - 8.1/fpm
+    - 8.2/cli
+    - 8.2/fpm
