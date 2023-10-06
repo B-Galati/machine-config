@@ -27,6 +27,6 @@
     enabled: yes
     state: started
 
-- import_tasks: docker-compose.yaml
+#- import_tasks: docker-compose.yaml
 
 - meta: flush_handlers
