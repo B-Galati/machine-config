@@ -66,7 +66,7 @@
     - commitizen
     - cz-emoji
     - name: pnpm
-      version: 7
+      version: 8
 
 - name: NPM symlink (to override the global installed one)
   become: true
