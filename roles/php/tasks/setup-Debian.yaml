@@ -8,7 +8,6 @@
   become: true
   apt:
     name: '{{ packages }}'
-    update_cache: yes
   vars:
     packages:
       - php7.4-cli
@@ -34,7 +33,6 @@
   become: true
   apt:
     name: '{{ packages }}'
-    update_cache: yes
   vars:
     packages:
       - php8.1-cli
@@ -60,7 +58,6 @@
   become: true
   apt:
     name: '{{ packages }}'
-    update_cache: yes
   vars:
     packages:
       - php8.2-cli
