@@ -1,0 +1,40 @@
+---
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/helm/helm/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    helm_version: "{{ response.json | json_query('tag_name') | regex_replace('^.', '') }}"
+
+- name: Check for existing install
+  command: /usr/local/bin/helm version
+  register: helm_cli_installed_version
+  changed_when: helm_version not in helm_cli_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download
+      get_url:
+        url: https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz
+        dest: /tmp/helm.tar.gz
+        checksum: "sha256:https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz.sha256sum"
+        mode: 0755
+        force: yes
+
+    - name: Install
+      become: yes
+      unarchive:
+        src: /tmp/helm.tar.gz
+        dest: /usr/local/bin
+        remote_src: yes
+        owner: '{{ ansible_user }}'
+        group: '{{ ansible_user }}'
+        extra_opts: [--strip=1, --wildcards, '*/helm' ]
+
+    - name: Check
+      command: /usr/local/bin/helm version
+  when: helm_version not in helm_cli_installed_version.stdout | default('')
