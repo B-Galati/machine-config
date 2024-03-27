@@ -4,89 +4,35 @@
   apt_repository:
     repo: ppa:ondrej/php
 
-- name: Install php 7.4 packages
+- name: Install php 8.3 packages
   become: true
   apt:
     name: '{{ packages }}'
   vars:
     packages:
-      - php7.4-cli
-      - php7.4-opcache
-      - php7.4-common
-      - php7.4-amqp
-      - php7.4-curl
-      - php7.4-fpm
-      - php7.4-intl
-      - php7.4-json
-      - php7.4-mbstring
-      - php7.4-pgsql
-      - php7.4-mysql
-      - php7.4-redis
-      - php7.4-readline
-      - php7.4-sqlite3
-      - php7.4-xml
-      - php7.4-xdebug
-      - php7.4-zip
-      - php7.4-soap
-
-- name: Install php 8.1 packages
-  become: true
-  apt:
-    name: '{{ packages }}'
-  vars:
-    packages:
-      - php8.1-cli
-      - php8.1-opcache
-      - php8.1-common
-      - php8.1-amqp
-      - php8.1-curl
-      - php8.1-fpm
-      - php8.1-intl
-      - php8.1-mbstring
-      - php8.1-pgsql
-      - php8.1-mysql
-      - php8.1-redis
-      - php8.1-readline
-      - php8.1-sqlite3
-      - php8.1-xml
-      - php8.1-xdebug
-      - php8.1-zip
-      - php8.1-soap
-
-
-- name: Install php 8.2 packages
-  become: true
-  apt:
-    name: '{{ packages }}'
-  vars:
-    packages:
-      - php8.2-cli
-      - php8.2-opcache
-      - php8.2-common
-      - php8.2-amqp
-      - php8.2-curl
-      - php8.2-fpm
-      - php8.2-intl
-      - php8.2-mbstring
-      - php8.2-pgsql
-      - php8.2-mysql
-      - php8.2-redis
-      - php8.2-readline
-      - php8.2-sqlite3
-      - php8.2-xml
-      - php8.2-xdebug
-      - php8.2-zip
-      - php8.2-soap
+      - php8.3-cli
+      - php8.3-opcache
+      - php8.3-common
+      - php8.3-amqp
+      - php8.3-curl
+      - php8.3-fpm
+      - php8.3-intl
+      - php8.3-mbstring
+      - php8.3-pgsql
+      - php8.3-mysql
+      - php8.3-redis
+      - php8.3-readline
+      - php8.3-sqlite3
+      - php8.3-xml
+      - php8.3-xdebug
+      - php8.3-zip
+      - php8.3-soap
 
 - name: Correct PHP version selected
   become: true
   alternatives:
     name: php
-    path: /usr/bin/php8.2
-
-- name: Disable xdebug
-  become: true
-  shell: phpdismod xdebug
+    path: /usr/bin/php8.3
 
 - name: Write /etc/php/{{ item }}/conf.d/99-custom.ini file
   become: true
@@ -94,9 +40,5 @@
     src: php.ini
     dest: /etc/php/{{ item }}/conf.d/99-custom.ini
   with_items:
-    - 7.4/cli
-    - 7.4/fpm
-    - 8.1/cli
-    - 8.1/fpm
-    - 8.2/cli
-    - 8.2/fpm
+    - 8.3/cli
+    - 8.3/fpm
