@@ -60,7 +60,7 @@ update:
 	composer selfupdate -n
 	@$(call log,Update rust and local binaries (toolchains))
 	rustup update
-	cargo install bandwhich grex alacritty sd starship tailspin
+	cargo install bandwhich grex alacritty sd starship tailspin difftastic
 	@$(call log,Update python deps)
 	pip install --upgrade --user s-tui psutil youtube-dl 'yubikey-manager==4.*' jmespath litra-driver
 	@$(call log,Update node deps)
