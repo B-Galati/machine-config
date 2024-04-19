@@ -15,7 +15,8 @@
   copy:
     dest: /etc/sysctl.d/local.conf
     content: |
-      # vm.swappiness=5
+      # See https://docs.kernel.org/admin-guide/sysctl/vm.html
+      # vm.swappiness=10
 
       # phpstorm
       fs.inotify.max_user_watches = 1048576
@@ -26,18 +27,5 @@
 
       # For Elasticsearch
       # vm.max_map_count=262144
-
-- name: Configure /etc/default/grub
-  become: true
-  notify: update grub
-  blockinfile:
-    path: /etc/default/grub
-    marker: "### {mark} machine-config ###"
-    block: |
-      GRUB_TIMEOUT=5
-      GRUB_CMDLINE_LINUX=""
-      GRUB_CMDLINE_LINUX_DEFAULT=""
-  when:
-    - ansible_os_family == 'RedHat' or ansible_distribution == 'Ubuntu'
 
 - meta: flush_handlers
