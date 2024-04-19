@@ -8,7 +8,7 @@ make install
 make install ARGS="-t docker"
 
 # Force install of discord
-make install ARGS="-t discord -e '{"discord_force_install": true}'"
+make install ARGS="-t discord -e '{"force_install": true}'"
 
 # Update everything on the machine
 make update
@@ -17,9 +17,7 @@ make update
 # Ideas of some things to do manually 
 
 - Configure TLP to optimize battery lifetime
-- Add entry `tmpfs /tmp tmpfs defaults,size=1g 0 0` to `/etc/fstab`
 - Consider HWE packages for Ubuntu
-- Install [docker compose switch](https://github.com/docker/compose-switch) if needed
 - Install (or enable) Gnome Extensions:
     - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
     - [Nothing to Say](https://extensions.gnome.org/extension/1113/nothing-to-say/)

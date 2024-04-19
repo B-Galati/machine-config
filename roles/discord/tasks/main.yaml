@@ -20,7 +20,7 @@
         src: https://discordapp.com/api/download?platform=linux&format=tar.gz
         dest: /opt
         remote_src: yes
-  when: not discord_install.stat.exists or discord_force_install is true
+  when: not discord_install.stat.exists or force_install is true
 
 - name: Install .desktop
   copy:

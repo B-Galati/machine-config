@@ -6,6 +6,7 @@
   vars:
     ansible_user: benoit
     jetbrains_toolbox_version: latest
+    force_install: false
   vars_files:
     - vault.yaml
   pre_tasks:

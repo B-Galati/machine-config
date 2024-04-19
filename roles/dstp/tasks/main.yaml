@@ -26,4 +26,4 @@
 
     - name: Check
       command: /usr/local/bin/dstp --help
-  when: not dstp_install.stat.exists or dstp_force_install is true
+  when: not dstp_install.stat.exists or force_install is true
