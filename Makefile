@@ -2,6 +2,7 @@ MAKEFLAGS+=--warn-undefined-variables
 MAKEFLAGS+=--no-builtin-rules # Disable built-in rules see https://www.gnu.org/software/make/manual/make.html#Canceling-Rules
 .SHELLFLAGS:=-eu -o pipefail -c # Exit on error, prevent undefined var usage, throw error if one of pipeline operation fails
 SHELL:=bash
+ARGS?=
 
 COLOR_RESET   = \033[0m
 COLOR_SUCCESS = \033[32m
@@ -86,8 +87,9 @@ vault.txt:
 install.lock:
 	@$(call log,1st time run; installing required tools)
 	@if which apt > /dev/null 2>&1; then \
-         sudo apt update -y && \
-         sudo apt install -y git python-is-python3 python3-pip \
+        sudo add-apt-repository ppa:git-core/ppa -yn && \
+        sudo apt update -y && \
+        sudo apt install -y git python-is-python3 python3-pip \
     ; fi
 	@if which dnf > /dev/null 2>&1; then \
          sudo dnf install -y git && \
