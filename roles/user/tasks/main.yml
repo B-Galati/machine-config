@@ -2,23 +2,23 @@
 - import_tasks: setup-Debian.yaml
   when: ansible_os_family == 'Debian'
 
-- name: Set ZSH shell for {{ ansible_user }}
+- name: Set ZSH shell for {{ ansible_user_id }}
   become: true
-  user: name={{ ansible_user }} shell=/bin/zsh state=present
+  user: name={{ ansible_user_id }} shell=/bin/zsh state=present
 
-- name: Config user {{ ansible_user }}
+- name: Config user {{ ansible_user_id }}
   become: true
   user:
-    name: '{{ ansible_user }}'
+    name: '{{ ansible_user_id }}'
     groups: adm,mail,users
     append: yes
     createhome: no
   when: ansible_os_family == 'Debian'
 
-- name: Config user {{ ansible_user }}
+- name: Config user {{ ansible_user_id }}
   become: true
   user:
-    name: '{{ ansible_user }}'
+    name: '{{ ansible_user_id }}'
     groups: wheel,adm,users,mail
     append: yes
     createhome: no

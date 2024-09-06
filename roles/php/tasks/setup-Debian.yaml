@@ -1,8 +1,9 @@
 ---
 - name: Add php's ppa
   become: true
-  apt_repository:
-    repo: ppa:ondrej/php
+  shell: sudo add-apt-repository ppa:ondrej/php -y
+  args:
+    creates: /etc/apt/sources.list.d/ondrej-ubuntu-php-noble.sources
 
 - name: Install php 8.3 packages
   become: true

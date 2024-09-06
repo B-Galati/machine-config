@@ -6,13 +6,8 @@
   when: ansible_os_family == 'Debian'
 
 - name: Install pip packages
-  pip:
-    name: '{{ packages }}'
-    state: present
-    extra_args: --user
-  vars:
-    packages:
-      - s-tui
-      - psutil
-      - youtube-dl
-      - jmespath
+  community.general.pipx:
+    name: '{{ item }}'
+  with_items:
+    - s-tui
+    - youtube-dl

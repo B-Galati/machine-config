@@ -14,10 +14,8 @@
 - meta: flush_handlers
 
 - name: Install driver
-  pip:
+  community.general.pipx:
     name: litra-driver
-    state: present
-    extra_args: --user
 
 - name: Install dependencies
   become: true

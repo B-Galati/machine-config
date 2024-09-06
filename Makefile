@@ -29,8 +29,9 @@ default:
 	@$(call log_error, You must specify a target)
 
 .PHONY: install
-install: ~/.ssh/id_rsa install.lock vault.yaml requirements
-	ansible-playbook machine.yaml --vault-id vault.txt --verbose $(ARGS)
+install: ~/.ssh/id_rsa install.lock requirements
+	sudo -v
+	ansible-playbook machine.yaml --verbose $(ARGS)
 	@$(call log_success,Done! You may need to restart the computer to make sure everything works as expected)
 
 ~/.ssh/id_rsa:
@@ -39,16 +40,22 @@ install: ~/.ssh/id_rsa install.lock vault.yaml requirements
 
 .PHONY: update
 update:
+	sudo -v
 	@$(call log,Update repo)
 	git pull
+# Restart Make to ensure we use an up-to-date Makefile
+	$(MAKE) do-update
+
+.PHONY: do-update
+do-update:
 	@$(call log,Update some repositories)
 	git -C ~/.oh-my-zsh pull
+	git -C ~/.oh-my-zsh/custom/plugins/k3d pull
 	git -C ~/z pull
 	git -C ~/docs pull
 	@$(call log,Update dotfiles)
 	git -C ~/dotfiles pull
 	~/dotfiles/bootstrap.sh --force
-	ansible-playbook machine.yaml --vault-id vault.txt --verbose --tag user # This line allow to unlock sudo as well for the commands below
 	@$(call log,Update system)
 	if which dnf > /dev/null 2>&1; then sudo dnf upgrade --refresh -y; fi
 	if which apt > /dev/null 2>&1; then sudo apt update -y && sudo apt upgrade -y --autoremove --purge; fi
@@ -57,43 +64,35 @@ update:
 	if which apt > /dev/null 2>&1; then sudo apt-get autoclean -y; fi
 	@$(call log,Update flatpak packages)
 	if which flatpak > /dev/null 2>&1; then flatpak update -y; fi
+	@$(call log,Update gnome extensions)
+	gext update -y
 	@$(call log,Update composer)
 	composer selfupdate -n
 	@$(call log,Update rust and local binaries (toolchains))
 	rustup update
 	cargo install bandwhich grex alacritty sd starship tailspin difftastic
 	@$(call log,Update python deps)
-	pip install --upgrade --user s-tui psutil youtube-dl 'yubikey-manager==4.*' jmespath litra-driver
-	@$(call log,Update node deps)
-	make install ARGS="-t nodejs"
+	pipx upgrade-all --include-injected
+	@$(call log,Update NVM)
+	(cd ~/.nvm && git fetch --tags origin && git checkout $$(git describe --abbrev=0 --tags --match "v[0-9]*" $$(git rev-list --tags --max-count=1)))
+	\. ~/.nvm/nvm.sh
 
 .PHONY: requirements
 requirements: requirements.lock
 requirements.lock: requirements.yaml
 	ansible-galaxy install --role-file requirements.yaml --roles-path ./roles --force
-	ansible-galaxy collection install community.general
 	@touch $@
-
-vault.yaml: vault.txt
-	@$(call log,[PAUSE] you will need to specify ansible variable ansible_become_pass in the vault)
-	@$(call log,Press a key to continue...)
-	@read var
-	@ansible-vault create --vault-password-file vault.txt vault.yaml
-
-vault.txt:
-	@dd if=/dev/urandom bs=1 count=32 2>/dev/null | base64 -w 0 > vault.txt
-	@chmod 600 vault.txt
 
 install.lock:
 	@$(call log,1st time run; installing required tools)
 	@if which apt > /dev/null 2>&1; then \
         sudo add-apt-repository ppa:git-core/ppa -yn && \
         sudo apt update -y && \
-        sudo apt install -y git python-is-python3 python3-pip \
+        sudo apt install -y git python-is-python3 python3-pip pipx \
     ; fi
 	@if which dnf > /dev/null 2>&1; then \
          sudo dnf install -y git && \
-         sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
+         sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$$(rpm -E %fedora).noarch.rpm && \
          sudo dnf group upgrade --with-optional Multimedia \
     ; fi
 	@$(call log,Please verify that python3 is installed)
@@ -102,6 +101,7 @@ install.lock:
 	@$(call log,Press any key to continue...)
 	@read var
 	@$(call log,Install Ansible)
-	@pip install --user ansible
+	@pipx install --include-deps ansible
+	@pipx inject --include-apps ansible jmespath
 # Success! let's create the lock file not to run this step again
 	@touch $@

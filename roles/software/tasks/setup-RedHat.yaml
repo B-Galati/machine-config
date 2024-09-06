@@ -52,7 +52,7 @@
       - flameshot
       - jq
       - vlc
-      - exa # ls like: https://github.com/ogham/exa
+      - eza # ls like: https://github.com/eza-community/eza
       - ripgrep # grep like: https://github.com/BurntSushi/ripgrep
       - fd-find # find like: https://github.com/sharkdp/fd
       - bat # find like: https://github.com/sharkdp/bat

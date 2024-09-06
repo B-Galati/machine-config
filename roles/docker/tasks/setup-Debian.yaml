@@ -1,22 +1,32 @@
 ---
+- name: Requirements
+  become: true
+  apt:
+    name: '{{ packages }}'
+  vars:
+    packages:
+      - ca-certificates
+      - curl
+
 - name: Check for existing GPG key
   become: true
   stat:
-    path: /etc/apt/keyrings/docker.gpg
-  register: docker_gpg
+    path: /etc/apt/keyrings/docker.asc
+  register: docker_key
   changed_when: False
 
 - name: Import GPG key
   become: true
   shell: |
-    mkdir -p /etc/apt/keyrings
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-  when: not docker_gpg.stat.exists
+    install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    chmod a+r /etc/apt/keyrings/docker.asc
+  when: not docker_key.stat.exists
 
 - name: Add Docker repository
   become: true
   apt_repository:
-    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release|lower }} stable"
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release|lower }} stable"
     filename: docker
     state: present
     update_cache: yes
@@ -29,5 +39,6 @@
     packages:
       - docker-ce
       - docker-ce-cli 
-      - containerd.io 
+      - containerd.io
+      - docker-buildx-plugin
       - docker-compose-plugin

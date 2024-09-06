@@ -10,6 +10,7 @@
       - meld
       - bash-completion
       - screenfetch
+      - neofetch
       - htop
       - nmon
       - hdparm
@@ -34,12 +35,11 @@
       - openvpn
       - openssl
       - network-manager-openvpn-gnome
+      - openvpn-systemd-resolved
       - resolvconf
       - tzdata
       - locales
       - shellcheck
-      - gnome-tweaks
-      - gnome-shell-extensions
       - gnome-characters
       - gnome-sound-recorder
       - menulibre
@@ -72,11 +72,15 @@
       - hyperfine # benchmarking: https://github.com/sharkdp/hyperfine
       - fzf # cli fuzzy search and more: https://github.com/junegunn/fzf
       - ripgrep # grep like: https://github.com/BurntSushi/ripgrep
-      - exa # ls like: https://github.com/ogham/exa
+      - eza # ls like: https://github.com/eza-community/eza
       - httpie
       - visidata
       - libnotify-bin
       - nfs-common
+      - libfuse2
+      - yq
+      - wireguard
+      - xournalpp # to annotate and sign pdfs
       #- openjdk-11-jre-headless
       #- klavaro # Typing tool
 

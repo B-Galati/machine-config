@@ -13,8 +13,8 @@
         dest: /usr/local/bin/mkcert
         mode: 0755
         force: yes
-        owner: '{{ ansible_user }}'
-        group: '{{ ansible_user }}'
+        owner: '{{ ansible_user_id }}'
+        group: '{{ ansible_user_id }}'
 
     - name: Create local CA
       shell: /usr/local/bin/mkcert -install

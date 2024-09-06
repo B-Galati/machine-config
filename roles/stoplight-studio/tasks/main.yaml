@@ -20,7 +20,7 @@
 
     - name: Install
       get_url:
-        url: https://github.com/stoplightio/studio/releases/download/v2.8.0-stable.7492.git-68a3857/stoplight-studio-linux-x86_64.AppImage
+        url: https://github.com/stoplightio/studio/releases/download/v2.10.0-stable.9587.git-0533c10/stoplight-studio-linux-x86_64.AppImage
         dest: ~/AppImages/stoplight-studio-linux-x86_64.AppImage
         mode: 0755
   when: not stoplightstudio_install.stat.exists
@@ -33,7 +33,7 @@
       Name=Stoplight Studio
       GenericName=Stoplight Studio
       Comment=Stoplight Studio, OpenAPI editor.
-      Exec=/home/{{ ansible_user }}/AppImages/stoplight-studio-linux-x86_64.AppImage
+      Exec=/home/{{ ansible_user_id }}/AppImages/stoplight-studio-linux-x86_64.AppImage --no-sandbox
       Icon=stoplight-studio
       StartupNotify=false
       StartupWMClass=Stoplight Studio

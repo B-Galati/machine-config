@@ -1,7 +1,7 @@
 ---
 - name: Check for existing install
   stat:
-    path: /home/{{ ansible_user }}/.cargo
+    path: /home/{{ ansible_user_id }}/.cargo
   register: cargo_install
   changed_when: False
 

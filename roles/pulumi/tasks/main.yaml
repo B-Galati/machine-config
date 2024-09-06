@@ -23,4 +23,4 @@
   copy:
     dest: /etc/profile.d/pulumi.sh
     mode: 0644
-    content: export PATH="${PATH}:/home/{{ ansible_user }}/.pulumi/bin"
+    content: export PATH="${PATH}:/home/{{ ansible_user_id }}/.pulumi/bin"

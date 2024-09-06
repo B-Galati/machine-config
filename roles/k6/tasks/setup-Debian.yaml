@@ -1,25 +1,19 @@
 ---
-- name: Add apt key
+- name: Import GPG key
   become: true
-  apt_key:
-    keyserver: hkp://keyserver.ubuntu.com:80
-    id: C5AD17C747E3415A3642D57D77C6C491D6AC1D69
-    state: present
+  shell: |
+    gpg -k
+    gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+  args:
+    creates: /usr/share/keyrings/k6-archive-keyring.gpg
 
 - name: Add repository
   become: true
   apt_repository:
-    repo: deb https://dl.k6.io/deb stable main
-    state: present
+    repo: deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main
   register: k6_repo
-
-- name: Update apt cache if repo was added
-  become: true
-  apt: update_cache=yes
-  when: k6_repo.changed
 
 - name: Install
   become: true
   apt:
     name: k6
-    state: present

@@ -36,8 +36,8 @@
         src: /tmp/trdsql_v{{ trdsql_version }}_linux_amd64/trdsql
         dest: /usr/local/bin/trdsql
         mode: 0755
-        owner: '{{ ansible_user }}'
-        group: '{{ ansible_user }}'
+        owner: '{{ ansible_user_id }}'
+        group: '{{ ansible_user_id }}'
         remote_src: yes
 
     - name: Check

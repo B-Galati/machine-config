@@ -19,40 +19,19 @@ make update
 - Configure TLP to optimize battery lifetime
 - Consider HWE packages for Ubuntu
 - Install (or enable) Gnome Extensions:
-    - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
-    - [Nothing to Say](https://extensions.gnome.org/extension/1113/nothing-to-say/)
-    - [Sound Input & Output Device Chooser](https://extensions.gnome.org/extension/906/sound-output-device-chooser/)
     - [Applications Menu](https://extensions.gnome.org/extension/6/applications-menu/)
     - [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
     - [Launch new instance](https://extensions.gnome.org/extension/600/launch-new-instance/)
     - [Bluetooth Quick Connect ](https://extensions.gnome.org/extension/1401/bluetooth-quick-connect/)
+- Customize other Gnome settings:
 
-## Bépo and keyboard configuration
-
-[source](https://bepo.fr/wiki/Console_GNU/Linux#Configuration_avanc.C3.A9e)
-[Keyboard Wiki Debian](https://wiki.debian.org/fr/Keyboard)
-[ArchLinux Wiki](https://wiki.archlinux.org/index.php/Keyboard_configuration_in_Xorg)
-
-Switch keyboard manually
-
-```bash
-setxkbmap fr bepo
+```shell
+gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
+gsettings set org.gnome.TextEditor custom-font 'JetBrains Mono 13'
+gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 13'
 ```
 
-To re-configure the keyboard :
 
-```bash
-sudo dpkg-reconfigure keyboard-configuration
-```
-
-Update file `/etc/default/keyboard` :
-
-```
-XKBMODEL="tm2030USB-102"
-XKBLAYOUT="fr,fr"
-XKBVARIANT="bepo,"
-XKBOPTIONS="grp:alt_caps_toggle"
-```
 
 # References
 

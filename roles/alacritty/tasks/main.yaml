@@ -28,10 +28,9 @@
       - python3
   when: ansible_os_family == 'Debian'
 
-
 - name: Check for existing installation
   stat:
-    path: /home/{{ ansible_user}}/.cargo/bin/alacritty
+    path: /home/{{ ansible_user_id}}/.cargo/bin/alacritty
   register: alacritty_install
   changed_when: False
 
@@ -51,8 +50,8 @@
     content: |
       [Desktop Entry]
       Type=Application
-      TryExec=/home/{{ ansible_user}}/.cargo/bin/alacritty
-      Exec=/home/{{ ansible_user}}/.cargo/bin/alacritty
+      TryExec=/home/{{ ansible_user_id}}/.cargo/bin/alacritty
+      Exec=/home/{{ ansible_user_id}}/.cargo/bin/alacritty
       Icon=Alacritty
       Terminal=false
       Categories=System;TerminalEmulator;
@@ -65,7 +64,7 @@
 
       [Desktop Action New]
       Name=New Terminal
-      Exec=/home/{{ ansible_user}}/.cargo/bin/alacritty
+      Exec=/home/{{ ansible_user_id}}/.cargo/bin/alacritty
   register: alacritty_desktop_file
 
 - name: Update desktop files

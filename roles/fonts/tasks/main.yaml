@@ -1,17 +1,22 @@
 ---
-- name: Copy font to src
-  become: true
-  copy:
-    src: "{{ item }}"
-    dest: /usr/share/fonts/
+- name: Install fonts
+  shell: |
+    set -x
+    
+    wget -nv -O "/tmp/{{ item }}.zip" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/{{ item }}.zip" 
+    unzip "/tmp/{{ item }}.zip" -d "/tmp/{{ item }}"
+    mkdir -p "~/.local/share/fonts/{{ item }}"
+    cp /tmp/{{ item }}/*.ttf "~/.local/share/fonts/{{ item }}"
+    rm -rf "/tmp/{{ item }}" "/tmp/{{ item }}.zip"
   with_items:
-    - MesloLGS
     - JetBrainsMono
-  notify: Build font information cache files
+    - Meslo
 
-- name: Copy font to src
+- name: Install fonts config
   become: true
   copy:
     src: fonts.conf
     dest: /etc/fonts/local.conf
-  notify: Build font information cache files
+
+- name: Build fonts information cache files
+  shell: fc-cache -rvf

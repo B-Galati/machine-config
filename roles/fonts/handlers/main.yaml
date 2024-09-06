@@ -1,3 +1,0 @@
----
-- name: Build font information cache files
-  shell: fc-cache -rvf

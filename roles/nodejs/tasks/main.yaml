@@ -16,8 +16,8 @@
   become: true
   file:
     path: "{{ npm_config_prefix }}"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
     state: directory
 
 - name: 'Add npm_config_prefix bin directory to global $PATH.'
@@ -27,20 +27,20 @@
     dest: /etc/profile.d/npm.sh
     mode: 0644
 
-- name: 'Ensure npm cache belongs to {{ ansible_user }}'
+- name: 'Ensure npm cache belongs to {{ ansible_user_id }}'
   become: true
   file:
-    path: '/home/{{ ansible_user }}/.npm'
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
+    path: '/home/{{ ansible_user_id }}/.npm'
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_id }}'
     recurse: yes
 
-- name: 'Ensure npm global belongs to {{ ansible_user }}'
+- name: 'Ensure npm global belongs to {{ ansible_user_id }}'
   become: true
   file:
     path: '{{ npm_config_prefix }}'
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_id }}'
     recurse: yes
 
 - name: 'Ensure npm global packages are installed.'
@@ -54,8 +54,6 @@
     NODE_PATH: "{{ npm_config_prefix }}/lib/node_modules"
     NPM_CONFIG_UNSAFE_PERM: true
   with_items:
-    - yarn
-    - ngrok
     - doctoc
     - tldr
     - prettier

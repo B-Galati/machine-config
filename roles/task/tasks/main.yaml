@@ -34,8 +34,8 @@
       unarchive:
         src: /tmp/task.tar.gz
         dest: ~/.oh-my-zsh/completions
-        owner: '{{ ansible_user }}'
-        group: '{{ ansible_user }}'
+        owner: '{{ ansible_user_id }}'
+        group: '{{ ansible_user_id }}'
         extra_opts: [ --strip=2, --wildcards, '*/_task' ]
         remote_src: yes
 
@@ -44,8 +44,8 @@
       unarchive:
         src: /tmp/task.tar.gz
         dest: /usr/local/bin
-        owner: '{{ ansible_user }}'
-        group: '{{ ansible_user }}'
+        owner: '{{ ansible_user_id }}'
+        group: '{{ ansible_user_id }}'
         extra_opts: [--wildcards, task]
         remote_src: yes
 

@@ -4,4 +4,4 @@
 nodejs_version: "20"
 
 # The directory for global installations.
-npm_config_prefix: '/home/{{ ansible_user }}/.npm-global'
+npm_config_prefix: '/home/{{ ansible_user_id }}/.npm-global'

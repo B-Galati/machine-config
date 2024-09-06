@@ -12,8 +12,8 @@
         path: /opt/firefox-dev
         state: directory
         mode: 0755
-        owner: '{{ ansible_user }}'
-        group: '{{ ansible_user }}'
+        owner: '{{ ansible_user_id }}'
+        group: '{{ ansible_user_id }}'
 
     - name: Install
       unarchive:
@@ -60,3 +60,32 @@
 - name: Update desktop files
   command: update-desktop-database ~/.local/share/applications -v
   when: firefox_desktop_file.changed
+
+- name: Créer ou mettre à jour le fichier firefox-local dans /etc/apparmor.d/
+  become: true
+  copy:
+    dest: /etc/apparmor.d/firefox-local
+    content: |
+      # Ce profil autorise tout et n’existe que pour donner à
+      # l’application un nom plutôt que laisser l’étiquette "unconfined"
+
+      abi <abi/4.0>,
+      include <tunables/global>
+      profile firefox-local
+      /opt/firefox-dev/firefox/{firefox,firefox-bin,updater}
+      flags=(unconfined) {
+
+        userns,
+        # Ajouts propres à l’installation et surcharges.
+        # Consultez local/README pour des précisions.
+        include if exists <local/firefox>
+
+      }
+  register: firefox_apparmor
+
+- name: Restart AppArmor
+  become: true
+  systemd:
+    name: apparmor
+    state: restarted
+  when: firefox_apparmor.changed

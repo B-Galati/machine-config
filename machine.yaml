@@ -4,15 +4,14 @@
   gather_facts: yes
   gather_subset: [ min ]
   vars:
-    ansible_user: benoit
     jetbrains_toolbox_version: latest
     force_install: false
-  vars_files:
-    - vault.yaml
   pre_tasks:
     - name: Debug info
       debug:
         msg: |
+          Ansible env home: {{ ansible_env.HOME }}
+          Ansible user id: {{ ansible_user_id }}
           OS Family: {{ ansible_os_family }}
           Distribution: {{ ansible_distribution }}
           Distribution release: {{ ansible_distribution_release }}
@@ -21,50 +20,47 @@
   roles:
     - user
     - system
-    - gnome-settings
-    - fonts
-    - dotfiles
-    - git-delta
-    - z
     - software
-    - jaredhocutt.jetbrains_toolbox
-    - firefox-dev
+    - fonts
+    - gnome-settings
+    - dotfiles
     - bitwarden
-    - rust
+    - yubico
+    - slack
     - alacritty
-    - php
-    - nodejs
+    - zellij
+    - z
+    - firefox-dev
+    - git-delta
+    - jaredhocutt.jetbrains_toolbox
     - phpstorm-url-handler
+    - discord
+    - keybase
+    - rust
+    - php
+    - nvm
+    #- nodejs
     - docker
     - awscli
-    #- dbeaver
-    - keepassxc
     #- peek
-    - vscode
-    - yubico
-    - spotify
-    - unipdf-cli
-    - pdfcpu
-    - slack
+    #- vscode
     - mkcert
     - croncape
     - hexyl
-    - discord
-    - keybase
-    #- gitlab-runner
-    #- drawio
-    - pulumi
-    - auth0
-    - k6
-    - grex # It generates regular expressions from examples
-    - bandwhich # Terminal bandwidth utilization tool
-    - stoplight-studio
-    - chrome
+    - unipdf-cli
+    - pdfcpu
     - obsidian
     - github-cli
     - dstp
     - postman
-    - litra
     - task
-    - trdsql
     - helm
+    - trdsql
+    - bandwhich # Terminal bandwidth utilization tool
+    - chrome
+    - spotify
+    - pulumi
+    - auth0
+    - k6
+    - litra
+    - stoplight-studio

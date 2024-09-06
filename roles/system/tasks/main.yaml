@@ -21,6 +21,7 @@
       # phpstorm
       fs.inotify.max_user_watches = 1048576
 
+      # No restriction on dmesg
       kernel.dmesg_restrict = 0
 
       # net.ipv4.ip_forward=1
