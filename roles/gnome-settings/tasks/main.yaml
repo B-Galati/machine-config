@@ -103,7 +103,7 @@
     gsettings set org.gnome.desktop.peripherals.keyboard remember-numlock-state true
 
     # Lock behaviors
-    gsettings set org.gnome.desktop.session idle-delay 900
+    gsettings set org.gnome.desktop.session idle-delay 300
     gsettings set org.gnome.desktop.screensaver lock-delay 0
     gsettings set org.gnome.desktop.screensaver lock-enabled false
 
