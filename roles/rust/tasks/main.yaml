@@ -1,10 +1,12 @@
 ---
-- name: Check for existing install
-  stat:
-    path: /home/{{ ansible_user_id }}/.cargo
-  register: cargo_install
-  changed_when: False
-
 - name: Install
   shell: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
-  when: not cargo_install.stat.exists
+  args:
+    creates: "{{ ansible_env.HOME }}/.cargo"
+
+- name: Update PATH
+  copy:
+    content: |
+      PATH="$PATH:{{ ansible_env.HOME }}/.cargo/bin"
+    dest: ~/.config/environment.d/cargo.conf
+    mode: 0644

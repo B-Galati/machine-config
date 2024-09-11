@@ -19,8 +19,8 @@
   when: not pulumi_install.stat.exists or force_install is true
 
 - name: Add bin to PATH
-  become: true
   copy:
-    dest: /etc/profile.d/pulumi.sh
+    dest: ~/.config/environment.d/pulumi.conf
     mode: 0644
-    content: export PATH="${PATH}:/home/{{ ansible_user_id }}/.pulumi/bin"
+    content: |
+      PATH="$PATH:{{ ansible_env.HOME }}/.pulumi/bin"

@@ -5,13 +5,6 @@
 - import_tasks: setup-Debian.yaml
   when: ansible_os_family == 'Debian'
 
-- name: Create /etc/profile.d directory
-  become: true
-  file:
-    path: /etc/profile.d
-    state: directory
-    mode: 0755
-
 - name: 'Create npm global directory'
   become: true
   file:
@@ -21,16 +14,15 @@
     state: directory
 
 - name: 'Add npm_config_prefix bin directory to global $PATH.'
-  become: true
   template:
-    src: npm.sh.j2
-    dest: /etc/profile.d/npm.sh
+    src: npm.conf.j2
+    dest: ~/.config/environment.d/npm.conf
     mode: 0644
 
 - name: 'Ensure npm cache belongs to {{ ansible_user_id }}'
   become: true
   file:
-    path: '/home/{{ ansible_user_id }}/.npm'
+    path: '{{ ansible_env.HOME }}/.npm'
     owner: '{{ ansible_user_id }}'
     group: '{{ ansible_user_id }}'
     recurse: yes

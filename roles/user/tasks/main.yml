@@ -23,3 +23,11 @@
     append: yes
     createhome: no
   when: ansible_os_family == 'RedHat'
+
+- name: User config ~/.config/environment.d/user.conf
+  copy:
+    content: |
+      PATH="$PATH:{{ ansible_env.HOME }}/.local/bin"
+      BAT_THEME="Monokai Extended Light"
+    dest: ~/.config/environment.d/user.conf
+    mode: 0644

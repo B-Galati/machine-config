@@ -36,9 +36,9 @@
         mode: 0755
   when: not composer_bin.stat.exists
 
-- name: Ensure /etc/profile.d/composer.sh file is present
-  become: true
+- name: Update PATH
   copy:
-      content: export PATH="${PATH}:/home/{{ ansible_user_id }}/.composer/vendor/bin"
-      dest: /etc/profile.d/composer.sh
+      content: |
+        PATH="$PATH:{{ ansible_env.HOME }}/.composer/vendor/bin"
+      dest: ~/.config/environment.d/composer.conf
       mode: 0644

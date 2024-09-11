@@ -53,7 +53,7 @@
 #      Name=Yubico Authenticator
 #      GenericName=Yubico Authenticator
 #      Comment=Graphical interface for displaying OATH codes with a YubiKey.
-#      Exec=/home/{{ ansible_user_id }}/AppImages/yubioath-desktop-latest-linux.AppImage --no-sandbox
+#      Exec={{ ansible_env.HOME }}/AppImages/yubioath-desktop-latest-linux.AppImage --no-sandbox
 #      Icon=com.yubico.yubioath
 #      StartupNotify=false
 #      StartupWMClass=yubioath-desktop

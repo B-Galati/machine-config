@@ -12,13 +12,12 @@
     groups: docker
     append: yes
 
-- name: Add docker config with environment variables
-  become: true
+- name: Add docker config
   copy:
-    dest: /etc/profile.d/docker.sh
+    dest: ~/.config/environment.d/docker.conf
     mode: 0644
     content: |
-      export DOCKER_BUILDKIT=1
+      DOCKER_BUILDKIT=1
 
 - name: ensure docker is running
   become: true

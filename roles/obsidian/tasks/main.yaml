@@ -50,7 +50,7 @@
       Name=Obsidian
       GenericName=Obsidian
       Comment=Second brain, notes.
-      Exec=/home/{{ ansible_user_id }}/AppImages/obsidian.AppImage --no-sandbox
+      Exec={{ ansible_env.HOME }}/AppImages/obsidian.AppImage --no-sandbox
       Icon=obsidian
       StartupNotify=false
       StartupWMClass=obsidian

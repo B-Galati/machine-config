@@ -33,7 +33,7 @@
       Name=Bitwarden
       GenericName=Bitwarden
       Comment=Password manager.
-      Exec=/home/{{ ansible_user_id }}/AppImages/bitwarden.AppImage --no-sandbox
+      Exec={{ ansible_env.HOME }}/AppImages/bitwarden.AppImage --no-sandbox
       Icon=bitwarden
       StartupNotify=false
       StartupWMClass=bitwarden

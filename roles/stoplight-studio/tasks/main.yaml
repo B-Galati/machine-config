@@ -33,7 +33,7 @@
       Name=Stoplight Studio
       GenericName=Stoplight Studio
       Comment=Stoplight Studio, OpenAPI editor.
-      Exec=/home/{{ ansible_user_id }}/AppImages/stoplight-studio-linux-x86_64.AppImage --no-sandbox
+      Exec={{ ansible_env.HOME }}/AppImages/stoplight-studio-linux-x86_64.AppImage --no-sandbox
       Icon=stoplight-studio
       StartupNotify=false
       StartupWMClass=Stoplight Studio
