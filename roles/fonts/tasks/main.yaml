@@ -1,16 +1,19 @@
 ---
 - name: Install fonts
   shell: |
-    set -x
+    set -xe
     
     wget -nv -O "/tmp/{{ item }}.zip" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/{{ item }}.zip" 
-    unzip "/tmp/{{ item }}.zip" -d "/tmp/{{ item }}"
-    mkdir -p "~/.local/share/fonts/{{ item }}"
-    cp /tmp/{{ item }}/*.ttf "~/.local/share/fonts/{{ item }}"
+    unzip -o "/tmp/{{ item }}.zip" -d "/tmp/{{ item }}"
+    mkdir -p "{{ ansible_env.HOME }}/.local/share/fonts/{{ item }}"
+    cp /tmp/{{ item }}/*.ttf "{{ ansible_env.HOME }}/.local/share/fonts/{{ item }}"
     rm -rf "/tmp/{{ item }}" "/tmp/{{ item }}.zip"
+  args:
+    creates: '{{ ansible_env.HOME }}/.local/share/fonts/{{ item }}'
   with_items:
     - JetBrainsMono
     - Meslo
+  register: install_fonts
 
 - name: Install fonts config
   become: true
@@ -20,3 +23,4 @@
 
 - name: Build fonts information cache files
   shell: fc-cache -rvf
+  when: install_fonts.changed

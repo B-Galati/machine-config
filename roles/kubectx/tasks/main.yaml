@@ -1,0 +1,24 @@
+---
+- name: Create opt directory
+  become: true
+  file:
+    path: /opt/kubectx
+    state: directory
+    mode: 0755
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_id }}'
+
+- name: Clone
+  git:
+    repo: https://github.com/ahmetb/kubectx
+    dest: /opt/kubectx
+    depth: 1
+    update: false
+
+- name: Install
+  shell: sudo ln -s /opt/kubectx/{{ item }} /usr/local/bin/{{ item }}
+  args:
+    creates: /usr/local/bin/{{ item }}
+  with_items:
+    - kubectx
+    - kubens

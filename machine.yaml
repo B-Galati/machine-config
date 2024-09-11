@@ -55,6 +55,7 @@
     - postman
     - task
     - helm
+    - kubectx
     - trdsql
     - bandwhich # Terminal bandwidth utilization tool
     - chrome

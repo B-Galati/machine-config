@@ -53,6 +53,7 @@ do-update:
 	git -C ~/.oh-my-zsh/custom/plugins/k3d pull
 	git -C ~/z pull
 	git -C ~/docs pull
+	git -C /opt/kubectx pull origin master
 	@$(call log,Update dotfiles)
 	git -C ~/dotfiles pull
 	~/dotfiles/bootstrap.sh --force
