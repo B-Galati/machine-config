@@ -65,6 +65,8 @@ do-update:
 	if which apt > /dev/null 2>&1; then sudo apt-get autoclean -y; fi
 	@$(call log,Update flatpak packages)
 	if which flatpak > /dev/null 2>&1; then flatpak update -y; fi
+	@$(call log,Update snap packages)
+	if which snap > /dev/null 2>&1; then sudo snap refresh; fi
 	@$(call log,Update gnome extensions)
 	gext update -y
 	@$(call log,Update composer)
