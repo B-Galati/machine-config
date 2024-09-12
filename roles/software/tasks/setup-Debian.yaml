@@ -77,7 +77,6 @@
       - libnotify-bin
       - nfs-common
       - libfuse2
-      - yq
       - wireguard
       - xournalpp # to annotate and sign pdfs
       #- openjdk-11-jre-headless
