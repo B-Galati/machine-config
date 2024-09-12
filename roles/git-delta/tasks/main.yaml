@@ -1,5 +1,16 @@
 ---
 # https://github.com/dandavison/delta
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/dandavison/delta/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    git_delta_version: "{{ response.json | json_query('tag_name') }}"
+
 - name: Check version to know if an update is needed or not
   command: '/usr/bin/delta --version'
   register: git_delta_installed_version
@@ -11,4 +22,7 @@
       become: true
       apt:
         deb: https://github.com/dandavison/delta/releases/download/{{ git_delta_version }}/git-delta_{{ git_delta_version }}_amd64.deb
+
+    - name: Check
+      command: '/usr/bin/delta --version'
   when: git_delta_version not in git_delta_installed_version.stdout | default('')
