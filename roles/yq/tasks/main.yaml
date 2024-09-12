@@ -1,0 +1,30 @@
+---
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/mikefarah/yq/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    yq_version: "{{ response.json | json_query('tag_name') | regex_replace('^.', '') }}"
+
+- name: Check for existing install
+  command: /usr/local/bin/yq --version
+  register: yq_cli_installed_version
+  changed_when: yq_version not in yq_cli_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download
+      become: true
+      get_url:
+        url: https://github.com/mikefarah/yq/releases/download/v{{ yq_version }}/yq_linux_amd64
+        dest: /usr/local/bin/yq
+        mode: 0755
+        force: yes
+
+    - name: Check
+      command: /usr/local/bin/yq --version
+  when: yq_version not in yq_cli_installed_version.stdout | default('')
