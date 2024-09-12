@@ -27,7 +27,7 @@
 - name: User config ~/.config/environment.d/user.conf
   copy:
     content: |
-      PATH="$PATH:{{ ansible_env.HOME }}/.local/bin"
+      PATH="$PATH:{{ ansible_env.HOME }}/.bin:{{ ansible_env.HOME }}/.local/bin"
       BAT_THEME="Monokai Extended Light"
     dest: ~/.config/environment.d/user.conf
     mode: 0644
