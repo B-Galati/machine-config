@@ -73,7 +73,6 @@
     - pulumi
     - auth0
     - k6
-    - litra
     - stoplight-studio
     - ngrok
     - yq
