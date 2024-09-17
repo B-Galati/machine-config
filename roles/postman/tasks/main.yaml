@@ -20,7 +20,7 @@
         src: https://dl.pstmn.io/download/latest/linux64
         dest: /opt
         remote_src: yes
-  when: not postman_install.stat.exists or force_install is true
+  when: not postman_install.stat.exists or force_install
 
 - name: Install .desktop
   copy:

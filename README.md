@@ -23,7 +23,7 @@ make update
 
 - Initialize favorite apps:
 ```shell
- gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'alacritty.desktop', 'jetbrains-phpstorm-55be83e5-2bc4-4556-bef0-9a571ec27ac3.desktop', 'firefox-dev.desktop', 'google-chrome.desktop', 'enpass.desktop', 'slack.desktop', 'discord_discord.desktop', 'whatsapp.desktop', 'spotify.desktop', 'org.gnome.SystemMonitor.desktop', 'org.gnome.Characters.desktop', 'org.gnome.TextEditor.desktop']"
+ gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'alacritty.desktop', 'jetbrains-phpstorm-55be83e5-2bc4-4556-bef0-9a571ec27ac3.desktop', 'firefox-dev.desktop', 'google-chrome.desktop', 'enpass.desktop', 'slack.desktop', 'discord_discord.desktop', 'whatsapp.desktop', 'spotify.desktop', 'org.gnome.SystemMonitor.desktop', 'btop.desktop', 'org.gnome.Characters.desktop', 'org.gnome.TextEditor.desktop']"
 ```
 
 # References
@@ -33,4 +33,5 @@ make update
 
 # Credits
 
+- [Omakub](https://github.com/basecamp/omakub)
 - [Jared Hocutt labtop config](https://github.com/jaredhocutt/laptop)

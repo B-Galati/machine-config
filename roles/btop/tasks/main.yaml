@@ -1,0 +1,41 @@
+---
+- name: Install
+  become: true
+  apt:
+    name: btop
+
+- name: Install logo
+  copy:
+    src: Activity.png
+    dest: '{{ ansible_env.HOME }}/.local/share/icons/Activity.png'
+
+- name: Create ~/.local/share/alacritty directory
+  file:
+    path: '{{ ansible_env.HOME }}/.local/share/alacritty'
+    state: directory
+    mode: 0755
+
+- name: Install Alacritty config
+  copy:
+    src: btop.toml
+    dest: '{{ ansible_env.HOME }}/.local/share/alacritty/btop.toml'
+
+- name: Install .desktop
+  copy:
+    dest: ~/.local/share/applications/btop.desktop
+    content: |
+      [Desktop Entry]
+      Version=1.0
+      Name=btop
+      Comment=System activity from btop
+      Exec=alacritty --config-file {{ ansible_env.HOME }}/.local/share/alacritty/btop.toml --class=btop --title=btop -e btop
+      Terminal=false
+      Type=Application
+      Icon={{ ansible_env.HOME }}/.local/share/icons/Activity.png
+      Categories=GTK;
+      StartupNotify=false
+  register: btop_desktop_file
+
+- name: Update desktop files
+  command: update-desktop-database ~/.local/share/applications -v
+  when: btop_desktop_file.changed

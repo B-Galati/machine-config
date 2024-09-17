@@ -1,0 +1,13 @@
+import = [ "~/.alacritty.toml" ]
+
+[window]
+decorations = "full"
+padding.x = 30
+padding.y = 30
+dimensions.columns = 160
+dimensions.lines = 45
+
+[colors]
+[colors.primary]
+foreground = '#ffffff'
+background = '#000000'

@@ -4,7 +4,7 @@
   file:
     path: /usr/local/bin/zellij
     state: absent
-  when: force_install is true
+  when: force_install
 
 - name: Install
   shell: |

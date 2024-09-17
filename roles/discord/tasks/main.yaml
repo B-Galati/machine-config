@@ -10,4 +10,4 @@
       become: true
       apt:
         deb: https://discord.com/api/download?platform=linux&format=deb
-  when: discord_installed.rc == 1 or force_install is true
+  when: discord_installed.rc == 1 or force_install

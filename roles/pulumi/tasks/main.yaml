@@ -16,7 +16,7 @@
 
     - name: Install auto complete
       shell: ~/.pulumi/bin/pulumi gen-completion zsh > ~/.oh-my-zsh/completions/_pulumi
-  when: not pulumi_install.stat.exists or force_install is true
+  when: not pulumi_install.stat.exists or force_install
 
 - name: Add bin to PATH
   copy:
