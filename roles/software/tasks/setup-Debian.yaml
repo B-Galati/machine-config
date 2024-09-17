@@ -82,6 +82,12 @@
       #- openjdk-11-jre-headless
       #- klavaro # Typing tool
 
+- name: Install snap packages
+  become: true
+  snap:
+    name:
+      - pinta
+
 - name: fd symlink
   become: true
   file:
