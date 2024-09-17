@@ -1,0 +1,26 @@
+---
+- name: Install logo
+  copy:
+    src: WhatsApp.png
+    dest: '{{ ansible_env.HOME }}/.local/share/icons/WhatsApp.png'
+
+- name: Install .desktop
+  copy:
+    dest: ~/.local/share/applications/whatsapp.desktop
+    content: |
+      [Desktop Entry]
+      Version=1.0
+      Name=WhatsApp
+      Comment=WhatsApp Messenger
+      Exec=google-chrome --app="https://web.whatsapp.com" --name=WhatsApp --class=Whatsapp
+      Terminal=false
+      Type=Application
+      Icon={{ ansible_env.HOME }}/.local/share/icons/WhatsApp.png
+      Categories=GTK;
+      MimeType=text/html;text/xml;application/xhtml_xml;
+      StartupNotify=true
+  register: whatsapp_desktop_file
+
+- name: Update desktop files
+  command: update-desktop-database ~/.local/share/applications -v
+  when: whatsapp_desktop_file.changed

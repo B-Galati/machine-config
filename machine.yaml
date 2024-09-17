@@ -19,7 +19,12 @@
           Distribution major version: {{ ansible_distribution_major_version }}
     - name: Create ~/.config/environment.d directory
       file:
-        path: ~/.config/environment.d
+        path: '{{ ansible_env.HOME }}/.config/environment.d'
+        state: directory
+        mode: 0755
+    - name: Create ~/.local/share/icons directory
+      file:
+        path: '{{ ansible_env.HOME }}/.local/share/icons'
         state: directory
         mode: 0755
   roles:
@@ -72,3 +77,4 @@
     - stoplight-studio
     - ngrok
     - yq
+    - whatsapp
