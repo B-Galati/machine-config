@@ -20,6 +20,9 @@
     # Turn off some extensions
     gnome-extensions disable tiling-assistant@ubuntu.com
     
+    # Turn on some extensions
+    gnome-extensions enable system-monitor@gnome-shell-extensions.gcampax.github.com
+    
     # Install new extensions
     gext install tilingshell@ferrarodomenico.com
     
