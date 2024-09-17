@@ -11,6 +11,7 @@
       - bash-completion
  #     - fastfetch
       - htop
+      - btop
       - nmon
       - hdparm
       - xclip
