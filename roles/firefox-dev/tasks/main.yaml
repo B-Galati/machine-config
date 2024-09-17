@@ -61,7 +61,7 @@
   command: update-desktop-database ~/.local/share/applications -v
   when: firefox_desktop_file.changed
 
-- name: Créer ou mettre à jour le fichier firefox-local dans /etc/apparmor.d/
+- name: Add apparmor profile
   become: true
   copy:
     dest: /etc/apparmor.d/firefox-local
@@ -89,3 +89,19 @@
     name: apparmor
     state: restarted
   when: firefox_apparmor.changed
+
+- name: Set as default browser
+  become: true
+  alternatives:
+    name: x-www-browser
+    path: /opt/firefox-dev/firefox/firefox
+    link: /usr/bin/x-www-browser
+    priority: 400
+    state: auto
+
+- name: Set BROWSER variable
+  copy:
+    content: |
+      BROWSER=/opt/firefox-dev/firefox/firefox
+    dest: ~/.config/environment.d/browser.conf
+    mode: 0644
