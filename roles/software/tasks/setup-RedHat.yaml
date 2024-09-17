@@ -8,7 +8,6 @@
       - stress
       - meld
       - bash-completion
-      - screenfetch
       - htop
       - nmon
       - hdparm

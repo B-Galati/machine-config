@@ -1,0 +1,27 @@
+---
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    fast_fetch_version: "{{ response.json | json_query('tag_name') }}"
+
+- name: Check version to know if an update is needed or not
+  command: '/usr/bin/fastfetch --version'
+  register: fast_fetch_installed_version
+  changed_when: fast_fetch_version not in fast_fetch_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download and install
+      become: true
+      apt:
+        deb: https://github.com/fastfetch-cli/fastfetch/releases/download/{{ fast_fetch_version }}/fastfetch-linux-amd64.deb
+
+    - name: Check
+      command: '/usr/bin/fastfetch --version'
+  when: fast_fetch_version not in fast_fetch_installed_version.stdout | default('')

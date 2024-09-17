@@ -9,7 +9,6 @@
       - stress
       - meld
       - bash-completion
- #     - fastfetch
       - htop
       - btop
       - nmon
