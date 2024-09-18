@@ -68,7 +68,8 @@ do-update:
 	@$(call log,Update snap packages)
 	if which snap > /dev/null 2>&1; then sudo snap refresh; fi
 	@$(call log,Update gnome extensions)
-	gext update -y
+	gext update -y --user
+	$(MAKE) install ARGS="-t gnome-settings"
 	@$(call log,Update composer)
 	composer selfupdate -n
 	@$(call log,Update rust and local binaries (toolchains))
