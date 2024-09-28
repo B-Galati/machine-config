@@ -87,6 +87,7 @@
   snap:
     name:
       - pinta
+      - trippy # Network diag tool traceroute+dig+ping https://github.com/fujiapple852/trippy
 
 - name: fd symlink
   become: true
