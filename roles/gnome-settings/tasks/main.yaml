@@ -96,11 +96,12 @@
 
     # General settings
     gsettings set org.gnome.desktop.privacy report-technical-problems false
-    gsettings set org.gnome.system.location enabled false
     gsettings set org.gnome.desktop.interface clock-format '24h'
-    gsettings set org.gnome.system.locale region 'fr_FR.UTF-8'
-    gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'nothing'
+    gsettings set org.gnome.desktop.interface show-battery-percentage true
     gsettings set org.gnome.GWeather temperature-unit 'centigrade'
+    gsettings set org.gnome.system.locale region 'fr_FR.UTF-8'
+    gsettings set org.gnome.system.location enabled false
+    gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'nothing'
 
     # Numlock
     gsettings set org.gnome.desktop.peripherals.keyboard numlock-state true
