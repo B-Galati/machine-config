@@ -21,6 +21,13 @@ define log_error
 	echo -e "[$(COLOR_ERROR)$$(date +"%T")$(COLOR_RESET)][$(COLOR_ERROR)$(@)$(COLOR_RESET)] $(COLOR_ERROR)$(1)$(COLOR_RESET)"
 endef
 
+define git_pull
+	@$(call log,Changelog for $(1))
+	@git -C $(1) log --oneline --no-merges --format=format:'- %s' HEAD..origin/master
+	@$(call log,Updating $(1))
+	@git -C $(1) pull origin master
+endef
+
 # Make sure the path is up-to-date for the 1st time setup, otherwise ansible may not be found
 export PATH:=$(HOME)/.local/bin:$(PATH)
 
@@ -49,13 +56,13 @@ update:
 .PHONY: do-update
 do-update:
 	@$(call log,Update some repositories)
-	git -C ~/.oh-my-zsh pull
-	git -C ~/.oh-my-zsh/custom/plugins/k3d pull
-	git -C ~/z pull
-	git -C ~/docs pull
-	git -C /opt/kubectx pull origin master
+	$(call git_pull,~/.oh-my-zsh)
+	$(call git_pull,~/.oh-my-zsh/custom/plugins/k3d)
+	$(call git_pull,~/z)
+	$(call git_pull,~/docs)
+	$(call git_pull,/opt/kubectx)
 	@$(call log,Update dotfiles)
-	git -C ~/dotfiles pull
+	$(call git_pull,~/dotfiles)
 	~/dotfiles/bootstrap.sh --force
 	@$(call log,Update system)
 	if which dnf > /dev/null 2>&1; then sudo dnf upgrade --refresh -y; fi
