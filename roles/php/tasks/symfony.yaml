@@ -38,3 +38,10 @@
     - name: Symfony CLI | Check
       command: /usr/local/bin/symfony version
   when: symfony_cli_version not in symfony_cli_installed_version.stdout | default('')
+
+- name: Install auto complete
+  shell: |
+    mkdir -p ~/.oh-my-zsh/completions
+    /usr/local/bin/symfony self:completion zsh > ~/.oh-my-zsh/completions/_symfony
+  args:
+    creates: ~/.oh-my-zsh/completions/_symfony
