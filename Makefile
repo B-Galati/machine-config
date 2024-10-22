@@ -22,6 +22,8 @@ define log_error
 endef
 
 define git_pull
+	@$(call log,Fetching $(1))
+	@git -C $(1) fetch origin master
 	@$(call log,Changelog for $(1))
 	@git -C $(1) log --oneline --no-merges --format=format:'- %s' HEAD..origin/master
 	@$(call log,Updating $(1))
