@@ -1,0 +1,79 @@
+# From https://www.jdegoeij.nl/posts/intune-ubuntu-24-04/
+# https://help.ubuntu.com/community/PinningHowto
+# https://debian-facile.org/doc:systeme:apt:pinning
+---
+- name: Configure Ubuntu sources list
+  become: true
+  copy:
+    dest: /etc/apt/sources.list.d/ubuntu-mantic.sources
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      Types: deb
+      URIs: http://nl.archive.ubuntu.com/ubuntu/
+      Suites: mantic
+      Components: main restricted universe multiverse
+      Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+      Types: deb
+      URIs: http://security.ubuntu.com/ubuntu/
+      Suites: mantic-security
+      Components: main restricted universe multiverse
+      Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+  notify: Update apt cache
+
+- name: Configure Ubuntu default release
+  become: true
+  copy:
+    dest: /etc/apt/apt.conf.d/default-release
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      APT::Default-Release "noble";
+
+- name: Configure Ubuntu package pinning
+  become: true
+  copy:
+    dest: /etc/apt/preferences.d/ubuntu-pinning
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      Package: *
+      Pin: release n=mantic
+      Pin-Priority: 100
+
+- name: Add Microsoft Intune repository
+  shell: |
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+    sudo install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/
+    sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/22.04/prod jammy main" > /etc/apt/sources.list.d/microsoft-ubuntu-jammy-prod.list'
+    sudo rm microsoft.gpg
+  args:
+    creates: /etc/apt/sources.list.d/microsoft-ubuntu-jammy-prod.list
+  notify: Update apt cache
+
+- name: Add Microsoft Edge repository
+  shell: |
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+    sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+    sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
+    sudo rm microsoft.gpg
+  args:
+    creates: /etc/apt/sources.list.d/microsoft-edge-dev.list
+  notify: Update apt cache
+
+- meta: flush_handlers
+
+- name: Install
+  become: true
+  apt:
+    name:
+      - intune-portal
+      - microsoft-edge-stable
+      - openjdk-11-jre
+      - libicu72
+      - libjavascriptcoregtk-4.0-18
+      - libwebkit2gtk-4.0-37
