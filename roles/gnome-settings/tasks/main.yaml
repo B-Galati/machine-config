@@ -111,6 +111,7 @@
     gsettings set org.gnome.desktop.session idle-delay 300
     gsettings set org.gnome.desktop.screensaver lock-delay 0
     gsettings set org.gnome.desktop.screensaver lock-enabled false
+    gsettings set org.gnome.desktop.notifications show-in-lock-screen false
 
     # Night mode display
     gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
