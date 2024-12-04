@@ -1,0 +1,43 @@
+---
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/jesseduffield/lazydocker/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    lazydocker_version: "{{ response.json | json_query('tag_name') | regex_replace('^v', '') }}"
+
+- name: Check for existing install
+  command: /usr/local/bin/lazydocker --version
+  register: lazydocker_installed_version
+  changed_when: lazydocker_version not in lazydocker_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download Lazydocker binary
+      become: true
+      get_url:
+        url: "https://github.com/jesseduffield/lazydocker/releases/download/v{{ lazydocker_version }}/lazydocker_{{ lazydocker_version }}_Linux_x86_64.tar.gz"
+        dest: /tmp/lazydocker.tar.gz
+        mode: 0644
+        force: yes
+
+    - name: Extract Lazydocker binary
+      become: true
+      unarchive:
+        src: /tmp/lazydocker.tar.gz
+        dest: /usr/local/bin/
+        remote_src: yes
+
+    - name: Ensure Lazydocker is executable
+      become: true
+      file:
+        path: /usr/local/bin/lazydocker
+        mode: '0755'
+
+    - name: Check installed version
+      command: /usr/local/bin/lazydocker --version
+  when: lazydocker_version not in lazydocker_installed_version.stdout | default('')
