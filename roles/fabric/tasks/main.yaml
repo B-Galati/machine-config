@@ -1,0 +1,29 @@
+---
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/danielmiessler/fabric/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    fabric_version: "{{ response.json | json_query('tag_name') }}"
+
+- name: Check version to know if an update is needed or not
+  command: '/usr/local/bin/fabric --version'
+  register: fabric_installed_version
+  changed_when: fabric_version not in fabric_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download and install
+      become: true
+      get_url:
+        url: "https://github.com/danielmiessler/fabric/releases/download/{{ fabric_version }}/fabric-linux-amd64"
+        dest: "/usr/local/bin/fabric"
+        mode: '0755'
+
+    - name: Check
+      command: '/usr/local/bin/fabric --version'
+  when: fabric_version not in fabric_installed_version.stdout | default('')
