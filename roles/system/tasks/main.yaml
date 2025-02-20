@@ -15,7 +15,7 @@
   copy:
     dest: /etc/sysctl.d/local.conf
     content: |
-      # See https://docs.kernel.org/admin-guide/sysctl/vm.html
+      # See https://docs.kernel.org/admin-guide/sysctl/vm.html#swappiness
       # vm.swappiness=10
 
       # phpstorm

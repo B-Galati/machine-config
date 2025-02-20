@@ -1,0 +1,27 @@
+---
+- name: Get the latest release from GitLab API
+  uri:
+    url: "https://gitlab.com/api/v4/projects/gitlab-org%2Fcli/releases"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    gitlab_cli_version: "{{ response.json[0].tag_name | regex_replace('^.', '') }}"
+
+- name: Check version to know if an update is needed or not
+  command: '/usr/bin/glab --version'
+  register: gitlab_cli_installed_version
+  changed_when: gitlab_cli_version not in gitlab_cli_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download and install
+      become: true
+      apt:
+        deb: "https://gitlab.com/gitlab-org/cli/-/releases/v{{ gitlab_cli_version }}/downloads/glab_{{ gitlab_cli_version }}_linux_amd64.deb"
+
+    - name: Check
+      command: '/usr/bin/glab --version'
+  when: gitlab_cli_version not in gitlab_cli_installed_version.stdout | default('')
