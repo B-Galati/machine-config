@@ -1,0 +1,17 @@
+---
+- name: Import GPG key
+  become: true
+  shell: |
+    gpg --no-default-keyring --keyring /usr/share/keyrings/insync-archive-keyring.gpg --keyserver keyserver.ubuntu.com --recv-keys ACCAF35C
+  args:
+    creates: /usr/share/keyrings/insync-archive-keyring.gpg
+
+- name: Add repository
+  become: true
+  apt_repository:
+    repo: deb http://apt.insync.io/ubuntu {{ ansible_distribution_release }} non-free contrib
+
+- name: Install
+  become: true
+  apt:
+    name: insync
