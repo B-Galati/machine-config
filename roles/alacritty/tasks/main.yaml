@@ -76,3 +76,11 @@
     repo: https://github.com/alacritty/alacritty-theme.git
     dest: ~/.config/alacritty/themes
     update: false
+
+- name: Set as default terminal emulator
+  become: true
+  alternatives:
+    name: x-terminal-emulator
+    path: /home/{{ ansible_user_id}}/.cargo/bin/alacritty
+    link: /usr/bin/x-terminal-emulator
+    state: auto
