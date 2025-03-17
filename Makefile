@@ -60,7 +60,6 @@ do-update:
 	@$(call log,Update some repositories)
 	$(call git_pull,~/.oh-my-zsh)
 	$(call git_pull,~/.oh-my-zsh/custom/plugins/k3d)
-	$(call git_pull,~/z)
 	$(call git_pull,~/docs)
 	$(call git_pull,/opt/kubectx)
 	@$(call log,Update dotfiles)
