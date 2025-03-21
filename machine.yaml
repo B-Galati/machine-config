@@ -40,7 +40,7 @@
     - rust
     - alacritty
     - zellij
-    - z
+    #- z
     - firefox-dev
     - git-delta
     - jaredhocutt.jetbrains_toolbox
