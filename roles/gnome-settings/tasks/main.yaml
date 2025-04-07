@@ -115,7 +115,8 @@
 
     # Night mode display
     gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
-    gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-automatic false
-    gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-from 0.0
-    gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-to 23.99
+    gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-automatic true
+    gsettings set org.gnome.settings-daemon.plugins.color night-light-last-coordinates '(48.8, 2.3)'
+    #gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-from 0.0
+    #gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-to 23.99
     gsettings set org.gnome.settings-daemon.plugins.color night-light-temperature 'uint32 3200'
