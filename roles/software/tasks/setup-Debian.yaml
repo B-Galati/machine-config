@@ -79,6 +79,7 @@
       - libfuse2
       - graphviz
       - wireguard
+      - jupyter-notebook # to read IPYNB files
       - xournalpp # to annotate and sign pdfs
       #- openjdk-11-jre-headless
       #- klavaro # Typing tool
