@@ -76,6 +76,7 @@
     - k6
     - stoplight-studio
     - ngrok
+    - netbird
     - yq
     - whatsapp
     - fastfetch
