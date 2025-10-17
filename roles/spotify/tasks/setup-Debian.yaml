@@ -1,14 +1,21 @@
 ---
-- name: Set gpg key
+- name: Add GPG key to keyring
   become: true
-  apt_key:
-    url: https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg
+  shell: |
+    curl -sS https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg | gpg --dearmor --yes -o /usr/share/keyrings/spotify.gpg
+  args:
+    creates: /usr/share/keyrings/spotify.gpg
 
-- name: Add repository
+- name: Add APT repository
   become: true
   apt_repository:
-    repo: 'deb http://repository.spotify.com stable non-free'
+    repo: 'deb [signed-by=/usr/share/keyrings/spotify.gpg] https://repository.spotify.com stable non-free'
     filename: spotify
+    state: present
+    update_cache: false
+  notify: Update apt cache
+
+- meta: flush_handlers
 
 - name: Install
   become: true
