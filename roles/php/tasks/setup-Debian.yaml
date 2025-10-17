@@ -28,6 +28,7 @@
       - php8.3-xdebug
       - php8.3-zip
       - php8.3-soap
+      - php8.3-apcu
 
 - name: Correct PHP version selected
   become: true
