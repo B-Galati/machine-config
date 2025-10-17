@@ -10,3 +10,14 @@
   apt:
     deb: https://prerelease.keybase.io/keybase_amd64.deb
   when: keybase_installed.rc == 1
+
+### deprecated store issue: https://github.com/keybase/client/issues/25940
+#
+# sudo apt-key export 222B85B0F90BE2D24CFEB93F47484E50656D16C7 > keybase.asc
+#sudo mv keybase.asc /etc/apt/trusted.gpg.d/
+#sudo chown root:root /etc/apt/trusted.gpg.d/keybase.asc
+#sudo apt-key del 222B85B0F90BE2D24CFEB93F47484E50656D16C7
+#
+#gpg --dearmor keybase.asc and
+#mv the resulting .pgp file to the /usr/share/keyrings/ directory.
+#deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/keybase.gpg] http://prerelease.keybase.io/deb stable main
