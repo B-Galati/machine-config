@@ -30,6 +30,8 @@ make update
 
 - [Disable error report dialog](https://www.kevin-custer.com/blog/how-to-turn-off-the-error-report-dialog-in-ubuntu-20-04/)
 - [Configuration files in the environment.d/](https://www.freedesktop.org/software/systemd/man/latest/environment.d.html)
+- [Ansible Vault with different backends](https://www.monotux.tech/posts/2025/03/ansible-vault/)
+- [Storing Ansible Vault Password in Bitwarden](https://theorangeone.net/posts/ansible-vault-bitwarden/)
 
 # Credits
 

@@ -46,3 +46,34 @@
 - name: Update desktop files
   command: update-desktop-database ~/.local/share/applications -v
   when: bitwarden_desktop_file.changed
+
+# CLI - https://bitwarden.com/help/cli/
+- name: Get the latest CLI release
+  uri:
+    url: "https://api.github.com/repos/bitwarden/clients/releases?per_page=30"
+    return_content: yes
+  register: bw_releases
+  no_log: true
+
+- name: Get CLI version number
+  set_fact:
+    bw_cli_version: "{{ bw_releases.json | selectattr('tag_name', 'match', '^cli-v') | map(attribute='tag_name') | first | regex_replace('^cli-v', '') }}"
+
+- name: Check installed CLI version
+  command: /usr/local/bin/bw --version
+  register: bw_cli_installed_version
+  changed_when: bw_cli_version != bw_cli_installed_version.stdout | default('') | trim
+  failed_when: False
+
+- block:
+    - name: Download CLI
+      unarchive:
+        src: "https://github.com/bitwarden/clients/releases/download/cli-v{{ bw_cli_version }}/bw-linux-{{ bw_cli_version }}.zip"
+        dest: /usr/local/bin
+        remote_src: yes
+        mode: 0755
+      become: true
+
+    - name: Verify CLI install
+      command: /usr/local/bin/bw --version
+  when: bw_cli_version != bw_cli_installed_version.stdout | default('') | trim

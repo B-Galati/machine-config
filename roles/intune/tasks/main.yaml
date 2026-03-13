@@ -46,21 +46,23 @@
       Pin-Priority: 100
 
 - name: Add Microsoft Intune repository
+  become: true
   shell: |
     curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-    sudo install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/
-    sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/22.04/prod jammy main" > /etc/apt/sources.list.d/microsoft-ubuntu-jammy-prod.list'
-    sudo rm microsoft.gpg
+    install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/
+    sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/22.04/prod jammy main" > /etc/apt/sources.list.d/microsoft-ubuntu-jammy-prod.list'
+    rm microsoft.gpg
   args:
     creates: /etc/apt/sources.list.d/microsoft-ubuntu-jammy-prod.list
   notify: Update apt cache
 
 - name: Add Microsoft Edge repository
+  become: true
   shell: |
     curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-    sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-    sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
-    sudo rm microsoft.gpg
+    install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+    sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
+    rm microsoft.gpg
   args:
     creates: /etc/apt/sources.list.d/microsoft-edge-dev.list
   notify: Update apt cache

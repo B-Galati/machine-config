@@ -2,7 +2,7 @@
 - name: Add NetBird GPG key to keyring
   become: true
   shell: |
-    curl -sSL https://pkgs.netbird.io/debian/public.key | sudo gpg --dearmor --output /usr/share/keyrings/netbird-archive-keyring.gpg
+    curl -sSL https://pkgs.netbird.io/debian/public.key | gpg --dearmor --output /usr/share/keyrings/netbird-archive-keyring.gpg
   args:
     creates: /usr/share/keyrings/netbird-archive-keyring.gpg
 

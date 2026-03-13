@@ -1,7 +1,7 @@
 ---
 - name: Add php's ppa
   become: true
-  shell: sudo add-apt-repository ppa:ondrej/php -y
+  shell: add-apt-repository ppa:ondrej/php -y
   args:
     creates: /etc/apt/sources.list.d/ondrej-ubuntu-php-noble.sources
 

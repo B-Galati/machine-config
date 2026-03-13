@@ -16,7 +16,8 @@
     update: false
 
 - name: Install
-  shell: sudo ln -s /opt/kubectx/{{ item }} /usr/local/bin/{{ item }}
+  become: true
+  shell: ln -s /opt/kubectx/{{ item }} /usr/local/bin/{{ item }}
   args:
     creates: /usr/local/bin/{{ item }}
   with_items:
