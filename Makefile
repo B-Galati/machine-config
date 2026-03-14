@@ -100,7 +100,7 @@ requirements.lock: requirements.yaml
 	@touch $@
 
 vault.yaml: | unlock-bitwarden
-	@$(call log,[PAUSE] you will need to specify ansible variable ansible_become_pass in the vault)
+	@$(call log,[PAUSE] you will need to specify ansible variable ansible_become_password in the vault)
 	@$(call log,Press a key to continue...)
 	@read var
 	@ansible-vault create vault.yaml
