@@ -99,7 +99,7 @@ requirements.lock: requirements.yaml
 	ansible-galaxy install --role-file requirements.yaml --roles-path ./roles --force
 	@touch $@
 
-vault.yaml:
+vault.yaml: | unlock-bitwarden
 	@$(call log,[PAUSE] you will need to specify ansible variable ansible_become_pass in the vault)
 	@$(call log,Press a key to continue...)
 	@read var
