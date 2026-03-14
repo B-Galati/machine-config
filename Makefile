@@ -68,6 +68,9 @@ do-update:
 	@$(call log,Update dotfiles)
 	$(call git_pull,~/dotfiles)
 	~/dotfiles/bootstrap.sh --force
+	@$(call log,Update python deps)
+	~/.local/pipx-venv/bin/pip install --upgrade pipx
+	pipx upgrade-all --include-injected
 	@$(call log,Update system)
 	if which dnf > /dev/null 2>&1; then sudo dnf upgrade --refresh -y; fi
 	if which apt > /dev/null 2>&1; then sudo apt update -y && sudo apt upgrade -y --autoremove --purge; fi
@@ -86,9 +89,6 @@ do-update:
 	@$(call log,Update rust and local binaries (toolchains))
 	rustup update
 	cargo install bandwhich grex alacritty sd starship tailspin difftastic
-	@$(call log,Update python deps)
-	~/.local/pipx-venv/bin/pip install --upgrade pipx
-	pipx upgrade-all --include-injected
 	@$(call log,Update NVM)
 	(cd ~/.nvm && git fetch --tags origin && git checkout $$(git describe --abbrev=0 --tags --match "v[0-9]*" $$(git rev-list --tags --max-count=1)))
 	\. ~/.nvm/nvm.sh
