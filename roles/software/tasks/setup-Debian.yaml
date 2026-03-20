@@ -66,6 +66,7 @@
       - flameshot
       - jq
       - vlc
+      - python3-fitz # binding for MuPDF
       - fd-find # find like: https://github.com/sharkdp/fd
       - bat # find like: https://github.com/sharkdp/bat
       - hyperfine # benchmarking: https://github.com/sharkdp/hyperfine
