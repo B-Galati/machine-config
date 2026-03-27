@@ -88,6 +88,7 @@ do-update:
 	composer selfupdate -n
 	@$(call log,Update rust and local binaries (toolchains))
 	rustup update
+	cargo install --git https://github.com/rtk-ai/rtk
 	cargo install bandwhich grex alacritty sd starship tailspin difftastic
 	@$(call log,Update NVM)
 	(cd ~/.nvm && git fetch --tags origin && git checkout $$(git describe --abbrev=0 --tags --match "v[0-9]*" $$(git rev-list --tags --max-count=1)))

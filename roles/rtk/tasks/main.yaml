@@ -1,0 +1,14 @@
+---
+- name: Check for existing installation
+  stat:
+    path: /home/{{ ansible_user_id}}/.cargo/bin/rtk
+  register: rtk_install
+  changed_when: False
+
+- name: Install
+  command: ~/.cargo/bin/cargo install --git https://github.com/rtk-ai/rtk
+  when: not rtk_install.stat.exists
+
+- name: Verify installation
+  command: ~/.cargo/bin/rtk gain
+  changed_when: False

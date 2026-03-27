@@ -70,6 +70,7 @@
     - kubectx
     - trdsql
     - bandwhich # Terminal bandwidth utilization tool
+    - rtk
     - chrome
     - spotify
     - pulumi
