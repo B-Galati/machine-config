@@ -8,6 +8,7 @@
 - name: Install pip packages
   community.general.pipx:
     name: '{{ item }}'
+    executable: ~/.local/bin/pipx
   with_items:
     - s-tui
     - youtube-dl

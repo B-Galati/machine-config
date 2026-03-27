@@ -11,7 +11,7 @@
 - name: Install pip packages
   community.general.pipx:
     name: '{{ item }}'
-    executable: pipx
+    executable: ~/.local/bin/pipx
   with_items:
     - gnome-extensions-cli
 
