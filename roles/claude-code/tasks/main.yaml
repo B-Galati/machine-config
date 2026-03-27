@@ -1,0 +1,10 @@
+---
+- name: Check for existing install
+  command: claude --version
+  register: claude_code_installed
+  failed_when: false
+  changed_when: false
+
+- name: Install Claude Code
+  shell: curl -fsSL https://claude.ai/install.sh | bash
+  when: claude_code_installed.rc != 0 or force_install
