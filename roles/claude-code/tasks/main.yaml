@@ -8,3 +8,9 @@
 - name: Install Claude Code
   shell: curl -fsSL https://claude.ai/install.sh | bash
   when: claude_code_installed.rc != 0 or force_install
+
+- name: Install logo
+  become: true
+  copy:
+    src: claude.svg
+    dest: /usr/share/pixmaps/claude.svg
