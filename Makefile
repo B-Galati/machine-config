@@ -93,6 +93,8 @@ do-update:
 	@$(call log,Update NVM)
 	(cd ~/.nvm && git fetch --tags origin && git checkout $$(git describe --abbrev=0 --tags --match "v[0-9]*" $$(git rev-list --tags --max-count=1)))
 	\. ~/.nvm/nvm.sh
+	@$(call log,Update Bitwarden)
+	$(MAKE) install ARGS="-t bitwarden"
 
 .PHONY: requirements
 requirements: requirements.lock
