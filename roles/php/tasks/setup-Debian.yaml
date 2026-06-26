@@ -5,42 +5,24 @@
   args:
     creates: /etc/apt/sources.list.d/ondrej-ubuntu-php-noble.sources
 
-- name: Install php 8.3 packages
+- name: Install PHP packages for all versions
   become: true
   apt:
-    name: '{{ packages }}'
-  vars:
-    packages:
-      - php8.3-cli
-      - php8.3-opcache
-      - php8.3-common
-      - php8.3-amqp
-      - php8.3-curl
-      - php8.3-fpm
-      - php8.3-intl
-      - php8.3-mbstring
-      - php8.3-pgsql
-      - php8.3-mysql
-      - php8.3-redis
-      - php8.3-readline
-      - php8.3-sqlite3
-      - php8.3-xml
-      - php8.3-xdebug
-      - php8.3-zip
-      - php8.3-soap
-      - php8.3-apcu
+    name: "{{ php_versions | product(php_extensions) | map('join', '-') | map('regex_replace', '^', 'php') | list }}"
+  # 8.3 + [cli, fpm, ...] -> [php8.3-cli, php8.3-fpm, ...]
 
-- name: Correct PHP version selected
+- name: Select default PHP version via alternatives
   become: true
   alternatives:
     name: php
-    path: /usr/bin/php8.3
+    path: "/usr/bin/php{{ item }}"
+    link: /usr/bin/php
+    priority: "{{ 100 if item == php_default_version else 50 }}"
+  loop: "{{ php_versions }}"
 
-- name: Write /etc/php/{{ item }}/conf.d/99-custom.ini file
+- name: Write 99-custom.ini for each version (cli + fpm)
   become: true
   copy:
     src: php.ini
-    dest: /etc/php/{{ item }}/conf.d/99-custom.ini
-  with_items:
-    - 8.3/cli
-    - 8.3/fpm
+    dest: "/etc/php/{{ item.0 }}/{{ item.1 }}/conf.d/99-custom.ini"
+  loop: "{{ php_versions | product(['cli', 'fpm']) | list }}"

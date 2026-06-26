@@ -1,0 +1,29 @@
+---
+# Add a line here to install another version side-by-side.
+php_versions:
+  - "8.3"
+  - "8.4"
+
+# Which version `php` (the default CLI) resolves to. Must be in php_versions.
+php_default_version: "8.3"
+
+# Extensions installed for every version listed above.
+php_extensions:
+  - cli
+  - opcache
+  - common
+  - amqp
+  - curl
+  - fpm
+  - intl
+  - mbstring
+  - pgsql
+  - mysql
+  - redis
+  - readline
+  - sqlite3
+  - xml
+  - xdebug
+  - zip
+  - soap
+  - apcu
