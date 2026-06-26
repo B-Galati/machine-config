@@ -9,9 +9,21 @@
 
 - name: Add repository
   become: true
-  apt_repository:
-    repo: deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main
+  deb822_repository:
+    name: k6
+    types: deb
+    uris: https://dl.k6.io/deb
+    suites: stable
+    components: main
+    signed_by: /usr/share/keyrings/k6-archive-keyring.gpg
+    state: present
   register: k6_repo
+
+- name: Update apt cache
+  become: true
+  apt:
+    update_cache: yes
+  when: k6_repo.changed
 
 - name: Install
   become: true

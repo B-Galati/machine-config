@@ -1,15 +1,22 @@
 ---
-- name: Add apt key repository
+- name: Add GPG key to keyring
   become: true
-  apt_key:
-    url: https://dl-ssl.google.com/linux/linux_signing_key.pub
-    state: present
+  shell: |
+    install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor --yes -o /etc/apt/keyrings/google-chrome.gpg
+  args:
+    creates: /etc/apt/keyrings/google-chrome.gpg
 
 - name: Add apt repository
   become: true
-  apt_repository:
-    filename: google-chrome
-    repo: deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
+  deb822_repository:
+    name: google-chrome
+    types: deb
+    uris: https://dl.google.com/linux/chrome/deb/
+    suites: stable
+    components: main
+    architectures: amd64
+    signed_by: /etc/apt/keyrings/google-chrome.gpg
     state: present
 
 - name: Install

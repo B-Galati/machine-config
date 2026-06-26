@@ -8,11 +8,14 @@
 
 - name: Add APT repository
   become: true
-  apt_repository:
-    repo: 'deb [signed-by=/usr/share/keyrings/spotify.gpg] https://repository.spotify.com stable non-free'
-    filename: spotify
+  deb822_repository:
+    name: spotify
+    types: deb
+    uris: https://repository.spotify.com
+    suites: stable
+    components: non-free
+    signed_by: /usr/share/keyrings/spotify.gpg
     state: present
-    update_cache: false
   notify: Update apt cache
 
 - meta: flush_handlers

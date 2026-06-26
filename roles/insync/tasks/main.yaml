@@ -8,8 +8,23 @@
 
 - name: Add repository
   become: true
-  apt_repository:
-    repo: deb http://apt.insync.io/ubuntu {{ ansible_distribution_release }} non-free contrib
+  deb822_repository:
+    name: insync
+    types: deb
+    uris: http://apt.insync.io/ubuntu
+    suites: "{{ ansible_distribution_release }}"
+    components:
+      - non-free
+      - contrib
+    signed_by: /usr/share/keyrings/insync-archive-keyring.gpg
+    state: present
+  register: insync_repo
+
+- name: Update apt cache
+  become: true
+  apt:
+    update_cache: yes
+  when: insync_repo.changed
 
 - name: Install
   become: true

@@ -15,11 +15,22 @@
 
 - name: Add GitHub CLI repository
   become: true
-  apt_repository:
-    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
-    filename: github-cli
+  deb822_repository:
+    name: github-cli
+    types: deb
+    uris: https://cli.github.com/packages
+    suites: stable
+    components: main
+    architectures: amd64
+    signed_by: /usr/share/keyrings/githubcli-archive-keyring.gpg
     state: present
+  register: github_cli_repo
+
+- name: Update apt cache
+  become: true
+  apt:
     update_cache: yes
+  when: github_cli_repo.changed
 
 - name: Install GitHub CLI
   become: true
