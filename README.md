@@ -17,15 +17,6 @@ make install ARGS="-t discord -e force_install=true}"
 make update
 ```
 
-# Ideas of some things to do manually 
-
-- Configure TLP to optimize battery lifetime
-
-- Initialize favorite apps:
-```shell
- gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'alacritty.desktop', 'jetbrains-phpstorm-55be83e5-2bc4-4556-bef0-9a571ec27ac3.desktop', 'firefox-dev.desktop', 'google-chrome.desktop', 'enpass.desktop', 'slack.desktop', 'discord_discord.desktop', 'whatsapp.desktop', 'spotify.desktop', 'org.gnome.SystemMonitor.desktop', 'btop.desktop', 'org.gnome.Characters.desktop', 'org.gnome.TextEditor.desktop']"
-```
-
 # References
 
 - [Disable error report dialog](https://www.kevin-custer.com/blog/how-to-turn-off-the-error-report-dialog-in-ubuntu-20-04/)
