@@ -58,6 +58,9 @@
     gsettings set org.gnome.shell.extensions.tilingshell layouts-json '[{"id":"Layout 1","tiles":[{"x":0,"y":0,"width":0.22,"height":0.5,"groups":[1,2]},{"x":0,"y":0.5,"width":0.22,"height":0.5,"groups":[1,2]},{"x":0.22,"y":0,"width":0.56,"height":1,"groups":[2,3]},{"x":0.78,"y":0,"width":0.22,"height":0.5,"groups":[3,4]},{"x":0.78,"y":0.5,"width":0.22,"height":0.5,"groups":[3,4]}]},{"id":"Layout 2","tiles":[{"x":0,"y":0,"width":0.22,"height":1,"groups":[1]},{"x":0.22,"y":0,"width":0.56,"height":1,"groups":[1,2]},{"x":0.78,"y":0,"width":0.22,"height":1,"groups":[2]}]},{"id":"Layout 3","tiles":[{"x":0,"y":0,"width":0.33,"height":1,"groups":[1]},{"x":0.33,"y":0,"width":0.67,"height":1,"groups":[1]}]},{"id":"Layout 4","tiles":[{"x":0,"y":0,"width":0.67,"height":1,"groups":[1]},{"x":0.67,"y":0,"width":0.33,"height":1,"groups":[1]}]},{"id":"30678093","tiles":[{"x":0,"y":0,"width":0.5,"height":1,"groups":[1]},{"x":0.5,"y":0,"width":0.49999999999999994,"height":1,"groups":[1]}]}]'
     gsettings set org.gnome.shell.extensions.tilingshell inner-gaps 4
     gsettings set org.gnome.shell.extensions.tilingshell outer-gaps 4
+    gsettings set org.gnome.shell.extensions.tilingshell enable-window-border true
+    gsettings set org.gnome.shell.extensions.tilingshell window-border-width 2
+    gsettings set org.gnome.shell.extensions.tilingshell window-use-custom-border-color true
 
     # Appearance
     gsettings set org.gnome.desktop.interface enable-animations true
@@ -79,8 +82,7 @@
     gsettings set org.gnome.mutter workspaces-only-on-primary true
 
     # Reset shortcut for screenshot
-    gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot []
-    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
     gsettings set org.gnome.shell.keybindings show-screenshot-ui []
 
     # Use Flameshot for screenshot and bind shortcut see https://askubuntu.com/questions/1036473/ubuntu-18-how-to-change-screenshot-application-to-flameshot
@@ -91,12 +93,6 @@
     # Set shortcut to mute mic
     gsettings set org.gnome.settings-daemon.plugins.media-keys email-static []
     gsettings set org.gnome.settings-daemon.plugins.media-keys mic-mute '["Pause", "Mail", "<Ctrl>Mail"]'
-
-    # Set shortcut to switch windows
-    gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Alt>Tab']"
-    gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab']"
-    gsettings set org.gnome.desktop.wm.keybindings switch-applications "['<Super>Tab']"
-    gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "['<Shift><Super>Tab']"
 
     # General settings
     gsettings set org.gnome.desktop.privacy report-technical-problems false
