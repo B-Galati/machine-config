@@ -94,18 +94,14 @@ do-update:
 	if which snap > /dev/null 2>&1; then sudo snap refresh; fi
 	@$(call log,Update gnome extensions)
 	gext update -y --user
-	$(MAKE) install ARGS="-t gnome-settings"
 	@$(call log,Update composer)
 	composer selfupdate -n
 	@$(call log,Update rust and local binaries (toolchains))
 	rustup update
 	cargo install --git https://github.com/rtk-ai/rtk
 	cargo install bandwhich grex alacritty sd starship tailspin difftastic
-	@$(call log,Update NVM)
-	(cd ~/.nvm && git fetch --tags origin && git checkout $$(git describe --abbrev=0 --tags --match "v[0-9]*" $$(git rev-list --tags --max-count=1)))
-	\. ~/.nvm/nvm.sh
-	@$(call log,Update Bitwarden)
-	$(MAKE) install ARGS="-t bitwarden"
+	@$(call log,Update other packages through ansible)
+	$(MAKE) install ARGS="-t gnome-settings,bitwarden,zellij,git-delta,php,awscli,mkcert,hexyl,pdfcpu,gitlab-cli,task,helm,trdsql,dstp,yq,fastfetch,lazydocker,handy"
 
 vault.yaml: | unlock-bitwarden
 	@$(call log,[PAUSE] you will need to specify ansible variable ansible_become_password in the vault)
