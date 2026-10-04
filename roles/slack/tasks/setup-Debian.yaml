@@ -10,4 +10,16 @@
       become: true
       apt:
         deb: https://downloads.slack-edge.com/desktop-releases/linux/x64/4.39.95/slack-desktop-4.39.95-amd64.deb
+
+    # Slack's daily cron adds its apt repository and key: run it now instead of waiting a day
+    - name: Add Slack apt repository
+      become: true
+      command: /etc/cron.daily/slack
+
+    - name: Upgrade to the latest version
+      become: true
+      apt:
+        update_cache: yes
+        name: slack-desktop
+        state: latest
   when: slack_installed.rc == 1
