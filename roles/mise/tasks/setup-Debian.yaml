@@ -2,8 +2,13 @@
 - name: Add NetBird GPG key to keyring
   become: true
   shell: |
-    wget -qO - https://mise.jdx.dev/gpg-key.pub | gpg --dearmor | tee /etc/apt/keyrings/mise-archive-keyring.gpg 1> /dev/null
+    set -euo pipefail
+    tmp=$(mktemp)
+    trap 'rm -f "$tmp"' EXIT
+    curl -fsSL https://mise.jdx.dev/gpg-key.pub | gpg --dearmor > "$tmp"
+    install -D -m 0644 "$tmp" /etc/apt/keyrings/mise-archive-keyring.gpg
   args:
+    executable: /bin/bash
     creates: /etc/apt/keyrings/mise-archive-keyring.gpg
 
 - name: Add APT repository

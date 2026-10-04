@@ -8,20 +8,12 @@
       - ca-certificates
       - curl
 
-- name: Check for existing GPG key
-  become: true
-  stat:
-    path: /etc/apt/keyrings/docker.asc
-  register: docker_key
-  changed_when: False
-
 - name: Import GPG key
   become: true
-  shell: |
-    install -m 0755 -d /etc/apt/keyrings
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-    chmod a+r /etc/apt/keyrings/docker.asc
-  when: not docker_key.stat.exists
+  get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: 0644
 
 - name: Add Docker repository
   become: true

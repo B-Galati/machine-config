@@ -1,17 +1,36 @@
 ---
-- name: Install APT repository
+- name: Add GPG key
   become: true
   shell: |
-    set -x
-    curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | \
-    gpg --dearmor -o /etc/apt/keyrings/ngrok.gpg && \
-    echo "deb [signed-by=/etc/apt/keyrings/ngrok.gpg] https://ngrok-agent.s3.amazonaws.com buster main" | \
-    tee /etc/apt/sources.list.d/ngrok.list && \
-    apt update && apt install ngrok
+    set -euo pipefail
+    tmp=$(mktemp)
+    trap 'rm -f "$tmp"' EXIT
+    curl -fsSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc | gpg --dearmor > "$tmp"
+    install -D -m 0644 "$tmp" /etc/apt/keyrings/ngrok.gpg
   args:
-    creates: /etc/apt/sources.list.d/ngrok.list
+    executable: /bin/bash
+    creates: /etc/apt/keyrings/ngrok.gpg
+
+# Replaced by ngrok.sources below
+- name: Remove legacy repository file
+  become: true
+  file:
+    path: /etc/apt/sources.list.d/ngrok.list
+    state: absent
+
+- name: Add apt repository
+  become: true
+  deb822_repository:
+    name: ngrok
+    types: deb
+    uris: https://ngrok-agent.s3.amazonaws.com
+    suites: buster
+    components: main
+    signed_by: /etc/apt/keyrings/ngrok.gpg
+    state: present
 
 - name: Install
   become: true
   apt:
+    update_cache: yes
     name: ngrok

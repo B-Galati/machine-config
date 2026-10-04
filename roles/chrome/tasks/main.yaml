@@ -2,9 +2,13 @@
 - name: Add GPG key to keyring
   become: true
   shell: |
-    install -m 0755 -d /etc/apt/keyrings
-    curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor --yes -o /etc/apt/keyrings/google-chrome.gpg
+    set -euo pipefail
+    tmp=$(mktemp)
+    trap 'rm -f "$tmp"' EXIT
+    curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > "$tmp"
+    install -D -m 0644 "$tmp" /etc/apt/keyrings/google-chrome.gpg
   args:
+    executable: /bin/bash
     creates: /etc/apt/keyrings/google-chrome.gpg
 
 - name: Add apt repository
