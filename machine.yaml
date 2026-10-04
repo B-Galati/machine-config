@@ -6,6 +6,9 @@
   vars_files: [ vault.yaml ]
   vars:
     force_install: false
+  # pipx tools land in ~/.local/bin, which is not in PATH outside `make` or before a re-login
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   pre_tasks:
     - name: Debug info
       debug:
