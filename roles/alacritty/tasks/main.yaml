@@ -84,3 +84,10 @@
     path: /home/{{ ansible_user_id}}/.cargo/bin/alacritty
     link: /usr/bin/x-terminal-emulator
     state: auto
+
+# GNOME launches the terminal through xdg-terminal-exec, which ignores x-terminal-emulator
+- name: Set as default terminal for xdg-terminal-exec
+  copy:
+    content: "alacritty.desktop\n"
+    dest: ~/.config/xdg-terminals.list
+    mode: 0644
