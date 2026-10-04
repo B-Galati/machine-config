@@ -5,6 +5,7 @@
     state: present
     name:
       - apt-file
+      - build-essential
       - lnav
       - stress
       - meld
@@ -35,7 +36,7 @@
       - openssl
       - network-manager-openvpn-gnome
       - openvpn-systemd-resolved
-      - resolvconf
+      - systemd-resolved
       - tzdata
       - locales
       - shellcheck
@@ -55,13 +56,13 @@
       - ncdu
       - pandoc
       - libnss3-tools
-      - pdftk
+      - pdftk-java
       - inkscape
       - gnupg2
       - entr
       - gdebi
       - fonts-roboto
-      - chrome-gnome-shell
+      - gnome-browser-connector
       - flameshot
       - jq
       - vlc
@@ -76,7 +77,7 @@
       - visidata
       - libnotify-bin
       - nfs-common
-      - libfuse2
+      - libfuse2t64
       - graphviz
       - wireguard
       - jupyter-notebook # to read IPYNB files

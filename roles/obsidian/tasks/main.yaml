@@ -2,7 +2,7 @@
 - name: Install deps
   become: true
   apt:
-    name: libfuse2
+    name: libfuse2t64
     state: present
 
 - name: Check for existing install
