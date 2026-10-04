@@ -7,6 +7,7 @@
       - gnome-tweaks
       - gnome-shell-extensions
       - gnome-shell-extension-manager
+      - gnome-shell-extension-system-monitor
 
 - name: Install pip packages
   community.general.pipx:
@@ -17,12 +18,12 @@
 
 - name: Install Gnome extensions
   shell: |
-    set -x
+    set -xe
     # Turn off some extensions
     gnome-extensions disable tiling-assistant@ubuntu.com
     
-    # Turn on some extensions
-    gnome-extensions enable system-monitor@gnome-shell-extensions.gcampax.github.com
+    # Turn on some extensions (filesystem backend: the running shell only sees newly installed extensions after a re-login)
+    gext -F enable system-monitor@gnome-shell-extensions.gcampax.github.com
     
     # Install new extensions
     gext install tilingshell@ferrarodomenico.com
@@ -30,7 +31,7 @@
 - name: Compile gsettings schemas in order to be able to set them
   become: true
   shell: |
-    set -x
+    set -xe
     cp {{ ansible_env.HOME }}/.local/share/gnome-shell/extensions/tilingshell@ferrarodomenico.com/schemas/org.gnome.shell.extensions.tilingshell.gschema.xml /usr/share/glib-2.0/schemas/
     glib-compile-schemas /usr/share/glib-2.0/schemas/
 
@@ -40,7 +41,7 @@
 #  -  dconf watch <KEY>
 - name: Apply gnome config for Pop!_OS
   shell: |
-    set -x
+    set -xe
     
     # Tiling
     gsettings set org.gnome.shell.extensions.pop-shell active-hint true
@@ -52,7 +53,7 @@
 
 - name: Apply gnome config
   shell: |
-    set -x
+    set -xe
 
     # Tiling Shell
     gsettings set org.gnome.shell.extensions.tilingshell layouts-json '[{"id":"Layout 1","tiles":[{"x":0,"y":0,"width":0.22,"height":0.5,"groups":[1,2]},{"x":0,"y":0.5,"width":0.22,"height":0.5,"groups":[1,2]},{"x":0.22,"y":0,"width":0.56,"height":1,"groups":[2,3]},{"x":0.78,"y":0,"width":0.22,"height":0.5,"groups":[3,4]},{"x":0.78,"y":0.5,"width":0.22,"height":0.5,"groups":[3,4]}]},{"id":"Layout 2","tiles":[{"x":0,"y":0,"width":0.22,"height":1,"groups":[1]},{"x":0.22,"y":0,"width":0.56,"height":1,"groups":[1,2]},{"x":0.78,"y":0,"width":0.22,"height":1,"groups":[2]}]},{"id":"Layout 3","tiles":[{"x":0,"y":0,"width":0.33,"height":1,"groups":[1]},{"x":0.33,"y":0,"width":0.67,"height":1,"groups":[1]}]},{"id":"Layout 4","tiles":[{"x":0,"y":0,"width":0.67,"height":1,"groups":[1]},{"x":0.67,"y":0,"width":0.33,"height":1,"groups":[1]}]},{"id":"30678093","tiles":[{"x":0,"y":0,"width":0.5,"height":1,"groups":[1]},{"x":0.5,"y":0,"width":0.49999999999999994,"height":1,"groups":[1]}]}]'
@@ -98,7 +99,7 @@
     gsettings set org.gnome.desktop.privacy report-technical-problems false
     gsettings set org.gnome.desktop.interface clock-format '24h'
     gsettings set org.gnome.desktop.interface show-battery-percentage true
-    gsettings set org.gnome.GWeather temperature-unit 'centigrade'
+    gsettings set org.gnome.GWeather4 temperature-unit 'centigrade'
     gsettings set org.gnome.system.locale region 'fr_FR.UTF-8'
     gsettings set org.gnome.system.location enabled false
     gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'nothing'
