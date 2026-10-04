@@ -107,7 +107,7 @@ install.lock:
 	@if which apt > /dev/null 2>&1; then \
         sudo add-apt-repository ppa:git-core/ppa -yn && \
         sudo apt update -y && \
-        sudo apt install -y git python-is-python3 python3-pip \
+        sudo apt install -y curl git python-is-python3 python3-pip python3-venv \
     ; fi
 	@if which dnf > /dev/null 2>&1; then \
          sudo dnf install -y git && \
