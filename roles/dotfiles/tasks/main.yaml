@@ -2,6 +2,7 @@
 - name: Clone dotfiles
   git:
     repo: git@github.com:B-Galati/dotfiles
+    accept_newhostkey: true
     dest: ~/dotfiles
     update: false
 
@@ -11,6 +12,7 @@
 - name: Clone docs
   git:
     repo: git@gitlab.com:B-Galati/docs.git
+    accept_newhostkey: true
     dest: ~/docs
     update: false
 
