@@ -1,8 +1,18 @@
 ---
+# Not a `creates` guard: rustup creates ~/.cargo/bin/cargo before installing the toolchain
+- name: Check for existing install
+  command: "{{ ansible_env.HOME }}/.cargo/bin/cargo --version"
+  register: cargo_installed
+  failed_when: false
+  changed_when: false
+
 - name: Install
-  shell: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+  shell: |
+    set -euo pipefail
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
   args:
-    creates: "{{ ansible_env.HOME }}/.cargo"
+    executable: /bin/bash
+  when: cargo_installed.rc != 0
 
 - name: Update PATH
   copy:
