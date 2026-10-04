@@ -51,7 +51,6 @@
     #- z
     - git-delta
     - jetbrains-toolbox
-    - phpstorm-url-handler
     - discord
     #- keybase
     - php
