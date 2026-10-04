@@ -9,6 +9,10 @@
   shell: curl -fsSL https://claude.ai/install.sh | bash
   when: claude_code_installed.rc != 0 or force_install
 
+- name: Check installed version
+  command: claude --version
+  changed_when: false
+
 - name: Install logo
   become: true
   copy:
