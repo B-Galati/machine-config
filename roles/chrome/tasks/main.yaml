@@ -22,4 +22,5 @@
 - name: Install
   become: true
   apt:
+    update_cache: yes
     name: google-chrome-stable
