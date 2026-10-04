@@ -34,17 +34,11 @@
     architectures: amd64
     signed_by: /etc/apt/keyrings/docker.asc
     state: present
-  register: docker_repo
-
-- name: Update apt cache
-  become: true
-  apt:
-    update_cache: yes
-  when: docker_repo.changed
 
 - name: Install docker
   become: true
   apt:
+    update_cache: yes
     name: '{{ packages }}'
   vars:
     packages:

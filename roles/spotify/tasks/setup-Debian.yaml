@@ -16,11 +16,9 @@
     components: non-free
     signed_by: /usr/share/keyrings/spotify.gpg
     state: present
-  notify: Update apt cache
-
-- meta: flush_handlers
 
 - name: Install
   become: true
   apt:
+    update_cache: yes
     name: [spotify-client]

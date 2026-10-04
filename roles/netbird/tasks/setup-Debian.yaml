@@ -16,12 +16,10 @@
     components: main
     signed_by: /usr/share/keyrings/netbird-archive-keyring.gpg
     state: present
-  notify: Update apt cache
-
-- meta: flush_handlers
 
 - name: Install NetBird
   become: true
   apt:
+    update_cache: yes
     name: [netbird, netbird-ui]
     state: present
