@@ -87,7 +87,7 @@
     - fabric
     - insync
     #- intune
-    #- handy # https://github.com/cjpais/Handy
+    - handy # https://github.com/cjpais/Handy
     #- pg-lord-of-the-rings # https://gitlab.com/l_avrot/pg-lord-of-the-rings
     - claude-code
     #- https://github.com/EpicenterHQ/epicenter

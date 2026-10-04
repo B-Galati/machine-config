@@ -1,0 +1,43 @@
+---
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/cjpais/Handy/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    handy_version: "{{ response.json | json_query('tag_name') | regex_replace('^v', '') }}"
+
+- name: Check for existing install
+  command: dpkg-query -W -f='${Version}' handy
+  register: handy_installed_version
+  changed_when: False
+  failed_when: False
+
+- name: Install
+  become: true
+  apt:
+    deb: "https://github.com/cjpais/Handy/releases/download/v{{ handy_version }}/Handy_{{ handy_version }}_amd64.deb"
+  when: handy_installed_version.stdout != handy_version
+
+# Text input on Wayland: wtype does not work on Ubuntu 26.04, ydotool is required
+- name: Install ydotool
+  become: true
+  apt:
+    name: ydotool
+
+- name: Allow ydotoold to access /dev/uinput
+  become: true
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: input
+    append: yes
+
+# Starts at next login, once the input group membership is active
+- name: Enable ydotool user service
+  systemd_service:
+    name: ydotool
+    scope: user
+    enabled: yes
