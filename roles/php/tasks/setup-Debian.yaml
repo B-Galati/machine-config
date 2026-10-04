@@ -1,13 +1,25 @@
 ---
-- name: Add php's ppa
+# ppa:ondrej/php is deprecated (no packages since 26.04), replaced by packages.sury.org
+- name: Install sury.org keyring
   become: true
-  shell: add-apt-repository ppa:ondrej/php -y
-  args:
-    creates: /etc/apt/sources.list.d/ondrej-ubuntu-php-noble.sources
+  apt:
+    deb: https://packages.sury.org/debsuryorg-archive-keyring.deb
+
+- name: Add sury.org PHP repository
+  become: true
+  deb822_repository:
+    name: sury-php
+    types: deb
+    uris: https://packages.sury.org/php
+    suites: "{{ ansible_distribution_release | lower }}"
+    components: main
+    signed_by: /usr/share/keyrings/debsuryorg-archive-keyring.gpg
+    state: present
 
 - name: Install PHP packages for all versions
   become: true
   apt:
+    update_cache: yes
     name: "{{ php_versions | product(php_extensions) | map('join', '-') | map('regex_replace', '^', 'php') | list }}"
   # 8.3 + [cli, fpm, ...] -> [php8.3-cli, php8.3-fpm, ...]
 

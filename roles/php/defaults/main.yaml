@@ -1,16 +1,15 @@
 ---
 # Add a line here to install another version side-by-side.
 php_versions:
-  - "8.3"
-  - "8.4"
+  - "8.5"
 
 # Which version `php` (the default CLI) resolves to. Must be in php_versions.
-php_default_version: "8.3"
+php_default_version: "8.5"
 
 # Extensions installed for every version listed above.
+# No opcache: it is built into PHP since 8.5 (no php8.5-opcache package).
 php_extensions:
   - cli
-  - opcache
   - common
   - amqp
   - curl
