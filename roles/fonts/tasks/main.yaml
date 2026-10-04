@@ -2,12 +2,16 @@
 - name: Install fonts
   shell: |
     set -xe
-    
-    wget -nv -O "/tmp/{{ item }}.zip" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/{{ item }}.zip" 
-    unzip -o "/tmp/{{ item }}.zip" -d "/tmp/{{ item }}"
-    mkdir -p "{{ ansible_env.HOME }}/.local/share/fonts/{{ item }}"
-    cp /tmp/{{ item }}/*.ttf "{{ ansible_env.HOME }}/.local/share/fonts/{{ item }}"
-    rm -rf "/tmp/{{ item }}" "/tmp/{{ item }}.zip"
+
+    # Built next to the final dir, then renamed: the `creates` dir only exists once complete
+    mkdir -p "{{ ansible_env.HOME }}/.local/share/fonts"
+    tmp=$(mktemp -d "{{ ansible_env.HOME }}/.local/share/fonts/.{{ item }}.XXXXXX")
+    trap 'rm -rf "$tmp"' EXIT
+    wget -nv -O "$tmp/font.zip" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/{{ item }}.zip"
+    unzip -o "$tmp/font.zip" -d "$tmp/unzipped"
+    mkdir "$tmp/{{ item }}"
+    cp "$tmp"/unzipped/*.ttf "$tmp/{{ item }}"
+    mv "$tmp/{{ item }}" "{{ ansible_env.HOME }}/.local/share/fonts/{{ item }}"
   args:
     creates: '{{ ansible_env.HOME }}/.local/share/fonts/{{ item }}'
   with_items:

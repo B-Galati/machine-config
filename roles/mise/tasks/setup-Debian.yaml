@@ -1,5 +1,5 @@
 ---
-- name: Add NetBird GPG key to keyring
+- name: Add GPG key to keyring
   become: true
   shell: |
     set -euo pipefail

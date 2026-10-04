@@ -17,7 +17,6 @@
       Type=Application
       Icon={{ ansible_env.HOME }}/.local/share/icons/WhatsApp.png
       Categories=GTK;
-      MimeType=text/html;text/xml;application/xhtml_xml;
       StartupNotify=true
   register: whatsapp_desktop_file
 
