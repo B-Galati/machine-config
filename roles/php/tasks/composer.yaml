@@ -36,9 +36,15 @@
         mode: 0755
   when: not composer_bin.stat.exists
 
+# ~/.composer if it exists, otherwise ~/.config/composer (XDG)
+- name: Get Composer global bin dir
+  command: ~/.local/bin/composer global config bin-dir --absolute
+  register: composer_bin_dir
+  changed_when: false
+
 - name: Update PATH
   copy:
       content: |
-        PATH="$PATH:{{ ansible_env.HOME }}/.composer/vendor/bin"
+        PATH="$PATH:{{ composer_bin_dir.stdout }}"
       dest: ~/.config/environment.d/composer.conf
       mode: 0644
