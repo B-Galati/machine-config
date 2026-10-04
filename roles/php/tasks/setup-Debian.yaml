@@ -13,6 +13,7 @@
     uris: https://packages.sury.org/php
     suites: "{{ ansible_distribution_release | lower }}"
     components: main
+    architectures: amd64
     signed_by: /usr/share/keyrings/debsuryorg-archive-keyring.gpg
     state: present
 
