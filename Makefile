@@ -100,7 +100,7 @@ do-update:
 	rustup update
 	cargo install --git https://github.com/rtk-ai/rtk
 	cargo install bandwhich grex alacritty sd starship tailspin difftastic
-	@$(call log,Update other packages through ansible)
+	@$(call log,Update tools installed from upstream releases and reapply GNOME settings)
 	$(MAKE) install ARGS="-t gnome-settings,bitwarden,zellij,git-delta,symfony,awscli,mkcert,hexyl,pdfcpu,gitlab-cli,task,helm,trdsql,dstp,yq,fastfetch,lazydocker,handy"
 
 vault.yaml: | unlock-bitwarden
