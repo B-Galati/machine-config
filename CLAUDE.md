@@ -8,7 +8,7 @@ Ansible-based personal machine provisioning for Debian/RedHat Linux workstations
 
 ## Architecture
 
-- **`machine.yaml`** — Main playbook. Runs against localhost, gathers minimal facts, imports `vault.yaml` for secrets.
+- **`machine.yaml`** — Main playbook. Runs against localhost, gathers minimal facts. The become password comes from `vault.yaml` (decrypted via Bitwarden), passed by the `Makefile`; `NO_BW=1` prompts for it instead.
 - **`roles/`** — Each role is a self-contained Ansible role (e.g., `roles/docker/tasks/main.yaml`). Multi-distro roles use `setup-Debian.yaml` / `setup-RedHat.yaml` conditional imports.
 - **`Makefile`** — Orchestrates installation, updates, and first-time bootstrap (installs Bitwarden CLI, pipx, Ansible).
 

@@ -7,6 +7,9 @@ sudo apt update -y && sudo apt install -y make
 # Set up everything
 make install
 
+# 1st install: Bitwarden is not reachable yet, the sudo password is prompted instead
+make install NO_BW=1
+
 # Install a given role
 make install ARGS="-t docker"
 

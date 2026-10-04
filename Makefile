@@ -42,9 +42,20 @@ unlock-bitwarden:
 	@bw unlock --check > /dev/null 2>&1 || { echo 'Bitwarden is locked. Run: export BW_SESSION=$$(bw unlock --raw)'; exit 1; }
 	@sudo -nv 2>/dev/null || { pw=$$(ansible-vault view vault.yaml | yq '.ansible_become_password') && echo "$$pw" | sudo -Sv; }
 
+# NO_BW=1 skips Bitwarden (required for the 1st install, as Bitwarden needs a fully set up machine): the sudo password is prompted instead
+NO_BW?=
+ifeq ($(NO_BW),)
+BW_DEPS:=vault.yaml unlock-bitwarden
+BECOME_ARGS:=-e @vault.yaml
+export ANSIBLE_VAULT_PASSWORD_FILE:=$(CURDIR)/vault-pass.sh
+else
+BW_DEPS:=
+BECOME_ARGS:=-K
+endif
+
 .PHONY: install
-install: ~/.ssh/id_rsa install.lock vault.yaml unlock-bitwarden
-	ansible-playbook machine.yaml --verbose $(ARGS)
+install: ~/.ssh/id_rsa install.lock $(BW_DEPS)
+	ansible-playbook machine.yaml $(BECOME_ARGS) --verbose $(ARGS)
 	@$(call log_success,Done! You may need to restart the computer to make sure everything works as expected)
 
 ~/.ssh/id_rsa:
@@ -52,7 +63,7 @@ install: ~/.ssh/id_rsa install.lock vault.yaml unlock-bitwarden
 	@exit 1
 
 .PHONY: update
-update: unlock-bitwarden
+update: $(BW_DEPS)
 	@$(call log,Update repo)
 	git pull
 # Restart Make to ensure we use an up-to-date Makefile
