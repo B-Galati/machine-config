@@ -10,6 +10,10 @@
   environment:
     PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   pre_tasks:
+    - name: Check become is working
+      become: true
+      command: "true"
+      changed_when: false
     - name: Debug info
       debug:
         msg: |
