@@ -59,6 +59,7 @@
     - discord
     #- keybase
     - php
+    - symfony
     #- nodejs
     - docker
     - awscli

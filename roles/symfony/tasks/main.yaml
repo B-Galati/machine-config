@@ -1,23 +1,23 @@
 ---
-- name: Symfony CLI | Get the latest release from GitHub API
+- name: Get the latest release from GitHub API
   uri:
     url: "https://api.github.com/repos/symfony-cli/symfony-cli/releases/latest"
     return_content: yes
   register: response
   no_log: true
 
-- name: Symfony CLI | Get version number
+- name: Get version number
   set_fact:
     symfony_cli_version: "{{ response.json | json_query('name') | regex_replace('^.', '') }}"
 
-- name: Symfony CLI | Check for existing install
+- name: Check for existing install
   command: /usr/local/bin/symfony version
   register: symfony_cli_installed_version
   changed_when: symfony_cli_version not in symfony_cli_installed_version.stdout | default('')
   failed_when: False
 
 - block:
-    - name: Symfony CLI | Download
+    - name: Download
       get_url:
         url: https://github.com/symfony-cli/symfony-cli/releases/download/v{{ symfony_cli_version }}/symfony-cli_linux_amd64.tar.gz
         dest: /tmp/symfony.tar.gz
@@ -25,7 +25,7 @@
         force: yes
         checksum: "sha256:https://github.com/symfony-cli/symfony-cli/releases/download/v{{ symfony_cli_version }}/checksums.txt"
 
-    - name: Symfony CLI | Install
+    - name: Install
       become: true
       unarchive:
         src: /tmp/symfony.tar.gz
@@ -35,7 +35,7 @@
         extra_opts: [--wildcards, symfony]
         remote_src: yes
 
-    - name: Symfony CLI | Check
+    - name: Check
       command: /usr/local/bin/symfony version
   when: symfony_cli_version not in symfony_cli_installed_version.stdout | default('')
 

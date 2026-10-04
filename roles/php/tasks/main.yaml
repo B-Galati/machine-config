@@ -6,5 +6,4 @@
   when: ansible_os_family == 'Debian'
 
 - import_tasks: composer.yaml
-- import_tasks: symfony.yaml
 #- import_tasks: phive.yaml
