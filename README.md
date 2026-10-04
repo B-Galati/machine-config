@@ -9,6 +9,8 @@ make install
 
 # 1st install: Bitwarden is not reachable yet, the sudo password is prompted instead
 make install NO_BW=1
+# Until the 1st reboot, binaries installed in ~/.local/bin (pipx, composer…) are not in PATH yet:
+# export PATH="${PATH}:${HOME}/.local/bin"
 
 # Install a given role
 make install ARGS="-t docker"
