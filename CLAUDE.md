@@ -11,7 +11,6 @@ Ansible-based personal machine provisioning for Debian/RedHat Linux workstations
 - **`machine.yaml`** — Main playbook. Runs against localhost, gathers minimal facts, imports `vault.yaml` for secrets.
 - **`roles/`** — Each role is a self-contained Ansible role (e.g., `roles/docker/tasks/main.yaml`). Multi-distro roles use `setup-Debian.yaml` / `setup-RedHat.yaml` conditional imports.
 - **`Makefile`** — Orchestrates installation, updates, and first-time bootstrap (installs Bitwarden CLI, pipx, Ansible).
-- **`requirements.yaml`** — External Ansible Galaxy roles (currently only `jaredhocutt.jetbrains_toolbox`).
 
 ## Conventions
 

@@ -43,7 +43,7 @@ unlock-bitwarden:
 	@sudo -nv 2>/dev/null || { pw=$$(ansible-vault view vault.yaml | yq '.ansible_become_password') && echo "$$pw" | sudo -Sv; }
 
 .PHONY: install
-install: ~/.ssh/id_rsa install.lock requirements vault.yaml unlock-bitwarden
+install: ~/.ssh/id_rsa install.lock vault.yaml unlock-bitwarden
 	ansible-playbook machine.yaml --verbose $(ARGS)
 	@$(call log_success,Done! You may need to restart the computer to make sure everything works as expected)
 
@@ -95,12 +95,6 @@ do-update:
 	\. ~/.nvm/nvm.sh
 	@$(call log,Update Bitwarden)
 	$(MAKE) install ARGS="-t bitwarden"
-
-.PHONY: requirements
-requirements: requirements.lock
-requirements.lock: requirements.yaml
-	ansible-galaxy install --role-file requirements.yaml --roles-path ./roles --force
-	@touch $@
 
 vault.yaml: | unlock-bitwarden
 	@$(call log,[PAUSE] you will need to specify ansible variable ansible_become_password in the vault)

@@ -5,7 +5,6 @@
   gather_subset: [ min ]
   vars_files: [ vault.yaml ]
   vars:
-    jetbrains_toolbox_version: latest
     force_install: false
   pre_tasks:
     - name: Debug info
@@ -44,7 +43,7 @@
     #- z
     - firefox-dev
     - git-delta
-    - jaredhocutt.jetbrains_toolbox
+    - jetbrains-toolbox
     - phpstorm-url-handler
     - discord
     - keybase

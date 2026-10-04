@@ -1,0 +1,11 @@
+---
+- name: Install
+  shell: |
+    set -euo pipefail
+    tmp=$(mktemp -d)
+    trap 'rm -rf "$tmp"' EXIT
+    curl -fsSL "https://data.services.jetbrains.com/products/download?platform=linux&code=TBA" | tar -xz -C "$tmp" --strip-components=1
+    "$tmp/bin/jetbrains-toolbox" --install
+  args:
+    executable: /bin/bash
+    creates: ~/.local/share/JetBrains/Toolbox
