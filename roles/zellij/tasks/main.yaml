@@ -1,20 +1,35 @@
 ---
-- name: Clean if force_install is true
-  become: true
-  file:
-    path: /usr/local/bin/zellij
-    state: absent
-  when: force_install
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/zellij-org/zellij/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
 
-- name: Install
-  become: true
-  shell: |
-    (
-      cd /tmp
-      wget -O zellij.tar.gz "https://github.com/zellij-org/zellij/releases/latest/download/zellij-x86_64-unknown-linux-musl.tar.gz"
-      tar -xf zellij.tar.gz zellij
-      install zellij /usr/local/bin
-      rm zellij.tar.gz zellij
-    )
-  args:
-    creates: /usr/local/bin/zellij
+- name: Get version number
+  set_fact:
+    zellij_version: "{{ response.json | json_query('tag_name') | regex_replace('^v', '') }}"
+
+- name: Check for existing install
+  command: /usr/local/bin/zellij --version
+  register: zellij_installed_version
+  changed_when: zellij_version not in zellij_installed_version.stdout | default('')
+  failed_when: False
+
+- block:
+    - name: Download
+      get_url:
+        url: https://github.com/zellij-org/zellij/releases/download/v{{ zellij_version }}/zellij-x86_64-unknown-linux-musl.tar.gz
+        dest: /tmp/zellij.tar.gz
+        force: yes
+
+    - name: Install
+      become: true
+      unarchive:
+        src: /tmp/zellij.tar.gz
+        dest: /usr/local/bin
+        owner: root
+        group: root
+        include: [zellij]
+        remote_src: yes
+  when: force_install or zellij_version not in zellij_installed_version.stdout | default('')

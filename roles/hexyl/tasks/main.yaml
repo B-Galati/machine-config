@@ -1,4 +1,15 @@
 ---
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/sharkdp/hexyl/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    hexyl_version: "{{ response.json | json_query('tag_name') | regex_replace('^v', '') }}"
+
 - name: Check hexyl version to know if an update is needed or not
   command: /usr/local/bin/hexyl --version
   register: hexyl_installed_version
@@ -18,5 +29,7 @@
         src: /tmp/hexyl.tar.gz
         dest: /usr/local/bin
         remote_src: yes
+        owner: root
+        group: root
         extra_opts: [--strip=1, --wildcards, '*/hexyl']
   when: hexyl_version not in hexyl_installed_version.stdout | default('')

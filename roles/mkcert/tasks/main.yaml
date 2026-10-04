@@ -1,4 +1,15 @@
 ---
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/FiloSottile/mkcert/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    mkcert_version: "{{ response.json | json_query('tag_name') }}"
+
 - name: Check for existing mkcert install
   command: /usr/local/bin/mkcert -version
   register: mkcert_installed_version

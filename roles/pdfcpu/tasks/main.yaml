@@ -1,4 +1,15 @@
 ---
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/pdfcpu/pdfcpu/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+- name: Get version number
+  set_fact:
+    pdfcpu_version: "{{ response.json | json_query('tag_name') | regex_replace('^v', '') }}"
+
 - name: Check for existing pdfcpu install
   command: /usr/local/bin/pdfcpu version
   register: pdfcpu_cli_installed_version

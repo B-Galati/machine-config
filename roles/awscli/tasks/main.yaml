@@ -1,5 +1,16 @@
 # see https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 ---
+# No GitHub releases for AWS CLI v2: its changelog lists the latest version first
+- name: Get the latest version from the changelog
+  uri:
+    url: https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+    return_content: yes
+  register: response
+
+- name: Get version number
+  set_fact:
+    aws_cli_version: "{{ response.content | regex_search('^2\\.[0-9]+\\.[0-9]+$', multiline=True) }}"
+
 - name: Check for existing installation and version
   command: /usr/local/bin/aws --version
   register: aws_cli_installed_version
