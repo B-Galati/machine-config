@@ -16,8 +16,8 @@
         owner: '{{ ansible_user_id }}'
         group: '{{ ansible_user_id }}'
 
+    # mkcert calls sudo itself, which fails without a TTY (sudo-rs on Ubuntu 26.04)
     - name: Create local CA
-      shell: /usr/local/bin/mkcert -install
-      register: mkcert_install
-      changed_when: "'Created a new local CA' in mkcert_install.stdout"
+      debug:
+        msg: "Run manually: mkcert -install"
   when: mkcert_version not in mkcert_installed_version.stdout | default('')
