@@ -61,7 +61,6 @@
       - entr
       - gdebi
       - fonts-roboto
-      - wondershaper
       - chrome-gnome-shell
       - flameshot
       - jq

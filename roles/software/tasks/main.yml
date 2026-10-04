@@ -11,5 +11,3 @@
     executable: ~/.local/bin/pipx
   with_items:
     - s-tui
-    - youtube-dl
-    - git+https://github.com/micoli/fixup-chooser.git
