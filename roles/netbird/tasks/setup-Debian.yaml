@@ -11,6 +11,13 @@
     executable: /bin/bash
     creates: /usr/share/keyrings/netbird-archive-keyring.gpg
 
+# Written by apt_repository before the switch to deb822_repository
+- name: Remove legacy repository file
+  become: true
+  file:
+    path: /etc/apt/sources.list.d/netbird.list
+    state: absent
+
 - name: Add NetBird APT repository
   become: true
   deb822_repository:

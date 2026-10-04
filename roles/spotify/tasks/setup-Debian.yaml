@@ -22,6 +22,15 @@
     signed_by: /usr/share/keyrings/spotify.gpg
     state: present
 
+# spotify-client's postinst only detects .list files and would add a duplicate spotify.list,
+# unless that file already exists (documented opt-out)
+- name: Prevent spotify-client from adding its own repository
+  become: true
+  copy:
+    content: "# Repository managed in spotify.sources\n"
+    dest: /etc/apt/sources.list.d/spotify.list
+    mode: 0644
+
 - name: Install
   become: true
   apt:
