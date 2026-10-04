@@ -1,11 +1,4 @@
 ---
-- name: Import GPG key
-  become: true
-  shell: |
-    gpg --no-default-keyring --keyring /usr/share/keyrings/insync-archive-keyring.gpg --keyserver keyserver.ubuntu.com --recv-keys ACCAF35C
-  args:
-    creates: /usr/share/keyrings/insync-archive-keyring.gpg
-
 - name: Add repository
   become: true
   deb822_repository:
@@ -16,17 +9,11 @@
     components:
       - non-free
       - contrib
-    signed_by: /usr/share/keyrings/insync-archive-keyring.gpg
+    signed_by: https://keyserver.ubuntu.com/pks/lookup?op=get&options=mr&search=0xAEEB94E9C5A3B54ECFA4A66AA684470CACCAF35C
     state: present
-  register: insync_repo
-
-- name: Update apt cache
-  become: true
-  apt:
-    update_cache: yes
-  when: insync_repo.changed
 
 - name: Install
   become: true
   apt:
+    update_cache: yes
     name: insync
