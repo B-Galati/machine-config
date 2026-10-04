@@ -41,21 +41,22 @@
     - fonts
     - gnome-settings
     - dotfiles
+    - firefox-dev
     - bitwarden
     - yubico
     - slack
     - rust
     - alacritty
+    - claude-code
     - zellij
     #- z
-    - firefox-dev
     - git-delta
     - jetbrains-toolbox
     - phpstorm-url-handler
     - discord
-    - keybase
+    #- keybase
     - php
-    - nvm
+    #- nvm
     #- nodejs
     - docker
     - awscli
@@ -64,25 +65,25 @@
     - mkcert
     - croncape
     - hexyl
-    - unipdf-cli
+    #- unipdf-cli
     - pdfcpu
     - obsidian
     - github-cli
     - gitlab-cli
-    - dstp
     - postman
     - task
     - helm
     - kubectx
     - trdsql
     - bandwhich # Terminal bandwidth utilization tool
+    - dstp
     - rtk
     - chrome
     - spotify
-    - pulumi
-    - auth0
-    - k6
-    - stoplight-studio
+    #- pulumi
+    #- auth0
+    #- k6
+    #- stoplight-studio
     - ngrok
     - netbird
     - mise
@@ -91,10 +92,9 @@
     - fastfetch
     - btop
     - lazydocker
-    - fabric
+    #- fabric
     - insync
     #- intune
     - handy # https://github.com/cjpais/Handy
     #- pg-lord-of-the-rings # https://gitlab.com/l_avrot/pg-lord-of-the-rings
-    - claude-code
     #- https://github.com/EpicenterHQ/epicenter
