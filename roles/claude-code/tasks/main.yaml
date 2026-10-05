@@ -49,3 +49,21 @@
     name: "{{ ansible_user_id }}"
     groups: kvm
     append: yes
+
+- name: Create autostart directory
+  file:
+    path: ~/.config/autostart
+    state: directory
+    mode: 0755
+
+# Same file and content as the app's "Open at login" setting, which keeps it in sync; --startup launches in background
+- name: Start Claude Desktop at login
+  copy:
+    content: |
+      [Desktop Entry]
+      Type=Application
+      Name=Claude
+      Exec="/usr/lib/claude-desktop/claude-desktop" --startup
+      X-GNOME-Autostart-enabled=true
+    dest: ~/.config/autostart/claude-desktop.desktop
+    mode: 0644
