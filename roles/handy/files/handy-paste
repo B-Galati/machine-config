@@ -1,0 +1,7 @@
+#!/bin/sh
+# Handy pastes with Ctrl + the physical V key, which types "." on the bépo layout.
+# Send Ctrl + the key that types "v" on bépo instead (evdev KEY_U), so apps get a real Ctrl+V.
+set -e
+printf '%s' "$1" | wl-copy
+sleep 0.1
+ydotool key 29:1 22:1 22:0 29:0

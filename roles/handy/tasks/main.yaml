@@ -23,10 +23,13 @@
   when: handy_installed_version.stdout != handy_version
 
 # Text input on Wayland: wtype does not work on Ubuntu 26.04, ydotool is required
-- name: Install ydotool
+# wl-clipboard: without wl-copy, Handy writes to a clipboard that native Wayland apps do not see. Also used by handy-paste
+- name: Install ydotool and wl-clipboard
   become: true
   apt:
-    name: ydotool
+    name:
+      - ydotool
+      - wl-clipboard
 
 - name: Allow ydotoold to access /dev/uinput
   become: true
@@ -60,9 +63,28 @@
   register: handy_settings_content
   when: handy_settings_file.stat.exists
 
-# Missing fields are filled with Handy's defaults
-- name: Start at login, hidden
+- name: Install paste script
   copy:
-    content: "{{ ((handy_settings_content.content | b64decode | from_json) if handy_settings_file.stat.exists else {}) | combine({'settings': {'autostart_enabled': true, 'start_hidden': true}}, recursive=true) | to_nice_json }}"
+    src: handy-paste
+    dest: ~/.local/bin/handy-paste
+    mode: 0755
+
+# Missing fields are filled with Handy's defaults
+- name: Configure settings
+  copy:
+    content: "{{ ((handy_settings_content.content | b64decode | from_json) if handy_settings_file.stat.exists else {}) | combine({'settings': handy_settings}, recursive=true) | to_nice_json }}"
     dest: ~/.local/share/com.pais.handy/settings_store.json
     mode: 0644
+  vars:
+    handy_settings:
+      autostart_enabled: true
+      start_hidden: true
+      # Built-in methods send physical keys: Ctrl+V types Ctrl+. on bépo, and Shift+Insert breaks while Ctrl is still held
+      paste_method: external_script
+      external_script_path: "{{ ansible_env.HOME }}/.local/bin/handy-paste"
+      # Hold Ctrl+Space (the default binding) to dictate
+      shortcut_activation: push_to_talk
+      # On Wayland, the default implementation only gets shortcuts when an X11 window has focus: read evdev instead (input group)
+      keyboard_implementation: handy_keys
+      # GNOME has no layer shell: the overlay is a regular window that takes the focus from the app to paste into
+      overlay_style: none
