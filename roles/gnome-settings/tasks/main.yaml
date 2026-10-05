@@ -123,3 +123,19 @@
     #gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-from 0.0
     #gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-to 23.99
     gsettings set org.gnome.settings-daemon.plugins.color night-light-temperature 'uint32 3200'
+
+# Flameshot captures through the screenshot portal on Wayland, which makes GNOME play the shutter sound.
+# A .disabled file mutes this sound only; Yaru has no screen-capture sound and falls back to freedesktop
+- name: Create sound theme directories
+  file:
+    path: "~/.local/share/sounds/{{ item }}/stereo"
+    state: directory
+    mode: 0755
+  loop: [Yaru, freedesktop]
+
+- name: Mute the screenshot sound
+  copy:
+    content: ""
+    dest: "~/.local/share/sounds/{{ item }}/stereo/screen-capture.disabled"
+    mode: 0644
+  loop: [Yaru, freedesktop]
