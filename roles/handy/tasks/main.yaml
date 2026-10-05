@@ -42,21 +42,27 @@
     scope: user
     enabled: yes
 
-- name: Create autostart directory
+# Handy creates or removes ~/.config/autostart/Handy.desktop from autostart_enabled on each launch
+- name: Create settings directory
   file:
-    path: ~/.config/autostart
+    path: ~/.local/share/com.pais.handy
     state: directory
     mode: 0755
 
-- name: Start at login
+- name: Check for existing settings
+  stat:
+    path: ~/.local/share/com.pais.handy/settings_store.json
+  register: handy_settings_file
+
+- name: Read existing settings
+  slurp:
+    src: ~/.local/share/com.pais.handy/settings_store.json
+  register: handy_settings_content
+  when: handy_settings_file.stat.exists
+
+# Missing fields are filled with Handy's defaults
+- name: Start at login, hidden
   copy:
-    content: |
-      [Desktop Entry]
-      Type=Application
-      Name=Handy
-      Exec=handy --start-hidden
-      Icon=handy
-      X-GNOME-Autostart-enabled=true
-      Terminal=false
-    dest: ~/.config/autostart/handy.desktop
+    content: "{{ ((handy_settings_content.content | b64decode | from_json) if handy_settings_file.stat.exists else {}) | combine({'settings': {'autostart_enabled': true, 'start_hidden': true}}, recursive=true) | to_nice_json }}"
+    dest: ~/.local/share/com.pais.handy/settings_store.json
     mode: 0644
