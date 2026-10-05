@@ -8,6 +8,8 @@
       - gnome-shell-extensions
       - gnome-shell-extension-manager
       - gnome-shell-extension-system-monitor
+      # The system-monitor extension hides itself without this app, which Ubuntu 26.04 replaced with Resources
+      - gnome-system-monitor
 
 - name: Install pip packages
   community.general.pipx:
