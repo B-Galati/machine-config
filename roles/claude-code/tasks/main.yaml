@@ -18,3 +18,34 @@
   copy:
     src: claude.svg
     dest: /usr/share/pixmaps/claude.svg
+
+# Claude Desktop, see https://code.claude.com/docs/en/desktop-linux
+# The package rewrites its key and repository on each install/upgrade: use the same paths and only create them if missing
+- name: Add Claude Desktop GPG key
+  become: true
+  get_url:
+    url: https://downloads.claude.ai/claude-desktop/key.asc
+    dest: /usr/share/keyrings/claude-desktop-archive-keyring.asc
+    mode: 0644
+
+- name: Add Claude Desktop apt repository
+  become: true
+  copy:
+    content: "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/claude-desktop-archive-keyring.asc] https://downloads.claude.ai/claude-desktop/apt/stable stable main\n"
+    dest: /etc/apt/sources.list.d/claude-desktop.list
+    mode: 0644
+    force: no
+
+- name: Install Claude Desktop
+  become: true
+  apt:
+    update_cache: yes
+    name: claude-desktop
+
+# Cowork runs tasks in a QEMU/KVM VM and needs /dev/kvm and /dev/vhost-vsock (kvm group only)
+- name: Allow Cowork to use KVM
+  become: true
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: kvm
+    append: yes
