@@ -19,6 +19,25 @@
     src: claude.svg
     dest: /usr/share/pixmaps/claude.svg
 
+- name: Install notify-send
+  become: true
+  apt:
+    name: libnotify-bin
+
+# Hooks send notifications with -h string:desktop-entry:claude-code-cli so that GNOME groups them under this app.
+# Do not add NoDisplay=true: GNOME then hides the notifications of the app
+- name: Add desktop entry for notifications
+  copy:
+    content: |
+      [Desktop Entry]
+      Type=Application
+      Name=Claude Code
+      Icon=claude
+      Exec=claude
+      Terminal=true
+    dest: ~/.local/share/applications/claude-code-cli.desktop
+    mode: 0644
+
 # Claude Desktop, see https://code.claude.com/docs/en/desktop-linux
 # The package rewrites its key and repository on each install/upgrade: use the same paths and only create them if missing
 - name: Add Claude Desktop GPG key
