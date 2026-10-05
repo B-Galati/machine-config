@@ -41,3 +41,22 @@
     name: ydotool
     scope: user
     enabled: yes
+
+- name: Create autostart directory
+  file:
+    path: ~/.config/autostart
+    state: directory
+    mode: 0755
+
+- name: Start at login
+  copy:
+    content: |
+      [Desktop Entry]
+      Type=Application
+      Name=Handy
+      Exec=handy --start-hidden
+      Icon=handy
+      X-GNOME-Autostart-enabled=true
+      Terminal=false
+    dest: ~/.config/autostart/handy.desktop
+    mode: 0644
