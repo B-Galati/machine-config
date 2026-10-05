@@ -20,3 +20,15 @@
       PATH="$PATH:{{ ansible_env.HOME }}/.cargo/bin"
     dest: ~/.config/environment.d/cargo.conf
     mode: 0644
+
+# Updated by `make update`
+- name: Install tools
+  command: "{{ ansible_env.HOME }}/.cargo/bin/cargo install {{ item.crate }}"
+  args:
+    creates: "{{ ansible_env.HOME }}/.cargo/bin/{{ item.bin }}"
+  loop:
+    - { crate: starship, bin: starship }
+    - { crate: grex, bin: grex }
+    - { crate: sd, bin: sd }
+    - { crate: tailspin, bin: tspin }
+    - { crate: difftastic, bin: difft }
