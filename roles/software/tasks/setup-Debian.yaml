@@ -15,6 +15,7 @@
       - nmon
       - hdparm
       - xclip
+      - wl-clipboard
       - smartmontools
       - sysbench
       - iotop
