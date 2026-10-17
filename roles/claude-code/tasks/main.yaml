@@ -24,6 +24,31 @@
   apt:
     name: libnotify-bin
 
+# Extends Ubuntu's notify-send profile through its local/ include, which survives package upgrades
+- name: Let notify-send --wait exit
+  become: true
+  copy:
+    content: |
+      # Managed by ~/machine-config (role claude-code).
+      # Claude Code hooks run notify-send --wait: GNOME groups the notifications of an app
+      # only while the sender of the first one is alive. Ubuntu's profile denies notify-send
+      # the NotificationClosed signal and every Unix signal, so each call then lingers forever,
+      # even when the notification is closed, and cannot be killed (pkill, timeout).
+      # With both rules, GNOME's cap of 10 notifications per app bounds the processes.
+      dbus (receive)
+          bus=session
+          interface=org.freedesktop.Notifications
+          member={NotificationClosed,ActionInvoked,ActivationToken},
+      signal (receive),
+    dest: /etc/apparmor.d/local/notify-send
+    mode: 0644
+  register: notify_send_apparmor
+
+- name: Reload notify-send AppArmor profile
+  become: true
+  command: apparmor_parser -r /etc/apparmor.d/notify-send
+  when: notify_send_apparmor.changed
+
 # Hooks send notifications with -h string:desktop-entry:claude-code-cli so that GNOME groups them under this app.
 # Do not add NoDisplay=true: GNOME then hides the notifications of the app
 - name: Add desktop entry for notifications
