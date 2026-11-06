@@ -55,7 +55,8 @@ endif
 
 .PHONY: install
 install: ~/.ssh/id_rsa install.lock $(BW_DEPS)
-	ansible-playbook machine.yaml $(BECOME_ARGS) --verbose $(ARGS)
+# MAKEFLAGS leaks to child builds (e.g. jemalloc's make) and its bare `r` (--no-builtin-rules) is read as a target
+	env -u MAKEFLAGS ansible-playbook machine.yaml $(BECOME_ARGS) --verbose $(ARGS)
 	@$(call log_success,Done! You may need to restart the computer to make sure everything works as expected)
 
 ~/.ssh/id_rsa:
@@ -98,7 +99,7 @@ do-update:
 	composer selfupdate -n
 	@$(call log,Update rust and local binaries (toolchains))
 	rustup update
-	cargo install bandwhich grex alacritty sd starship tailspin difftastic
+	env -u MAKEFLAGS cargo install bandwhich grex alacritty sd starship tailspin difftastic
 	@$(call log,Update tools installed from upstream releases and reapply GNOME settings)
 	$(MAKE) install ARGS="-t gnome-settings,rtk,bitwarden,zellij,git-delta,symfony,awscli,mkcert,hexyl,pdfcpu,gitlab-cli,task,helm,trdsql,dstp,yq,fastfetch,lazydocker,handy"
 
