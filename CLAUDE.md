@@ -18,3 +18,4 @@ Ansible-based personal machine provisioning for Debian/RedHat Linux workstations
 - Roles support Debian and RedHat via `ansible_os_family` conditionals.
 - `force_install` variable (default `false`) controls whether roles re-download/reinstall.
 - No CI/CD or test suite — changes are validated by running `make install` on the target machine.
+- Never create a Linear ticket or a Linear branch for this repo: it overrides the global "Tâche de code sans ticket" rule.
