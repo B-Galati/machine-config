@@ -23,7 +23,7 @@
   when: handy_installed_version.stdout != handy_version
 
 # Text input on Wayland: wtype does not work on Ubuntu 26.04, ydotool is required
-# wl-clipboard: without wl-copy, Handy writes to a clipboard that native Wayland apps do not see. Also used by handy-paste
+# wl-clipboard: without wl-copy, Handy writes to a clipboard that native Wayland apps do not see
 - name: Install ydotool and wl-clipboard
   become: true
   apt:
@@ -63,28 +63,39 @@
   register: handy_settings_content
   when: handy_settings_file.stat.exists
 
-- name: Install paste script
-  copy:
-    src: handy-paste
-    dest: ~/.local/bin/handy-paste
-    mode: 0755
-
 # Missing fields are filled with Handy's defaults
-- name: Configure settings
-  copy:
-    content: "{{ ((handy_settings_content.content | b64decode | from_json) if handy_settings_file.stat.exists else {}) | combine({'settings': handy_settings}, recursive=true) | to_nice_json }}"
-    dest: ~/.local/share/com.pais.handy/settings_store.json
-    mode: 0644
+- name: Compute settings
+  set_fact:
+    handy_settings_wanted: "{{ handy_settings_current | combine({'settings': handy_settings}, recursive=true) }}"
+    handy_settings_changed: "{{ handy_settings_current | combine({'settings': handy_settings}, recursive=true) != handy_settings_current }}"
   vars:
+    handy_settings_current: "{{ (handy_settings_content.content | b64decode | from_json) if handy_settings_file.stat.exists else {} }}"
     handy_settings:
       autostart_enabled: true
       start_hidden: true
-      # Built-in methods send physical keys: Ctrl+V types Ctrl+. on bépo, and Shift+Insert breaks while Ctrl is still held
-      paste_method: external_script
-      external_script_path: "{{ ansible_env.HOME }}/.local/bin/handy-paste"
+      # Recommended on Linux since 0.10.1: pastes in apps and terminals whatever the keyboard layout
+      paste_method: shift_insert
       # Hold Ctrl+Space (the default binding) to dictate
       shortcut_activation: push_to_talk
       # On Wayland, the default implementation only gets shortcuts when an X11 window has focus: read evdev instead (input group)
       keyboard_implementation: handy_keys
       # GNOME has no layer shell: the overlay is a regular window that takes the focus from the app to paste into
       overlay_style: none
+
+# Handy keeps its settings in memory and writes them back on exit, which would undo the change
+- name: Stop Handy before changing its settings
+  shell: pkill -x handy && timeout 10 sh -c 'while pgrep -x handy > /dev/null; do sleep 0.2; done'
+  register: handy_stopped
+  changed_when: handy_stopped.rc == 0
+  failed_when: handy_stopped.rc > 1
+  when: handy_settings_changed | bool
+
+- name: Configure settings
+  copy:
+    content: "{{ handy_settings_wanted | to_nice_json }}"
+    dest: ~/.local/share/com.pais.handy/settings_store.json
+    mode: 0644
+
+- name: Start Handy again
+  shell: setsid -f handy > /dev/null 2>&1
+  when: handy_stopped is changed
