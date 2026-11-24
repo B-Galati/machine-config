@@ -123,7 +123,7 @@ install.lock:
     ; fi
 	@$(call log,Install Bitwarden CLI)
 	@BW_VERSION=$$(curl -s https://api.github.com/repos/bitwarden/clients/releases?per_page=30 | python3 -c "import json,sys; print(next(t.replace('cli-v','') for t in (r['tag_name'] for r in json.load(sys.stdin)) if t.startswith('cli-v')))") && \
-		curl -sL "https://github.com/bitwarden/clients/releases/download/cli-v$${BW_VERSION}/bw-linux-$${BW_VERSION}.zip" -o /tmp/bw.zip && \
+		curl -sL "https://github.com/bitwarden/clients/releases/download/cli-v$${BW_VERSION}/bw-bit-linux-$${BW_VERSION}.zip" -o /tmp/bw.zip && \
 		sudo unzip -o /tmp/bw.zip -d /usr/local/bin && \
 		sudo chmod 755 /usr/local/bin/bw && \
 		rm /tmp/bw.zip

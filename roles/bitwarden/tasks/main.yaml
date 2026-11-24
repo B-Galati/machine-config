@@ -68,7 +68,7 @@
 - block:
     - name: Download CLI
       unarchive:
-        src: "https://github.com/bitwarden/clients/releases/download/cli-v{{ bw_cli_version }}/bw-linux-{{ bw_cli_version }}.zip"
+        src: "https://github.com/bitwarden/clients/releases/download/cli-v{{ bw_cli_version }}/bw-bit-linux-{{ bw_cli_version }}.zip"
         dest: /usr/local/bin
         remote_src: yes
         mode: 0755
