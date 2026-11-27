@@ -1,0 +1,49 @@
+---
+# Ubuntu repositories lag behind upstream: install the .deb from the GitHub release
+- name: Get the latest release from GitHub API
+  uri:
+    url: "https://api.github.com/repos/flameshot-org/flameshot/releases/latest"
+    return_content: yes
+  register: response
+  no_log: true
+
+# Asset names embed a commit hash, e.g. flameshot-v15.0.0+git0.f4f2e4e-artifact-ubuntu-26.04-amd64.zip
+- name: Get version and package URL
+  set_fact:
+    flameshot_version: "{{ response.json.tag_name | regex_replace('^v', '') }}"
+    flameshot_zip_url: "{{ response.json.assets | map(attribute='browser_download_url') | select('search', 'ubuntu-' ~ ansible_distribution_version ~ '-amd64\\.zip$') | first }}"
+
+- name: Check for existing install
+  command: dpkg-query -W -f='${Version}' flameshot
+  register: flameshot_installed_version
+  changed_when: False
+  failed_when: False
+
+- block:
+    - name: Create temporary directory
+      tempfile:
+        state: directory
+      register: flameshot_tmp
+
+    - name: Download and extract
+      unarchive:
+        src: "{{ flameshot_zip_url }}"
+        dest: "{{ flameshot_tmp.path }}"
+        remote_src: yes
+
+    - name: Find package
+      find:
+        paths: "{{ flameshot_tmp.path }}"
+        patterns: "*.deb"
+      register: flameshot_deb
+
+    - name: Install
+      become: true
+      apt:
+        deb: "{{ flameshot_deb.files[0].path }}"
+
+    - name: Remove temporary directory
+      file:
+        path: "{{ flameshot_tmp.path }}"
+        state: absent
+  when: not flameshot_installed_version.stdout.startswith(flameshot_version ~ '-')

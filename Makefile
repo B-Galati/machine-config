@@ -101,7 +101,7 @@ do-update:
 	rustup update
 	env -u MAKEFLAGS cargo install bandwhich grex alacritty sd starship tailspin difftastic
 	@$(call log,Update tools installed from upstream releases and reapply GNOME settings)
-	$(MAKE) install ARGS="-t gnome-settings,rtk,bitwarden,zellij,git-delta,symfony,awscli,mkcert,hexyl,pdfcpu,gitlab-cli,task,helm,trdsql,dstp,yq,fastfetch,lazydocker,handy"
+	$(MAKE) install ARGS="-t gnome-settings,rtk,bitwarden,zellij,git-delta,symfony,awscli,mkcert,hexyl,pdfcpu,gitlab-cli,task,helm,trdsql,dstp,yq,fastfetch,lazydocker,handy,flameshot"
 
 vault.yaml: | unlock-bitwarden
 	@$(call log,[PAUSE] you will need to specify ansible variable ansible_become_password in the vault)

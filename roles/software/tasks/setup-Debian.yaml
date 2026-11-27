@@ -64,7 +64,6 @@
       - gdebi
       - fonts-roboto
       - gnome-browser-connector
-      - flameshot
       - jq
       - vlc
       - python3-fitz # binding for MuPDF

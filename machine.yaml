@@ -99,5 +99,6 @@
     - insync
     #- intune
     - handy # https://github.com/cjpais/Handy
+    - flameshot # https://github.com/flameshot-org/flameshot
     #- pg-lord-of-the-rings # https://gitlab.com/l_avrot/pg-lord-of-the-rings
     #- https://github.com/EpicenterHQ/epicenter
