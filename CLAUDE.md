@@ -17,5 +17,6 @@ Ansible-based personal machine provisioning for Debian/RedHat Linux workstations
 - YAML files use `.yaml` extension (some legacy roles still use `.yml` for handlers).
 - Roles support Debian and RedHat via `ansible_os_family` conditionals.
 - `force_install` variable (default `false`) controls whether roles re-download/reinstall.
+- A role that installs the latest upstream release (GitHub, etc.) must also be added to the `-t` list of the `do-update` target in the `Makefile`.
 - No CI/CD or test suite — changes are validated by running `make install` on the target machine.
 - Never create a Linear ticket or a Linear branch for this repo: it overrides the global "Tâche de code sans ticket" rule.
