@@ -1,17 +1,26 @@
 ---
-# Ubuntu repositories lag behind upstream: install the .deb from the GitHub release
-- name: Get the latest release from GitHub API
+# Ubuntu repositories lag behind upstream: install the .deb from the GitHub releases
+- name: Get the releases from GitHub API
   uri:
-    url: "https://api.github.com/repos/flameshot-org/flameshot/releases/latest"
+    url: "https://api.github.com/repos/flameshot-org/flameshot/releases"
     return_content: yes
   register: response
+  no_log: true
+
+# Supply chain: releases are not signed, so only install one published at least 7 days ago,
+# leaving time for a compromised release to be spotted and pulled
+- name: Pick the newest release older than 7 days
+  set_fact:
+    flameshot_release: "{{ response.json | rejectattr('draft') | rejectattr('prerelease') | selectattr('published_at', 'lt', flameshot_cutoff) | first }}"
+  vars:
+    flameshot_cutoff: "{{ '%Y-%m-%dT%H:%M:%SZ' | strftime(now(utc=true).timestamp() - 7 * 86400, utc=true) }}"
   no_log: true
 
 # Asset names embed a commit hash, e.g. flameshot-v15.0.0+git0.f4f2e4e-artifact-ubuntu-26.04-amd64.zip
 - name: Get version and package URL
   set_fact:
-    flameshot_version: "{{ response.json.tag_name | regex_replace('^v', '') }}"
-    flameshot_zip_url: "{{ response.json.assets | map(attribute='browser_download_url') | select('search', 'ubuntu-' ~ ansible_distribution_version ~ '-amd64\\.zip$') | first }}"
+    flameshot_version: "{{ flameshot_release.tag_name | regex_replace('^v', '') }}"
+    flameshot_zip_url: "{{ flameshot_release.assets | map(attribute='browser_download_url') | select('search', 'ubuntu-' ~ ansible_distribution_version ~ '-amd64\\.zip$') | first }}"
 
 - name: Check for existing install
   command: dpkg-query -W -f='${Version}' flameshot
@@ -20,14 +29,27 @@
   failed_when: False
 
 - block:
+    # The .sha256sum names the file with a literal "+" while its URL has "%2B": get_url cannot match it, so read the hash ourselves
+    - name: Get checksum
+      uri:
+        url: "{{ flameshot_zip_url }}.sha256sum"
+        return_content: yes
+      register: flameshot_checksum
+
     - name: Create temporary directory
       tempfile:
         state: directory
       register: flameshot_tmp
 
-    - name: Download and extract
+    - name: Download and verify checksum
+      get_url:
+        url: "{{ flameshot_zip_url }}"
+        dest: "{{ flameshot_tmp.path }}/flameshot.zip"
+        checksum: "sha256:{{ flameshot_checksum.content.split()[0] }}"
+
+    - name: Extract
       unarchive:
-        src: "{{ flameshot_zip_url }}"
+        src: "{{ flameshot_tmp.path }}/flameshot.zip"
         dest: "{{ flameshot_tmp.path }}"
         remote_src: yes
 
@@ -41,7 +63,7 @@
       become: true
       apt:
         deb: "{{ flameshot_deb.files[0].path }}"
-
+  always:
     - name: Remove temporary directory
       file:
         path: "{{ flameshot_tmp.path }}"
